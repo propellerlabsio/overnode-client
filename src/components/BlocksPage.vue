@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="title">This is the blocks page</h1>
+    <h1 class="title">Blocks</h1>
     <table class="table is-striped is-bordered">
       <thead>
         <tr>

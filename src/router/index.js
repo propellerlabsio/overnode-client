@@ -1,7 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import HomePage from '@/components/HomePage';
+import OverviewPage from '@/components/OverviewPage';
 import BlocksPage from '@/components/BlocksPage';
+import WalletPage from '@/components/WalletPage';
+import DonationsPage from '@/components/DonationsPage';
 
 Vue.use(Router);
 
@@ -10,12 +12,22 @@ export default new Router({
     {
       path: '/',
       name: 'Home',
-      component: HomePage,
+      component: OverviewPage,
     },
     {
       path: '/blocks',
       name: 'Blocks',
       component: BlocksPage,
+    },
+    {
+      path: '/wallet',
+      name: 'Wallet',
+      component: WalletPage,
+    },
+    {
+      path: '/donate',
+      name: 'Donate',
+      component: DonationsPage,
     },
   ],
 });

@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="container">
     <section class="section">
-      <div class="columns is-mobile is-variable is-5">
+      <div class="columns is-mobile is-variable is-6">
         <div class="column is-narrow">
           <!-- <p>Menu menu menu.</p> -->
           <side-menu />

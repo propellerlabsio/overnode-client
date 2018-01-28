@@ -6,6 +6,10 @@ import App from './App';
 import createStore from './store/index';
 import router from './router';
 
+import BlockTimes from './components/overview/BlockTimes';
+
+Vue.component('block-times', BlockTimes);
+
 Vue.use(Vuex);
 const store = createStore();
 
