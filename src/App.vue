@@ -1,14 +1,16 @@
 <template>
   <div id="app" class="container">
-    <div class="columns">
-      <div class="column is-narrow">
-        <!-- <p>Menu menu menu.</p> -->
-        <side-menu />
+    <section class="section">
+      <div class="columns is-mobile is-variable is-5">
+        <div class="column is-narrow">
+          <!-- <p>Menu menu menu.</p> -->
+          <side-menu />
+        </div>
+        <div class="column">
+          <router-view/>
+        </div>
       </div>
-      <div class="column">
-        <router-view/>
-      </div>
-    </div>
+    </section>
   </div>
 </template>
 
