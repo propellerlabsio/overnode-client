@@ -1,6 +1,6 @@
-# node-commander-client
+# overnode-client
 
-> Vuejs UI for node-commander
+> Vuejs UI / Client for Overnode
 
 ## Build Setup
 
