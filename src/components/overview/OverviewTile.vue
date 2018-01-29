@@ -19,3 +19,12 @@ export default {
   props: ['title', 'componentType'],
 };
 </script>
+
+<style scoped>
+  .content {
+    display: block;
+    height: 200px;
+    overflow: hidden;
+  }
+</style>
+

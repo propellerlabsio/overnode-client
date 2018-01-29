@@ -6,7 +6,8 @@
         <overview-tile title="Block Times (mins)" component-type="block-times" />
       </div>
       <div class="column">
-        <overview-tile title="Second graph test" component-type="block-times" />
+        <overview-tile title="Tx/sec (mempool)"
+          component-type="transaction-rate" />
       </div>
     </div>
   </div>

@@ -12,7 +12,6 @@ const mutations = {
 };
 
 const actions = {
-  // eslint-disable-next-line
   async get({ dispatch, commit }) {
     const query = `query {
       blocks {
@@ -30,7 +29,6 @@ const actions = {
     const variables = {
     };
 
-    // eslint-disable-next-line
     const response = await dispatch('session/request', { query, variables }, { root: true });
     response.blocks.forEach(block => commit('addBlock', block));
   },

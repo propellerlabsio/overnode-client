@@ -1,5 +1,5 @@
 <template>
-  <svg class="chart-block-times" width="100%" height="100%" :viewBox="`0 0 ${width} ${height}`"
+  <svg class="chart-block-times" width="100%" height="200px" :viewBox="`0 0 ${width} ${height}`"
     ref="svg">
     <text x="10" y="35" font-size="35">Loading d3...</text>
   </svg>
