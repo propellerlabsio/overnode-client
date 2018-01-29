@@ -1,7 +1,6 @@
 <template>
   <svg class="chart-block-times" width="100%" height="100%" :viewBox="`0 0 ${width} ${height}`"
     ref="svg">
-  <!-- <svg class="chart-block-times" :width="width" :height="height"> -->
     <text x="10" y="35" font-size="35">Loading d3...</text>
   </svg>
 </template>
@@ -25,7 +24,7 @@ export default {
   },
   computed: {
     blocks() {
-      return this.$store.state.blocks
+      return this.$store.state.blocks.cached
         .map(block => ({
           height: block.height,
           interval: block.interval / 60,

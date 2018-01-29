@@ -37,7 +37,7 @@ export default {
   name: 'blocks-page',
   computed: {
     blocks() {
-      return this.$store.state.blocks;
+      return this.$store.state.blocks.cached;
     },
   },
 };

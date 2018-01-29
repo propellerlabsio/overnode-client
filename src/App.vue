@@ -22,6 +22,10 @@ export default {
   components: {
     SideMenu,
   },
+  created() {
+    // Get latest blocks (TODO parametize)
+    this.$store.dispatch('blocks/get');
+  },
 };
 </script>
 
