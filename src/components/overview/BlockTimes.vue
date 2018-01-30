@@ -70,7 +70,8 @@ export default {
         .range([this.height - this.margins.top, this.margins.bottom]);
 
       const xAxis = d3
-        .axisBottom(xRange);
+        .axisBottom(xRange)
+        .tickFormat(() => '');
         // .scale(xRange)
         // .tickSize(5)
         // .tickSubdivide(true);

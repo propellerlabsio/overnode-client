@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div class="card-content is-paddingless">
+    <div class="card-content is-paddingless is-borderless">
       <div class="content">
         <component :is="componentType"></component>
       </div>

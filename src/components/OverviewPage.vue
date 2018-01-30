@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1 class="title">Overview</h1>
     <div class="columns">
       <div class="column">
         <overview-tile title="Block Times (mins)" component-type="block-times" />
@@ -8,6 +7,10 @@
       <div class="column">
         <overview-tile title="Tx/sec (mempool)"
           component-type="transaction-rate" />
+      </div>
+      <div class="column">
+        <overview-tile title="Peers"
+          component-type="peers" />
       </div>
     </div>
   </div>

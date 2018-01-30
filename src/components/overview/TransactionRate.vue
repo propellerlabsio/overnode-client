@@ -18,8 +18,8 @@ export default {
   data() {
     return {
       svg: null,
-      width: 157,
-      height: 157,
+      width: 160,
+      height: 160,
       stats: {
         tx_sec: 15,
         height: 532592,
@@ -79,6 +79,11 @@ export default {
             // Copy speedo from xml to dom
             this.svg.select('.loading-message').remove();
             domElement.append(xml.querySelector('#speedo'));
+
+            // Change colors (may need TODO again after theme is reworked)
+            this.svg.select('#background')
+              .style('stroke', 'lightgrey')
+              .style('fill', 'white');
 
             // Draw values
             this.drawValues();

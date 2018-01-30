@@ -25,6 +25,8 @@ export default {
   created() {
     // Get latest blocks (TODO parametize)
     this.$store.dispatch('blocks/get');
+
+    this.$store.dispatch('peers/get');
   },
 };
 </script>

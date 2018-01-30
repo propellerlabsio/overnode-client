@@ -30,7 +30,7 @@
           </router-link>
         </div>
         <div class="tile link-tile">
-          <a href="https://github.com/propellerlabsio/overnode" target="_blank" class="tile is-child">
+          <a href="https://github.com/propellerlabsio/overnode-client" target="_blank" class="tile is-child">
             <span class="icon is-large">
               <i class="fa fa-github fa-3x"></i>
             </span>
