@@ -1,6 +1,6 @@
-# OverNode VueJs Client
+# Overnode VueJs Client
 
-OverNode is a Bitcoin full node monitoring and explorer (query) tool which provides a GraphQL interface.  This project contains a client / UI implementation written in VueJs which will be hosted at overnode.org. 
+Overnode is a Bitcoin full node monitoring and explorer (query) tool which provides a GraphQL interface.  This project contains a client / UI implementation written in VueJs which will be hosted at overnode.org. 
 
 **WARNING:** 
 

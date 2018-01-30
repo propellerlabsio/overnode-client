@@ -1,7 +1,7 @@
 {
   "name": "overnode-client",
   "version": "1.0.0",
-  "description": "Vuejs Client / UI for OverNode",
+  "description": "Vuejs Client / UI for Overnode",
   "author": "Peter Roehlen <peter.roehlen@gmail.com>",
   "private": true,
   "scripts": {
