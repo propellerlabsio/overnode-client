@@ -1,6 +1,12 @@
 <template>
   <svg class="chart-block-times" width="100%" height="100%" :viewBox="`0 0 ${width} ${height}`"
     ref="svg">
+    <defs>
+      <marker id="arrow" markerWidth="20" markerHeight="20"
+        refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="lightgrey" />
+      </marker>
+    </defs>
     <text x="10" y="35" font-size="35">Loading d3...</text>
   </svg>
 </template>
@@ -10,6 +16,8 @@
 /* Disable eslint rules that don't work well with d3 */
 /* eslint-disable no-param-reassign                  */
 import * as d3 from 'd3';
+
+const OUR_NODE_ID = 'Our node';
 
 const CLIENT_COLOR = {
   Unknown: 1,
@@ -40,7 +48,7 @@ export default {
     nodes() {
       return this.peers.concat([{
         // Add our node
-        id: 'home',
+        id: OUR_NODE_ID,
         addr: 'Our Node',
         pingtime: 0,
         minping: 0,
@@ -66,9 +74,10 @@ export default {
       const links = this.nodes
         .filter(node => node.id !== -1)
         .map(node => ({
-          source: 'home',
+          source: OUR_NODE_ID,
           target: node.id,
-          value: node.pingtime,
+          distance: node.pingtime,
+          inbound: node.inbound,
         }));
       return links;
     },
@@ -99,7 +108,7 @@ export default {
       }
 
       // Remove loading message or graph for old data
-      this.svg.selectAll('*').remove();
+      this.svg.selectAll('text').remove();
 
       const color = d3.scaleOrdinal(d3.schemeCategory20);
 
@@ -132,9 +141,25 @@ export default {
         .selectAll('line')
         .data(this.links)
         .enter()
-        .append('line')
+        .append('polyline')
+        .attr('points', '0 0 0 0 0 0')
         .style('stroke', 'lightgrey')
-        .attr('stroke-width', '0.5');
+        .style('fill', 'none')
+        .attr('stroke-width', '0.5')
+        .attr('marker-mid', (d) => {
+          let url = '';
+          if (d.inbound) {
+            url = 'url(#arrow)';
+          }
+          return url;
+        })
+        .attr('marker-mid', (d) => {
+          let url = '';
+          if (!d.inbound) {
+            url = 'url(#arrow)';
+          }
+          return url;
+        });
 
       const node = this.svg.append('g')
         .attr('class', 'nodes')
@@ -154,10 +179,21 @@ export default {
 
       function ticked() {
         link
-          .attr('x1', d => d.source.x)
-          .attr('y1', d => d.source.y)
-          .attr('x2', d => d.target.x)
-          .attr('y2', d => d.target.y);
+          .attr('points', (d) => {
+            // New points
+            const points = {
+              x1: d.source.x,
+              y1: d.source.y,
+              x3: d.target.x,
+              y3: d.target.y,
+            };
+
+            // Calc midpoint for marker
+            points.x2 = (points.x3 + points.x1) / 2;
+            points.y2 = (points.y3 + points.y1) / 2;
+
+            return `${points.x1},${points.y1} ${points.x2},${points.y2} ${points.x3},${points.y3} `;
+          });
 
         node
           .attr('cx', d => d.x)
