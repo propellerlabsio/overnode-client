@@ -15,7 +15,7 @@ export default {
   data() {
     return {
       svg: null,
-      width: 200,
+      width: 100,
       height: 100,
       margins: {
         top: 20,
