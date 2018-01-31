@@ -2,9 +2,9 @@
   <svg class="chart-block-times" width="100%" height="100%" :viewBox="`0 0 ${width} ${height}`"
     ref="svg">
     <defs>
-      <marker id="arrow" markerWidth="20" markerHeight="20"
+      <marker id="arrow" markerWidth="25" markerHeight="25"
         refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
-        <path d="M0,0 L0,6 L9,3 z" fill="lightgrey" />
+        <path d="M0,0 L0,6 L9,3 z" fill="grey" />
       </marker>
     </defs>
     <text x="10" y="35" font-size="35">Loading d3...</text>
@@ -74,8 +74,8 @@ export default {
       const links = this.nodes
         .filter(node => node.id !== -1)
         .map(node => ({
-          source: OUR_NODE_ID,
-          target: node.id,
+          source: node.inbound ? node.id : OUR_NODE_ID,
+          target: node.inbound ? OUR_NODE_ID : node.id,
           distance: node.pingtime,
           inbound: node.inbound,
         }));
@@ -146,20 +146,7 @@ export default {
         .style('stroke', 'lightgrey')
         .style('fill', 'none')
         .attr('stroke-width', '0.5')
-        .attr('marker-mid', (d) => {
-          let url = '';
-          if (d.inbound) {
-            url = 'url(#arrow)';
-          }
-          return url;
-        })
-        .attr('marker-mid', (d) => {
-          let url = '';
-          if (!d.inbound) {
-            url = 'url(#arrow)';
-          }
-          return url;
-        });
+        .attr('marker-mid', 'url(#arrow)');
 
       const node = this.svg.append('g')
         .attr('class', 'nodes')
