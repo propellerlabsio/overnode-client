@@ -6,9 +6,17 @@
 </template>
 
 <script>
+
 /* Disable eslint rules that don't work well with d3 */
 /* eslint-disable no-param-reassign                  */
 import * as d3 from 'd3';
+
+const CLIENT_COLOR = {
+  Unknown: 1,
+  BUCash: 2,
+  ABC: 3,
+  XT: 4,
+};
 
 export default {
   name: 'peers',
@@ -36,29 +44,32 @@ export default {
         addr: 'Our Node',
         pingtime: 0,
         minping: 0,
+        subver: 'BUCash', // TODO get actual
       }]).map((node) => {
         let group;
         if (!node.subver) {
-          group = 1;
+          group = CLIENT_COLOR.Unknown;
         } else if (node.subver.includes('BUCash')) {
-          group = 2;
+          group = CLIENT_COLOR.BUCash;
         } else if (node.subver.includes('ABC')) {
-          group = 3;
+          group = CLIENT_COLOR.ABC;
         } else if (node.subver.includes('XT')) {
-          group = 4;
+          group = CLIENT_COLOR.XT;
         } else {
-          group = 5;
+          group = CLIENT_COLOR.Unknown;
         }
         return Object.assign({ group }, node);
       });
     },
 
     links() {
-      const links = this.nodes.map(node => ({
-        source: 'home',
-        target: node.id,
-        value: node.pingtime,
-      }));
+      const links = this.nodes
+        .filter(node => node.id !== -1)
+        .map(node => ({
+          source: 'home',
+          target: node.id,
+          value: node.pingtime,
+        }));
       return links;
     },
   },
@@ -98,7 +109,9 @@ export default {
         .force('center', d3.forceCenter(this.width / 2, this.height / 2));
 
       function dragstarted(d) {
-        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+        if (!d3.event.active) {
+          simulation.alphaTarget(0.3).restart();
+        }
         d.fx = d.x;
         d.fy = d.y;
       }
@@ -120,7 +133,8 @@ export default {
         .data(this.links)
         .enter()
         .append('line')
-        .attr('stroke-width', d => (Math.sqrt(d.value) * 5));
+        .style('stroke', 'lightgrey')
+        .attr('stroke-width', '0.5');
 
       const node = this.svg.append('g')
         .attr('class', 'nodes')
@@ -160,9 +174,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-  line {
-    stroke: black;
-  }
-</style>
