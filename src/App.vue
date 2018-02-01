@@ -7,6 +7,7 @@
           <side-menu />
         </div>
         <div class="column">
+          <socket-connection />
           <router-view/>
         </div>
       </div>
@@ -15,12 +16,14 @@
 </template>
 
 <script>
+import SocketConnection from './components/SocketConnection';
 import SideMenu from './components/SideMenu';
 
 export default {
   name: 'App',
   components: {
     SideMenu,
+    SocketConnection,
   },
   created() {
     // Get latest blocks (TODO parametize)

@@ -25,6 +25,10 @@ module.exports = {
   },
   // add your custom rules here
   rules: {
+    // TODO back this rule out - latest Version of VsCode broke the
+    // automatic conversion of windows line breaks to *nix style
+    'linebreak-style': 0,
+
     // don't require .vue extension when importing
     'import/extensions': ['error', 'always', {
       js: 'never',

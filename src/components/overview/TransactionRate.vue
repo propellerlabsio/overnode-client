@@ -20,13 +20,12 @@ export default {
       svg: null,
       width: 160,
       height: 160,
-      stats: {
-        tx_sec: 15,
-        height: 532592,
-      },
     };
   },
   computed: {
+    mempool() {
+      return this.$store.state.stats.mempool;
+    },
     blocks() {
       return this.$store.state.blocks.cached
         .map(block => ({
@@ -40,7 +39,7 @@ export default {
     this.initImage();
   },
   watch: {
-    stats() {
+    mempool() {
       // console.debug('Data changed');
       // Re-draw graph whenever the data changes
       this.drawValues();
@@ -48,20 +47,21 @@ export default {
   },
   methods: {
     drawValues() {
+      let roundedTps;
+      if (this.mempool.txPerSecond >= 10) {
+        // Round to 1 decimal place
+        roundedTps = Math.round(this.mempool.txPerSecond * 10) / 10;
+      } else {
+        // Round to 1 decimal place
+        roundedTps = Math.round(this.mempool.txPerSecond * 100) / 100;
+      }
       if (this.svg) {
-        // this.svg
         this.svg
-          .append('text')
-          .text(this.stats.tx_sec)
-          .style('fill', '#1b1ef8')
-          .style('font-family', 'digital_7')
-          .style('font-size', '45px')
-          .style('text-anchor', 'middle')
-          .attr('width', this.width)
-          .attr('x', this.width / 2)
-          .attr('y', 90);
+          .select('#tps')
+          .text(roundedTps);
       }
     },
+
     initImage() {
       // Get reference to this svg
       const domElement = this.$refs.svg;
@@ -85,8 +85,17 @@ export default {
               .style('stroke', 'lightgrey')
               .style('fill', 'white');
 
-            // Draw values
-            this.drawValues();
+            // Append text for values
+            this.svg
+              .append('text')
+              .attr('id', 'tps')
+              .style('fill', '#1b1ef8')
+              .style('font-family', 'digital_7')
+              .style('font-size', '45px')
+              .style('text-anchor', 'middle')
+              .attr('width', this.width)
+              .attr('x', this.width / 2)
+              .attr('y', 90);
           }
         });
     },
@@ -98,7 +107,7 @@ export default {
 
 @font-face {
   font-family: digital_7;
-  src: url('../../assets/fonts/digital_7/digital_7_(mono).ttf');
+  src: url('../../assets/fonts/digital_7/digital_7.ttf');
 }
 
 text {
