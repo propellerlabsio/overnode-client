@@ -131,6 +131,8 @@ export default {
             // Append text for tx per second value
             this.svg
               .append('text')
+              .text('0.00')
+              .attr('class', 'is-unselectable')
               .attr('id', 'tps')
               .style('fill', '#1b1ef8')
               .style('font-family', 'digital_7')
@@ -145,6 +147,7 @@ export default {
               .append('text')
               .text('tx/sec')
               .attr('id', 'tps_label')
+              .attr('class', 'is-unselectable')
               .style('fill', '#1b1ef8')
               .style('font-family', 'digital_7')
               .style('font-size', '12px')

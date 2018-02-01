@@ -2,15 +2,15 @@
   <div>
     <div class="columns">
       <div class="column">
-        <overview-tile title="Block Times (mins)" component-type="block-times" />
+        <overview-tile title="Blocks" class="is-unselectable" component-type="block-times" />
       </div>
       <div class="column">
         <overview-tile title="Mempool"
-          component-type="transaction-rate" />
+          class="is-unselectable" component-type="transaction-rate" />
       </div>
       <div class="column">
         <overview-tile title="Peers"
-          component-type="peers" />
+          class="is-unselectable" component-type="peers" />
       </div>
     </div>
   </div>
