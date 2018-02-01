@@ -6,6 +6,7 @@ const state = {
     time: null,
     txCount: 0,
     txPerSecond: 0,
+    bytes: 0,
   },
 };
 

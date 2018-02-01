@@ -10,6 +10,16 @@
 <script>
 import * as d3 from 'd3';
 
+const SEGMENT_COLOR = {
+  good: '#1b1ef8',
+  warning: '#ffbf00',
+  bad: '#ff0000',
+};
+
+const BLOCK_SIZE_LIMT_MB = 8;
+const BTC_TX_PER_SEC_1_MB = 2.7;
+const BCH_TX_PER_SEC_LIMIT = BLOCK_SIZE_LIMT_MB * BTC_TX_PER_SEC_1_MB;
+
 export default {
   name: 'transaction-rate',
   data() {
@@ -53,9 +63,46 @@ export default {
         roundedTps = Math.round(this.mempool.txPerSecond * 100) / 100;
       }
       if (this.svg) {
+        // Update mempool size bytes reading
+        this.svg
+          .select('#size')
+          .text(this.mempool.bytes);
+
+        // Update transactions per second reading
         this.svg
           .select('#tps')
           .text(roundedTps);
+
+        // Update highlighted segment lights
+        // There are 18 segements representing the rough limit on
+        // how many tx's will fit in a BCH block so work out what
+        // each segment represents
+        const txPerSegment = BCH_TX_PER_SEC_LIMIT / 18;
+
+        // Determine how many segments are lit (may be more than 18)
+        const numLitSegments = Math.floor(this.mempool.txPerSecond / txPerSegment) + 1;
+
+        // Light or dim segments
+        this.svg.select('g#speedo')
+          .selectAll('path')
+          .each(function eachSegment() {
+            const segment = d3.select(this);
+            const segmentNo = Number(segment.attr('id').substr(7));
+            let fill;
+            if (segmentNo <= numLitSegments) {
+              if (segmentNo < 15) {
+                fill = SEGMENT_COLOR.good;
+              } else if (segmentNo < 19) {
+                fill = SEGMENT_COLOR.warning;
+              } else {
+                fill = SEGMENT_COLOR.bad;
+              }
+            } else {
+              // Don't light segment
+              fill = 'none';
+            }
+            segment.style('fill', fill);
+          });
       }
     },
 
@@ -81,7 +128,7 @@ export default {
               .style('stroke', 'lightgrey')
               .style('fill', 'white');
 
-            // Append text for values
+            // Append text for tx per second value
             this.svg
               .append('text')
               .attr('id', 'tps')
@@ -92,6 +139,49 @@ export default {
               .attr('width', this.width)
               .attr('x', this.width / 2)
               .attr('y', 90);
+
+            // append text for tx per second label
+            this.svg
+              .append('text')
+              .text('tx/sec')
+              .attr('id', 'tps_label')
+              .style('fill', '#1b1ef8')
+              .style('font-family', 'digital_7')
+              .style('font-size', '12px')
+              .style('text-anchor', 'middle')
+              .attr('width', this.width)
+              .attr('x', this.width / 2)
+              .attr('y', 105);
+
+            // Append background for mempool size bytes value
+            this.svg
+              .append('rect')
+              .attr('x', (this.width / 2) - 35)
+              .attr('y', 120)
+              .attr('width', '70')
+              .attr('height', '16')
+              .attr('rx', 5)
+              .attr('ry', 5)
+              .style('fill', '#252525')
+              .append('svg:title')
+              .text('bytes');
+
+            // Append text for mempool size bytes value
+            this.svg
+              .append('text')
+              .text('32000000')
+              .attr('id', 'size')
+              .attr('class', 'is-unselectable')
+              .style('fill', '#FFFFFF')
+              .style('font-family', 'digital_7_mono')
+              .style('font-size', '14px')
+              .style('text-anchor', 'end')
+              .style('letter-spacing', '1.5')
+              .attr('width', this.width)
+              .attr('x', (this.width / 2) + 30)
+              .attr('y', 132)
+              .append('svg:title')
+              .text('bytes');
           }
         });
     },
@@ -104,6 +194,11 @@ export default {
 @font-face {
   font-family: digital_7;
   src: url('../../assets/fonts/digital_7/digital_7.ttf');
+}
+
+@font-face {
+  font-family: digital_7_mono;
+  src: url('../../assets/fonts/digital_7/digital_7_(mono).ttf');
 }
 
 text {

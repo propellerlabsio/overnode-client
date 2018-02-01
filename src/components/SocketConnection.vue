@@ -28,7 +28,6 @@
 
 <script>
 
-
 /* Allow console messages from this component:    */
 /* eslint-disable no-console                      */
 export default {
@@ -59,7 +58,7 @@ export default {
         !this.reconnectInSecs) {
         // Attempt reconnection in 5 seconds
         this.reconnectInSecs = 5;
-        console.log('Reconnectin in ', this.reconnectInSecs);
+        console.log('Reconnecting in ', this.reconnectInSecs);
         window.setTimeout(this.reconnectCountdown, 1000);
       }
     },
@@ -68,7 +67,7 @@ export default {
         this.reconnectInSecs -= 1;
       }
 
-      console.log('Reconnectin in ', this.reconnectInSecs);
+      console.log('Reconnecting in ', this.reconnectInSecs);
 
       if (this.reconnectInSecs === 0) {
         this.startConnection();

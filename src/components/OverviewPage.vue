@@ -5,7 +5,7 @@
         <overview-tile title="Block Times (mins)" component-type="block-times" />
       </div>
       <div class="column">
-        <overview-tile title="Tx/sec (mempool)"
+        <overview-tile title="Mempool"
           component-type="transaction-rate" />
       </div>
       <div class="column">
