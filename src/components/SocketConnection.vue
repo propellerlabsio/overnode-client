@@ -12,7 +12,8 @@
       </div>
     </article>
     <article class="message is-warning"
-      :class="{ 'is-hidden': connectionState !== CONNECTION_STATE.CLOSING && connectionState !== CONNECTION_STATE.CLOSED }">
+      :class="{ 'is-hidden': connectionState !== CONNECTION_STATE.CLOSING &&
+      connectionState !== CONNECTION_STATE.CLOSED }">
       <div class="message-header">
         <p>
           <span class="icon">

@@ -53,7 +53,6 @@ export default {
   watch: {
     peers() {
       // Re-draw graph whenever the data changes
-      console.log('Watch triggered');
       this.drawGraph();
     },
   },
@@ -95,7 +94,6 @@ export default {
     },
 
     initGraph() {
-      console.log('Initializing graph');
       this.drawGraph();
       // Get reference to this svg
       const domElement = this.$refs.svg;
@@ -105,10 +103,8 @@ export default {
     },
 
     drawGraph() {
-      console.log('(Re)drawing graph');
       // Check we have reference to DOM element
       if (!this.svg) {
-        console.log('No svg; aborting draw');
         return;
       }
 
