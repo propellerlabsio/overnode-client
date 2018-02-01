@@ -45,7 +45,20 @@ export default {
     peers() {
       return this.$store.state.peers.current;
     },
-    nodes() {
+  },
+  mounted() {
+    // Draw graph when we have a dom element for d3 to hook on to
+    this.initGraph();
+  },
+  watch: {
+    peers() {
+      // Re-draw graph whenever the data changes
+      console.log('Watch triggered');
+      this.drawGraph();
+    },
+  },
+  methods: {
+    getNodes() {
       return this.peers.concat([{
         // Add our node
         id: OUR_NODE_ID,
@@ -70,30 +83,20 @@ export default {
       });
     },
 
-    links() {
-      const links = this.nodes
-        .filter(node => node.id !== -1)
-        .map(node => ({
-          source: node.inbound ? node.id : OUR_NODE_ID,
-          target: node.inbound ? OUR_NODE_ID : node.id,
-          distance: node.pingtime,
-          inbound: node.inbound,
+    getLinks() {
+      const links = this.peers
+        .map(peer => ({
+          source: peer.inbound ? peer.id : OUR_NODE_ID,
+          target: peer.inbound ? OUR_NODE_ID : peer.id,
+          distance: peer.pingtime,
+          inbound: peer.inbound,
         }));
       return links;
     },
-  },
-  mounted() {
-    // Draw graph when we have a dom element for d3 to hook on to
-    this.initGraph();
-  },
-  watch: {
-    peers() {
-      // Re-draw graph whenever the data changes
-      this.drawGraph();
-    },
-  },
-  methods: {
+
     initGraph() {
+      console.log('Initializing graph');
+      this.drawGraph();
       // Get reference to this svg
       const domElement = this.$refs.svg;
       this.svg = d3.select(domElement);
@@ -102,13 +105,19 @@ export default {
     },
 
     drawGraph() {
+      console.log('(Re)drawing graph');
       // Check we have reference to DOM element
       if (!this.svg) {
+        console.log('No svg; aborting draw');
         return;
       }
 
-      // Remove loading message or graph for old data
-      this.svg.selectAll('text').remove();
+      const nodes = this.getNodes();
+      const links = this.getLinks();
+
+      // Remove loading message and graph for old data
+      this.svg.selectAll('text').remove(); 
+      this.svg.selectAll('g').remove();
 
       const color = d3.scaleOrdinal(d3.schemeCategory20);
 
@@ -139,7 +148,7 @@ export default {
       const link = this.svg.append('g')
         .attr('class', 'links')
         .selectAll('line')
-        .data(this.links)
+        .data(links)
         .enter()
         .append('polyline')
         .attr('points', '0 0 0 0 0 0')
@@ -151,7 +160,7 @@ export default {
       const node = this.svg.append('g')
         .attr('class', 'nodes')
         .selectAll('circle')
-        .data(this.nodes)
+        .data(nodes)
         .enter()
         .append('circle')
         .attr('r', 5)
@@ -188,11 +197,11 @@ export default {
       }
 
       simulation
-        .nodes(this.nodes)
+        .nodes(nodes)
         .on('tick', ticked);
 
       simulation.force('link')
-        .links(this.links);
+        .links(links);
     },
   },
 };
