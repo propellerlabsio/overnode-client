@@ -1,11 +1,8 @@
 <template>
   <svg class="chart-block-times" width="200px" height="200px" :viewBox="`0 0 ${width} ${height}`"
     ref="svg">
-    <text class="loading-message" x="10" y="35" font-size="18">
+    <text class="loading-message" x="10" y="35" font-size="12">
       Loading d3...
-    </text>
-    <text class="error-message" x="10" y="35" font-size="18" visibility="hidden">
-      Error loading graphics
     </text>
   </svg>
 </template>
@@ -73,12 +70,11 @@ export default {
         .mimeType('image/svg+xml')
         .get((error, xml) => {
           if (error) {
-            this.svg.select('.loading-message').remove();
-            this.svg.select('.error-message').attr('visibility', 'visibile');
+            this.svg.select('.loading-message').text('Unable to load graphics file');
           } else {
             // Copy speedo from xml to dom
             this.svg.select('.loading-message').remove();
-            domElement.append(xml.querySelector('#speedo'));
+            domElement.appendChild(xml.querySelector('#speedo'));
 
             // Change colors (may need TODO again after theme is reworked)
             this.svg.select('#background')
