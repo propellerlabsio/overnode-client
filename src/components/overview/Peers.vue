@@ -116,7 +116,7 @@ export default {
       const links = this.getLinks();
 
       // Remove loading message and graph for old data
-      this.svg.selectAll('text').remove(); 
+      this.svg.selectAll('text').remove();
       this.svg.selectAll('g').remove();
 
       const color = d3.scaleOrdinal(d3.schemeCategory20);

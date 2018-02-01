@@ -1,27 +1,43 @@
 <template>
-  <article class="message is-warning"
-    :class="{ 'is-hidden': connection.readyState !== READY_STATE.CLOSED }">
-    <div class="message-header">
-      <p>
-        <span class="icon">
-          <i class="fa fa-exclamation-triangle"></i>
-        </span>
-        Unable to connect to live stats server.  Some charts may not be working correctly.
-        {{ connection.readyState }}
-      </p>
-    </div>
-  </article>
+  <span>
+    <article class="message is-info"
+      :class="{ 'is-hidden': connectionState !== CONNECTION_STATE.CONNECTING }">
+      <div class="message-header">
+        <p>
+          <span class="icon">
+            <i class="fa fa-info-circle"></i>
+          </span>
+          Connecting to live stats server...
+        </p>
+      </div>
+    </article>
+    <article class="message is-warning"
+      :class="{ 'is-hidden': connectionState !== CONNECTION_STATE.CLOSING && connectionState !== CONNECTION_STATE.CLOSED }">
+      <div class="message-header">
+        <p>
+          <span class="icon">
+            <i class="fa fa-exclamation-triangle"></i>
+          </span>
+          Connection to live stats server lost. Attempting to reconnect...
+        </p>
+      </div>
+    </article>
+  </span>
 </template>
 
 <script>
+
+
 /* Allow console messages from this component:    */
 /* eslint-disable no-console                      */
 export default {
   name: 'socket-connection',
   data() {
     return {
+      reconnectInSecs: 0,
       connection: null,
-      READY_STATE: {
+      connectionState: 0,
+      CONNECTION_STATE: {
         CONNECTING: 0, // The connection is not yet open.
         OPEN: 1, // The connection is open and ready to communicate.
         CLOSING: 2, // The connection is in the process of closing.
@@ -31,15 +47,41 @@ export default {
   },
   created() {
     this.startConnection();
+    window.setInterval(this.checkConnection, 500);
   },
   methods: {
+    checkConnection() {
+      const lastState = this.connectionState;
+      this.connectionState = this.connection.readyState;
+      if (lastState !== this.connectionState &&
+        this.connectionState === this.CONNECTION_STATE.CLOSED &&
+        !this.reconnectInSecs) {
+        // Attempt reconnection in 5 seconds
+        this.reconnectInSecs = 5;
+        console.log('Reconnectin in ', this.reconnectInSecs);
+        window.setTimeout(this.reconnectCountdown, 1000);
+      }
+    },
+    reconnectCountdown() {
+      if (this.reconnectInSecs > 0) {
+        this.reconnectInSecs -= 1;
+      }
+
+      console.log('Reconnectin in ', this.reconnectInSecs);
+
+      if (this.reconnectInSecs === 0) {
+        this.startConnection();
+      } else {
+        window.setTimeout(this.reconnectCountdown, 1000);
+      }
+    },
     startConnection() {
       this.connection = new WebSocket('ws://localhost:4010/socket');
 
       // When the connection is open, send some data to the server
       this.connection.onopen = () => {
         // Send the message 'Ping' to the server every five seconds to test connection
-        window.setInterval(() => this.connection.send('Ping'), 5000);
+        this.connection.send('Ping');
       };
 
       // Log errors
