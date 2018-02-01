@@ -1,7 +1,7 @@
 <template>
-  <article class="message is-warning" :class="{ 'is-hidden': reconnectInSeconds ? false : true }">
+  <article class="message is-warning" :class="{ 'is-hidden': connection.readyState !== 'CLOSED' }">
     <div class="message-header">
-      <p>Connection lost.  Attempting to reconnect in {{ reconnectInSeconds }} seconds.</p>
+      <p>Connection lost.</p>
     </div>
   </article>
 </template>
@@ -11,7 +11,7 @@ export default {
   name: 'socket-connection',
   data() {
     return {
-      reconnectInSeconds: 5,
+      connection: null,
     };
   },
   created() {
@@ -19,21 +19,21 @@ export default {
   },
   methods: {
     startConnection() {
-      const connection = new WebSocket('ws://localhost:4010/socket');
+      this.connection = new WebSocket('ws://localhost:4010/socket');
 
       // When the connection is open, send some data to the server
-      connection.onopen = () => {
-        connection.send('Ping'); // Send the message 'Ping' to the server
+      this.connection.onopen = () => {
+        this.connection.send('Ping'); // Send the message 'Ping' to the server
       };
 
       // Log errors
-      connection.onerror = (error) => {
+      this.connection.onerror = (error) => {
         // eslint-disable-next-line
         console.log('WebSocket Error ', error);
       };
 
       // Store data given by the server
-      connection.onmessage = (e) => {
+      this.connection.onmessage = (e) => {
         try {
           if (e.data) {
             const dataJson = JSON.parse(e.data);
