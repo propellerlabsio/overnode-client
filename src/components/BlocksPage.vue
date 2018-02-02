@@ -23,7 +23,7 @@
             </router-link>
           </td>
           <td>
-            {{ block.hash }}
+            <short-hash :hash='block.hash'/>
           </td>
           <td>
             {{ block.interval }}
@@ -35,8 +35,13 @@
 </template>
 
 <script>
+import ShortHash from './formatters/ShortHash';
+
 export default {
   name: 'blocks-page',
+  components: {
+    ShortHash,
+  },
   computed: {
     blocks() {
       return this.$store.state.blocks.cached;
