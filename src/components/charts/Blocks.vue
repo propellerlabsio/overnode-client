@@ -9,7 +9,7 @@
 import * as d3 from 'd3';
 
 export default {
-  name: 'blocks-page',
+  name: 'blocks',
   data() {
     return {
       width: 400,

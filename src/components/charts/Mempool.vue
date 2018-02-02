@@ -21,7 +21,7 @@ const BTC_TX_PER_SEC_1_MB = 2.7;
 const BCH_TX_PER_SEC_LIMIT = BLOCK_SIZE_LIMT_MB * BTC_TX_PER_SEC_1_MB;
 
 export default {
-  name: 'transaction-rate',
+  name: 'mempool',
   data() {
     return {
       svg: null,

@@ -2,11 +2,11 @@
   <div>
     <div class="columns">
       <div class="column">
-        <overview-tile title="Blocks" class="is-unselectable" component-type="block-times" />
+        <overview-tile title="Blocks" class="is-unselectable" component-type="blocks" />
       </div>
       <div class="column">
         <overview-tile title="Mempool"
-          class="is-unselectable" component-type="transaction-rate" />
+          class="is-unselectable" component-type="mempool" />
       </div>
       <div class="column">
         <overview-tile title="Peers"
@@ -18,7 +18,7 @@
 
 <script>
 
-import OverviewTile from './overview/OverviewTile';
+import OverviewTile from './OverviewTile';
 
 export default {
   name: 'overview-page',
