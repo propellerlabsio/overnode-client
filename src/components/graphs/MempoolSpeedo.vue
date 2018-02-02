@@ -98,10 +98,19 @@ export default {
                 fill = SEGMENT_COLOR.bad;
               }
             } else {
-              // Don't light segment
-              fill = 'none';
+              // Don't light segment but show a paler version of the color
+              // eslint-disable-next-line no-lonely-if
+              if (segmentNo < 15) {
+                fill = d3.color(SEGMENT_COLOR.good);
+              } else if (segmentNo < 19) {
+                fill = d3.color(SEGMENT_COLOR.warning);
+              } else {
+                fill = d3.color(SEGMENT_COLOR.bad);
+              }
+              fill.opacity = 0.05;
             }
             segment.style('fill', fill);
+            segment.style('stroke', 'darkslategrey');
           });
       }
     },
@@ -148,7 +157,8 @@ export default {
               .text('tx/sec')
               .attr('id', 'tps_label')
               .attr('class', 'is-unselectable')
-              .style('fill', '#1b1ef8')
+              // .style('fill', '#1b1ef8')
+              .style('fill', 'darkslategrey')
               .style('font-family', 'digital_7')
               .style('font-size', '10px')
               .style('text-anchor', 'middle')
