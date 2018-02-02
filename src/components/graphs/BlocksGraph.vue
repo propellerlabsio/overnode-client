@@ -28,6 +28,7 @@ export default {
         .map(block => ({
           height: block.height,
           interval: block.interval / 60,
+          hash: block.hash,
         }));
     },
   },
@@ -49,6 +50,7 @@ export default {
       const domElement = this.$refs.svg;
       const svg = d3.select(domElement);
 
+
       // Remove loading message or graph for old data
       svg.selectAll('*').remove();
 
@@ -56,34 +58,28 @@ export default {
       const xRange = d3
         .scaleLinear()
         .domain([
-          d3.min(this.blocks, block => block.height),
-          d3.max(this.blocks, block => block.height),
+          d3.min(this.blocks, block => block.height - 0.5),
+          d3.max(this.blocks, block => block.height + 0.5),
         ])
         .range([this.margins.left, this.width - this.margins.right]);
 
       const yRange = d3
         .scaleLinear()
         .domain([
-          d3.min(this.blocks, block => block.interval),
-          d3.max(this.blocks, block => block.interval),
+          d3.min(this.blocks, block => block.interval - 1),
+          d3.max(this.blocks, block => block.interval + 1),
         ])
         .range([this.height - this.margins.top, this.margins.bottom]);
 
       const xAxis = d3
         .axisBottom(xRange)
-        .tickFormat(() => '');
-        // .scale(xRange)
-        // .tickSize(5)
-        // .tickSubdivide(true);
+        .tickFormat(() => '')
+        // .ticks(this.blocks.length);
+        .ticks(0);
 
       const yAxis = d3
         .axisLeft(yRange);
-        // .scale(yRange)
-        // .tickSize(5)
-        // .orient('left')
-        // .tickSubdivide(true);
 
-      // TOOD
       svg.append('svg:g')
         .attr('class', 'x axis')
         .attr('transform', `translate(0,${this.height - this.margins.bottom})`)
@@ -95,19 +91,96 @@ export default {
         .call(yAxis);
 
 
+      svg
+        .attr('x', 0)
+        .attr('y', 0)
+        .style('fill', 'black')
+        .attr('width', this.width)
+        .attr('height', this.height)
+        .on('mousemove', function onMouseOver() {
+          const mouse = d3.mouse(this);
+          const blockHeight = Math.round(xRange.invert(mouse[0]));
+          svg
+            .selectAll('.intervalPipScaler')
+            .attr('transform', (d) => {
+              let scale = 'scale(1)';
+              if (d.height === blockHeight) {
+                scale = 'scale(1.7)';
+              }
+              return scale;
+            });
+        });
+
+
       const lineFunc = d3
         .line()
         .x(d => xRange(d.height))
         .y(d => yRange(d.interval));
-        // .interpolate('linear');
-        // .curve(d3.curveBasis);
 
       svg.append('svg:path')
         .attr('d', lineFunc(this.blocks))
         .attr('stroke', 'blue')
         .attr('stroke-width', 2)
         .attr('fill', 'none');
+
+      const intervalPips = svg
+        .selectAll('.intervalPip')
+        .data(this.blocks)
+        .enter()
+        .append('g')
+        .attr('class', 'intervalPip')
+        .attr('transform', (d) => {
+          const x = xRange(d.height);
+          const y = yRange(d.interval);
+          return `translate(${x}, ${y})`;
+        });
+
+      const intervalPipScalers = intervalPips
+        .append('g')
+        .attr('class', 'intervalPipScaler')
+        .attr('transform', 'scale(1)');
+
+      const addBlockNav = (selection) => {
+        selection
+          .on('click', (d) => {
+            this.$router.push({
+              name: 'Block',
+              params: {
+                hash: d.hash,
+              },
+            });
+            d3.event.stopPropagation();
+          })
+          .append('title')
+          .text(d => `Block ${d.height}`);
+      };
+
+      intervalPipScalers
+        .append('circle')
+        .attr('class', 'intervalPipBg')
+        .attr('cx', 0)
+        .attr('cy', 0)
+        .attr('r', 5.5)
+        .style('fill', 'white')
+        .call(addBlockNav);
+
+
+      intervalPipScalers
+        .append('circle')
+        .style('fill', 'blue')
+        .attr('cx', 0)
+        .attr('cy', 0)
+        .attr('class', 'intervalPipFg')
+        .attr('r', 3.5)
+        .call(addBlockNav);
     },
   },
 };
 </script>
+
+<style>
+  .intervalPipBg, .intervalPipFg {
+    cursor: pointer;
+  }
+</style>
+
