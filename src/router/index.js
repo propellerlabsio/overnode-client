@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import OverviewPage from '@/components/OverviewPage';
+import BlockPage from '@/components/BlockPage';
 import BlocksPage from '@/components/BlocksPage';
 import WalletPage from '@/components/WalletPage';
 import DonationsPage from '@/components/DonationsPage';
@@ -18,6 +19,11 @@ export default new Router({
       path: '/blocks',
       name: 'Blocks',
       component: BlocksPage,
+    },
+    {
+      path: '/block/:hash',
+      name: 'Block',
+      component: BlockPage,
     },
     {
       path: '/wallet',

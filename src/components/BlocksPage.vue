@@ -18,7 +18,9 @@
       <tbody>
         <tr v-for="block in blocks" v-bind:key="block.hash">
           <td>
-            {{ block.height }}
+            <router-link :to="`/block/${block.hash}`">
+              {{ block.height }}
+            </router-link>
           </td>
           <td>
             {{ block.hash }}

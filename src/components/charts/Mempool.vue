@@ -150,7 +150,7 @@ export default {
               .attr('class', 'is-unselectable')
               .style('fill', '#1b1ef8')
               .style('font-family', 'digital_7')
-              .style('font-size', '12px')
+              .style('font-size', '10px')
               .style('text-anchor', 'middle')
               .attr('width', this.width)
               .attr('x', this.width / 2)

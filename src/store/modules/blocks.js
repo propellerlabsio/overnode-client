@@ -1,11 +1,17 @@
 /* Can't use vuex mutations with these airbnb rules:                                */
 /* eslint-disable no-shadow, no-param-reassign                                      */
 
+import Vue from 'vue';
+
 const state = {
   cached: [],
+  activeBlock: {},
 };
 
 const mutations = {
+  setActiveBlock(state, block) {
+    Vue.set(state, 'activeBlock', block);
+  },
   addBlock(state, block) {
     state.cached.push(block);
   },
@@ -31,6 +37,36 @@ const actions = {
 
     const response = await dispatch('session/request', { query, variables }, { root: true });
     response.blocks.forEach(block => commit('addBlock', block));
+  },
+
+  async setActiveBlock({ dispatch, commit }, hash) {
+    const query = `query($hash: String!) {
+      block(hash: $hash) {
+        hash
+        confirmations
+        size
+        height
+        version
+        versionHex
+        merkleroot
+        tx
+        time
+        mediantime
+        nonce
+        bits
+        difficulty
+        chainwork
+        previousblockhash
+        nextblockhash
+      }
+    }`;
+
+    const variables = {
+      hash,
+    };
+
+    const response = await dispatch('session/request', { query, variables }, { root: true });
+    commit('setActiveBlock', response.block);
   },
 };
 
