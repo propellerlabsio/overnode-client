@@ -1,15 +1,15 @@
 <template>
-  <div class="card">
-    <div class="card-content is-paddingless is-borderless">
-      <div class="content">
+  <div class="columns">
+    <div class="column">
+      <div class="row graph-widget">
         <component :is="componentType"></component>
       </div>
+      <div class="row">
+        <h2 class="subtitle has-text-centered">
+          {{ this.title }}
+        </h2>
+      </div>
     </div>
-    <footer class="card-footer">
-      <p class="card-header-title">
-        {{ this.title }}
-      </p>
-    </footer>
   </div>
 </template>
 
@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style scoped>
-  .content {
+  .graph-widget {
     display: block;
     height: 200px;
     overflow: hidden;
