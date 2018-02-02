@@ -17,7 +17,7 @@ export default {
         shortHash = `${startChars}...${endChars}`;
       }
       return shortHash;
-    }
+    },
   },
 };
 </script>

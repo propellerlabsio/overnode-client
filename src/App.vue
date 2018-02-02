@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import SocketConnection from './components/SocketConnection';
-import SideMenu from './components/SideMenu';
+import SocketConnection from './components/misc/SocketConnection';
+import SideMenu from './components/misc/SideMenu';
 
 export default {
   name: 'App',

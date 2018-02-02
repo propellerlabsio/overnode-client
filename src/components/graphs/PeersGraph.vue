@@ -27,7 +27,7 @@ const CLIENT_COLOR = {
 };
 
 export default {
-  name: 'peers',
+  name: 'peers-graph',
   data() {
     return {
       svg: null,

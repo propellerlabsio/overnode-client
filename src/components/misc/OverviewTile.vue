@@ -14,17 +14,17 @@
 </template>
 
 <script>
-import Blocks from './charts/Blocks';
-import Mempool from './charts/Mempool';
-import Peers from './charts/Peers';
+import BlocksGraph from '../graphs/BlocksGraph';
+import MempoolSpeedo from '../graphs/MempoolSpeedo';
+import PeersGraph from '../graphs/PeersGraph';
 
 export default {
   name: 'overview-tile',
   props: ['title', 'componentType'],
   components: {
-    Blocks,
-    Mempool,
-    Peers,
+    BlocksGraph,
+    MempoolSpeedo,
+    PeersGraph,
   },
 };
 </script>

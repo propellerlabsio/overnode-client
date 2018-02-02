@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import ShortHash from './formatters/ShortHash';
+import ShortHash from '../formatters/ShortHash';
 
 export default {
   name: 'blocks-page',
