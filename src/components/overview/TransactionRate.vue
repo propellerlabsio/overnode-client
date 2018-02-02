@@ -163,9 +163,11 @@ export default {
               .attr('y', 120)
               .attr('width', '70')
               .attr('height', '16')
+              .style('fill', 'lightgrey')
+              .style('stroke', 'darkslategrey')
+              .style('stroke-width', '.3')
               .attr('rx', 5)
               .attr('ry', 5)
-              .style('fill', '#252525')
               .append('svg:title')
               .text('bytes');
 
@@ -175,7 +177,7 @@ export default {
               .text('32000000')
               .attr('id', 'size')
               .attr('class', 'is-unselectable')
-              .style('fill', '#FFFFFF')
+              .style('fill', '#000000')
               .style('font-family', 'digital_7_mono')
               .style('font-size', '14px')
               .style('text-anchor', 'end')
