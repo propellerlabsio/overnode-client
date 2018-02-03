@@ -21,9 +21,9 @@ export default {
       },
       margins: {
         top: 20,
-        right: 30,
+        right: 45,
         bottom: 20,
-        left: 50,
+        left: 35,
       },
       ranges: {
         blockNumbers: null,
@@ -161,14 +161,27 @@ export default {
       const mainGroup = this.svg
         .append('g')
         .attr('id', 'block-intervals')
-        .attr('stroke', this.colors.blockIntervals)
-        .attr('fill', this.colors.blockIntervals);
+        .style('stroke', this.colors.blockIntervals)
+        .style('fill', 'none');
 
-      mainGroup.append('svg:g')
+      const axis = mainGroup.append('svg:g')
         .attr('class', 'y axis')
         .attr('transform', `translate(${this.margins.left},0)`)
-        .attr('stroke', this.colors.blockIntervals)
         .call(blockIntervalAxis);
+
+      axis
+        .append('text')
+        .attr('transform', `rotate(270) translate(-${(this.height - this.margins.bottom) / 2}, -25)`)
+        .append('tspan')
+        .text('Time (mins)')
+        .style('stroke', 'none')
+        .attr('fill', this.colors.blockIntervals)
+        .style('text-anchor', 'middle');
+
+      // Set tick label colors
+      axis.selectAll('text')
+        .style('stroke', 'none')
+        .attr('fill', this.colors.blockIntervals);
 
       mainGroup.append('svg:path')
         .attr('d', lineFunc(this.blocks))
@@ -197,11 +210,13 @@ export default {
         .attr('class', 'intervalPipBg')
         .attr('r', 5.5)
         .style('fill', 'white')
+        .style('stroke', 'none')
         .call(this.addBlockNavigation);
 
       intervalPipScalers
         .append('circle')
         .attr('class', 'intervalPipFg')
+        .style('fill', this.colors.blockIntervals)
         .attr('r', 3.5)
         .call(this.addBlockNavigation);
     },
@@ -240,10 +255,24 @@ export default {
         .attr('width', 20)
         .call(this.addBlockNavigation);
 
-      mainGroup.append('svg:g')
+      const axis = mainGroup.append('svg:g')
         .attr('class', 'megabytes axis')
         .attr('transform', `translate(${this.width - this.margins.right},0)`)
         .call(blockMegabytesAxis);
+
+      axis
+        .append('text')
+        .attr('transform', `rotate(90) translate(${(this.height - this.margins.bottom) / 2}, -35)`)
+        .append('tspan')
+        .text('Size (mb)')
+        .style('stroke', 'none')
+        .attr('fill', this.colors.blockMegabytes)
+        .style('text-anchor', 'middle');
+
+      // Set tick label colors
+      axis.selectAll('text')
+        .style('stroke', 'none')
+        .attr('fill', this.colors.blockMegabytes);
     },
   },
 };
