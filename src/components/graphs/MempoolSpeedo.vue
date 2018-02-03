@@ -220,9 +220,4 @@ text {
   font-family: 'digital_7';
 }
 
-svg {
-  margin-left:auto;
-  margin-right:auto;
-  display:block;
-}
 </style>
