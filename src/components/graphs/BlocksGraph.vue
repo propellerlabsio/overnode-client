@@ -50,9 +50,11 @@ export default {
       const domElement = this.$refs.svg;
       const svg = d3.select(domElement);
 
-
       // Remove loading message or graph for old data
       svg.selectAll('*').remove();
+
+      // Color scheme
+      const color = d3.scaleOrdinal(d3.schemeCategory20);
 
       // Create functions to normalize our graph with our data
       const xRange = d3
@@ -74,7 +76,6 @@ export default {
       const xAxis = d3
         .axisBottom(xRange)
         .tickFormat(() => '')
-        // .ticks(this.blocks.length);
         .ticks(0);
 
       const yAxis = d3
@@ -114,7 +115,7 @@ export default {
 
       svg.append('svg:path')
         .attr('d', lineFunc(this.blocks))
-        .attr('stroke', 'blue')
+        .attr('stroke', color(0))
         .attr('stroke-width', 2)
         .attr('fill', 'none');
 
@@ -160,7 +161,7 @@ export default {
 
       intervalPipScalers
         .append('circle')
-        .style('fill', 'blue')
+        .style('fill', color(0))
         .attr('class', 'intervalPipFg')
         .attr('r', 3.5)
         .call(addBlockNav);
