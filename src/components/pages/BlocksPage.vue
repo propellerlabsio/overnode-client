@@ -44,7 +44,7 @@ export default {
   },
   computed: {
     blocks() {
-      return this.$store.state.blocks.cached;
+      return this.$store.state.blocks.latest;
     },
   },
 };

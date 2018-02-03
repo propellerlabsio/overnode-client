@@ -4,21 +4,21 @@
 import Vue from 'vue';
 
 const state = {
-  cached: [],
-  activeBlock: {},
+  latest: [],
+  selected: {},
 };
 
 const mutations = {
-  setActiveBlock(state, block) {
-    Vue.set(state, 'activeBlock', block);
+  setSelected(state, block) {
+    Vue.set(state, 'selected', block);
   },
-  addBlock(state, block) {
-    state.cached.push(block);
+  setLatest(state, blocks) {
+    Vue.set(state, 'latest', blocks);
   },
 };
 
 const actions = {
-  async get({ dispatch, commit }) {
+  async getLatest({ dispatch, commit }) {
     const query = `query {
       blocks {
         hash
@@ -36,10 +36,10 @@ const actions = {
     };
 
     const response = await dispatch('session/request', { query, variables }, { root: true });
-    response.blocks.forEach(block => commit('addBlock', block));
+    commit('setLatest', response.blocks);
   },
 
-  async setActiveBlock({ dispatch, commit }, hash) {
+  async setSelected({ dispatch, commit }, hash) {
     const query = `query($hash: String!) {
       block(hash: $hash) {
         hash
@@ -66,7 +66,7 @@ const actions = {
     };
 
     const response = await dispatch('session/request', { query, variables }, { root: true });
-    commit('setActiveBlock', response.block);
+    commit('setSelected', response.block);
   },
 };
 

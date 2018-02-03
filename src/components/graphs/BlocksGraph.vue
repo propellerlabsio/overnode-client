@@ -12,122 +12,178 @@ export default {
   name: 'blocks-graph',
   data() {
     return {
+      svg: null,
       width: 400,
       height: 200,
+      colors: {
+        blockIntervals: null,
+        blockMegabytes: null,
+      },
       margins: {
         top: 20,
-        right: 20,
+        right: 30,
         bottom: 20,
         left: 50,
+      },
+      ranges: {
+        blockNumbers: null,
+        blockMegabytes: null,
+        blockIntervals: null,
       },
     };
   },
   computed: {
     blocks() {
-      return this.$store.state.blocks.cached
+      return this.$store.state.blocks.latest
         .map(block => ({
-          height: block.height,
+          number: block.height,
           interval: block.interval / 60,
+          megabytes: block.size / 1000000,
           hash: block.hash,
         }));
     },
   },
   mounted() {
-    // console.debug('Mounted');
-    // Draw graph when we have a dom element for d3 to hook on to
-    this.drawGraph();
+    // Init graph when we have a dom element for d3 to hook on to
+    this.initGraph();
+    this.drawAll();
   },
   watch: {
     blocks() {
-      // console.debug('Data changed');
       // Re-draw graph whenever the data changes
-      this.drawGraph();
+      if (this.svg) {
+        this.drawAll();
+      }
     },
   },
   methods: {
-    drawGraph() {
+    initGraph() {
       // Get reference to this svg
       const domElement = this.$refs.svg;
-      const svg = d3.select(domElement);
-
-      // Remove loading message or graph for old data
-      svg.selectAll('*').remove();
+      this.svg = d3.select(domElement);
 
       // Color scheme
       const color = d3.scaleOrdinal(d3.schemeCategory20);
+      this.colors.blockIntervals = color(0);
+      this.colors.blockMegabytes = color(1);
+    },
+    drawAll() {
+      // Remove loading message or graph for old data
+      this.svg.selectAll('*').remove();
 
-      // Create functions to normalize our graph with our data
-      const xRange = d3
-        .scaleLinear()
-        .domain([
-          d3.min(this.blocks, block => block.height - 0.5),
-          d3.max(this.blocks, block => block.height + 0.5),
-        ])
-        .range([this.margins.left, this.width - this.margins.right]);
+      if (this.blocks.length) {
+        // Create ranges to transpose datapoints to graph
+        this.ranges.blockIntervals = d3
+          .scaleLinear()
+          .domain([
+            d3.min(this.blocks, block => block.interval - 1),
+            d3.max(this.blocks, block => block.interval + 1),
+          ])
+          .range([this.height - this.margins.top, this.margins.bottom]);
 
-      const yRange = d3
-        .scaleLinear()
-        .domain([
-          d3.min(this.blocks, block => block.interval - 1),
-          d3.max(this.blocks, block => block.interval + 1),
-        ])
-        .range([this.height - this.margins.top, this.margins.bottom]);
+        this.ranges.blockNumbers = d3
+          .scaleLinear()
+          .domain([
+            d3.min(this.blocks, block => block.number - 0.5),
+            d3.max(this.blocks, block => block.number + 0.5),
+          ])
+          .range([this.margins.left, this.width - this.margins.right]);
 
-      const xAxis = d3
-        .axisBottom(xRange)
-        .tickFormat(() => '')
-        .ticks(0);
+        this.ranges.blockMegabytes = d3
+          .scaleLinear()
+          .domain([
+            d3.min(this.blocks, block => block.megabytes),
+            d3.max(this.blocks, block => block.megabytes),
+          ])
+          .range([this.height - this.margins.top, this.margins.bottom]);
 
-      const yAxis = d3
-        .axisLeft(yRange);
+        // Draw graph elements
+        this.drawBlockNumbers();
+        this.drawBlockMegabytes();
+        this.drawBlockIntervals();
 
-      svg.append('svg:g')
-        .attr('class', 'x axis')
-        .attr('transform', `translate(0,${this.height - this.margins.bottom})`)
-        .call(xAxis);
-
-      svg.append('svg:g')
-        .attr('class', 'y axis')
-        .attr('transform', `translate(${this.margins.left},0)`)
-        .call(yAxis);
-
-
-      svg
-        .on('mousemove', function onMouseOver() {
+        // Highlight closest block interval on mouse move
+        this.addMouseMoveListeners();
+      }
+    },
+    addMouseMoveListeners() {
+      // Emphasize closest block interval on mouse move
+      const svg = this.svg;
+      const range = this.ranges.blockNumbers;
+      this.svg
+        .on('mousemove', function onMouseMove() {
           const mouse = d3.mouse(this);
-          const blockHeight = Math.round(xRange.invert(mouse[0]));
+          const blockNumber = Math.round(range.invert(mouse[0]));
           svg
             .selectAll('.intervalPipScaler')
             .attr('transform', (d) => {
               let scale = 'scale(1)';
-              if (d.height === blockHeight) {
+              if (d.number === blockNumber) {
                 scale = 'scale(1.7)';
               }
               return scale;
             });
         });
 
+      // Deemphasize on on mouse leaving svg area
+      this.svg
+        .on('mouseout', () => {
+          svg
+            .selectAll('.intervalPipScaler')
+            .attr('transform', 'scale(1)');
+        });
+    },
+
+    addBlockNavigation(selection) {
+      selection
+        .on('click', (d) => {
+          this.$router.push({
+            name: 'Block',
+            params: {
+              hash: d.hash,
+            },
+          });
+          d3.event.stopPropagation();
+        })
+        .append('title')
+        .text(d => `Block ${d.number}`);
+    },
+
+    drawBlockIntervals() {
+      const blockIntervalAxis = d3
+        .axisLeft(this.ranges.blockIntervals);
 
       const lineFunc = d3
         .line()
-        .x(d => xRange(d.height))
-        .y(d => yRange(d.interval));
+        .x(d => this.ranges.blockNumbers(d.number))
+        .y(d => this.ranges.blockIntervals(d.interval));
 
-      svg.append('svg:path')
+      const mainGroup = this.svg
+        .append('g')
+        .attr('id', 'block-intervals')
+        .attr('stroke', this.colors.blockIntervals)
+        .attr('fill', this.colors.blockIntervals);
+
+      mainGroup.append('svg:g')
+        .attr('class', 'y axis')
+        .attr('transform', `translate(${this.margins.left},0)`)
+        .attr('stroke', this.colors.blockIntervals)
+        .call(blockIntervalAxis);
+
+      mainGroup.append('svg:path')
         .attr('d', lineFunc(this.blocks))
-        .attr('stroke', color(0))
         .attr('stroke-width', 2)
         .attr('fill', 'none');
 
-      const intervalPips = svg
+      const intervalPips = mainGroup
         .selectAll('.intervalPip')
         .data(this.blocks)
         .enter()
         .append('g')
         .attr('class', 'intervalPip')
         .attr('transform', (d) => {
-          const x = xRange(d.height);
-          const y = yRange(d.interval);
+          const x = this.ranges.blockNumbers(d.number);
+          const y = this.ranges.blockIntervals(d.interval);
           return `translate(${x}, ${y})`;
         });
 
@@ -136,42 +192,65 @@ export default {
         .attr('class', 'intervalPipScaler')
         .attr('transform', 'scale(1)');
 
-      const addBlockNav = (selection) => {
-        selection
-          .on('click', (d) => {
-            this.$router.push({
-              name: 'Block',
-              params: {
-                hash: d.hash,
-              },
-            });
-            d3.event.stopPropagation();
-          })
-          .append('title')
-          .text(d => `Block ${d.height}`);
-      };
-
       intervalPipScalers
         .append('circle')
         .attr('class', 'intervalPipBg')
         .attr('r', 5.5)
         .style('fill', 'white')
-        .call(addBlockNav);
-
+        .call(this.addBlockNavigation);
 
       intervalPipScalers
         .append('circle')
-        .style('fill', color(0))
         .attr('class', 'intervalPipFg')
         .attr('r', 3.5)
-        .call(addBlockNav);
+        .call(this.addBlockNavigation);
+    },
+
+    drawBlockNumbers() {
+      const blockNumberAxis = d3
+        .axisBottom(this.ranges.blockNumbers)
+        .tickFormat(() => '')
+        .ticks(0);
+
+      this.svg.append('svg:g')
+        .attr('class', 'x axis')
+        .attr('transform', `translate(0,${this.height - this.margins.bottom})`)
+        .call(blockNumberAxis);
+    },
+
+    drawBlockMegabytes() {
+      const blockMegabytesAxis = d3
+        .axisRight(this.ranges.blockMegabytes);
+
+      const mainGroup = this.svg
+        .append('g')
+        .attr('id', 'block-megabytes')
+        .attr('stroke', this.colors.blockMegabytes)
+        .attr('fill', this.colors.blockMegabytes);
+
+      mainGroup
+        .selectAll('.block-megabytes-bar')
+        .data(this.blocks)
+        .enter()
+        .append('rect')
+        .attr('class', 'block-megabytes-bar')
+        .attr('x', d => this.ranges.blockNumbers(d.number) - 10)
+        .attr('y', d => this.ranges.blockMegabytes(d.megabytes))
+        .attr('height', d => (this.height - this.margins.bottom) - this.ranges.blockMegabytes(d.megabytes))
+        .attr('width', 20)
+        .call(this.addBlockNavigation);
+
+      mainGroup.append('svg:g')
+        .attr('class', 'megabytes axis')
+        .attr('transform', `translate(${this.width - this.margins.right},0)`)
+        .call(blockMegabytesAxis);
     },
   },
 };
 </script>
 
 <style>
-  .intervalPipBg, .intervalPipFg {
+  .block-megabytes-bar, .intervalPipBg, .intervalPipFg {
     cursor: pointer;
   }
 </style>

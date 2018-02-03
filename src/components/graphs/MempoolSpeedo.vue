@@ -34,7 +34,7 @@ export default {
       return this.$store.state.stats.mempool;
     },
     blocks() {
-      return this.$store.state.blocks.cached
+      return this.$store.state.blocks.latest
         .map(block => ({
           height: block.height,
           interval: block.interval / 60,
@@ -134,7 +134,7 @@ export default {
 
             // Change colors (may need TODO again after theme is reworked)
             this.svg.select('#background')
-              .style('stroke', 'lightgrey')
+              .style('stroke', '#EEEEEE')
               .style('fill', 'white');
 
             // Append text for tx per second value

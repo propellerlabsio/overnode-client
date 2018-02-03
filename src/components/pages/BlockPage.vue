@@ -21,11 +21,11 @@ export default {
   },
   computed: {
     block() {
-      return this.$store.state.blocks.activeBlock;
+      return this.$store.state.blocks.selected;
     },
   },
   created() {
-    this.$store.dispatch('blocks/setActiveBlock', this.$route.params.hash);
+    this.$store.dispatch('blocks/setSelected', this.$route.params.hash);
   },
 };
 </script>
