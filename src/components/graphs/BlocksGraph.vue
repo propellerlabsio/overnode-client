@@ -1,5 +1,5 @@
 <template>
-  <svg class="chart-block-times" width="100%" height="200px" :viewBox="`0 0 ${width} ${height}`"
+  <svg class="chart-block-times" width="400" height="200" :viewBox="`0 0 ${width} ${height}`"
     ref="svg">
     <text x="10" y="35" font-size="35">Loading d3...</text>
   </svg>
@@ -92,11 +92,6 @@ export default {
 
 
       svg
-        .attr('x', 0)
-        .attr('y', 0)
-        .style('fill', 'black')
-        .attr('width', this.width)
-        .attr('height', this.height)
         .on('mousemove', function onMouseOver() {
           const mouse = d3.mouse(this);
           const blockHeight = Math.round(xRange.invert(mouse[0]));
@@ -158,8 +153,6 @@ export default {
       intervalPipScalers
         .append('circle')
         .attr('class', 'intervalPipBg')
-        .attr('cx', 0)
-        .attr('cy', 0)
         .attr('r', 5.5)
         .style('fill', 'white')
         .call(addBlockNav);
@@ -168,8 +161,6 @@ export default {
       intervalPipScalers
         .append('circle')
         .style('fill', 'blue')
-        .attr('cx', 0)
-        .attr('cy', 0)
         .attr('class', 'intervalPipFg')
         .attr('r', 3.5)
         .call(addBlockNav);

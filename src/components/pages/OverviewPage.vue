@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div class="columns">
-      <div class="column">
-        <overview-tile title="Blocks" class="is-unselectable" component-type="blocks-graph" />
-      </div>
+    <div class="columns is-multiline">
       <div class="column">
         <overview-tile title="Mempool"
           class="is-unselectable" component-type="mempool-speedo" />
@@ -11,6 +8,9 @@
       <div class="column">
         <overview-tile title="Peers"
           class="is-unselectable" component-type="peers-graph" />
+      </div>
+      <div class="column">
+        <overview-tile title="Blocks" class="is-unselectable" component-type="blocks-graph" />
       </div>
     </div>
   </div>

@@ -1,7 +1,7 @@
 <template>
   <div class="columns">
     <div class="column">
-      <div class="row graph-widget">
+      <div class="row graph-widget has-text-centered">
         <component :is="componentType"></component>
       </div>
       <div class="row">
@@ -33,6 +33,7 @@ export default {
   .graph-widget {
     display: block;
     height: 200px;
+    min-width: 200px;
     overflow: hidden;
   }
 </style>
