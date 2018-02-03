@@ -1,5 +1,5 @@
 <template>
-  <svg class="chart-block-times" width="400" height="200" :viewBox="`0 0 ${width} ${height}`"
+  <svg class="chart-block-times" width="300" height="200" :viewBox="`0 0 ${width} ${height}`"
     ref="svg">
     <text x="10" y="35" font-size="35">Loading d3...</text>
   </svg>
@@ -13,16 +13,16 @@ export default {
   data() {
     return {
       svg: null,
-      width: 400,
+      width: 300,
       height: 200,
       colors: {
         blockIntervals: null,
         blockMegabytes: null,
       },
       margins: {
-        top: 20,
+        top: 5,
         right: 45,
-        bottom: 20,
+        bottom: 5,
         left: 35,
       },
       ranges: {
@@ -35,6 +35,7 @@ export default {
   computed: {
     blocks() {
       return this.$store.state.blocks.latest
+        .slice(0, 10)
         .map(block => ({
           number: block.height,
           interval: block.interval / 60,
@@ -117,9 +118,9 @@ export default {
           svg
             .selectAll('.intervalPipScaler')
             .attr('transform', (d) => {
-              let scale = 'scale(1)';
+              let scale = 'scale(0.7)';
               if (d.number === blockNumber) {
-                scale = 'scale(1.7)';
+                scale = 'scale(1.4)';
               }
               return scale;
             });
@@ -130,7 +131,7 @@ export default {
         .on('mouseout', () => {
           svg
             .selectAll('.intervalPipScaler')
-            .attr('transform', 'scale(1)');
+            .attr('transform', 'scale(0.7)');
         });
     },
 
@@ -203,7 +204,7 @@ export default {
       const intervalPipScalers = intervalPips
         .append('g')
         .attr('class', 'intervalPipScaler')
-        .attr('transform', 'scale(1)');
+        .attr('transform', 'scale(0.7)');
 
       intervalPipScalers
         .append('circle')
@@ -217,7 +218,7 @@ export default {
         .append('circle')
         .attr('class', 'intervalPipFg')
         .style('fill', this.colors.blockIntervals)
-        .attr('r', 3.5)
+        .attr('r', 3.0)
         .call(this.addBlockNavigation);
     },
 
