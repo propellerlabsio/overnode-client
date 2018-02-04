@@ -11,9 +11,9 @@
 import * as d3 from 'd3';
 
 const SEGMENT_COLOR = {
-  good: '#1b1ef8',
-  warning: '#ffbf00',
-  bad: '#ff0000',
+  good: '#2ca02c',
+  warning: '#bcbd22',
+  bad: '#d62728',
 };
 
 const BLOCK_SIZE_LIMT_MB = 8;
@@ -82,6 +82,20 @@ export default {
         // Determine how many segments are lit (may be more than 18)
         const numLitSegments = Math.floor(this.mempool.txPerSecond / txPerSegment) + 1;
 
+        // Change color tx per second to match warning state
+        this.svg.select('#tps')
+          .style('fill', () => {
+            let fill;
+            if (numLitSegments < 15) {
+              fill = SEGMENT_COLOR.good;
+            } else if (numLitSegments < 19) {
+              fill = SEGMENT_COLOR.warning;
+            } else {
+              fill = SEGMENT_COLOR.bad;
+            }
+            return fill;
+          });
+
         // Light or dim segments
         this.svg.select('g#speedo')
           .selectAll('path')
@@ -143,7 +157,7 @@ export default {
               .text('0.00')
               .attr('class', 'is-unselectable')
               .attr('id', 'tps')
-              .style('fill', '#1b1ef8')
+              .style('fill', 'grey')
               .style('font-family', 'digital_7')
               .style('font-size', '45px')
               .style('text-anchor', 'middle')
@@ -157,7 +171,6 @@ export default {
               .text('tx/sec')
               .attr('id', 'tps_label')
               .attr('class', 'is-unselectable')
-              // .style('fill', '#1b1ef8')
               .style('fill', 'darkslategrey')
               .style('font-family', 'digital_7')
               .style('font-size', '10px')
