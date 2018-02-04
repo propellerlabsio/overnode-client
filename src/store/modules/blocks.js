@@ -4,13 +4,24 @@
 import Vue from 'vue';
 
 const state = {
-  latest: [],
-  selected: {},
+  height: 0, // latest block height retrieved
+  latest: [], // latest blocks
+  selected: {}, // selected block
+  // pager: {
+  //   blocksPerPage: 15,
+  //   page: 1,
+  //   previous: null,
+  //   next: 2,
+  //   blocks: [],
+  // },
 };
 
 const mutations = {
   setSelected(state, block) {
     Vue.set(state, 'selected', block);
+  },
+  setHeight(state, height) {
+    Vue.set(state, 'height', height);
   },
   setLatest(state, blocks) {
     Vue.set(state, 'latest', blocks);
@@ -18,6 +29,15 @@ const mutations = {
 };
 
 const actions = {
+  async setHeight({ dispatch, commit, state }, height) {
+    if (state.height !== height) {
+      // Set new height
+      commit('setHeight', height);
+
+      // Updated latest blocks
+      dispatch('getLatest');
+    }
+  },
   async getLatest({ dispatch, commit }) {
     const query = `query {
       blocks {
@@ -36,6 +56,7 @@ const actions = {
     };
 
     const response = await dispatch('session/request', { query, variables }, { root: true });
+    commit('setHeight', response.blocks[0].height);
     commit('setLatest', response.blocks);
   },
 

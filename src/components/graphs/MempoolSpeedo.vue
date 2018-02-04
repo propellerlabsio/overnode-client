@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     mempool() {
-      return this.$store.state.stats.mempool;
+      return this.$store.state.server.status.mempool;
     },
     blocks() {
       return this.$store.state.blocks.latest

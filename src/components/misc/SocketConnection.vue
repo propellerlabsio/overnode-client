@@ -35,6 +35,7 @@ export default {
   data() {
     return {
       reconnectInSecs: 0,
+      latestBlockRequested: 0, // Latest block height we've already requested from server
       connection: null,
       connectionState: 0,
       CONNECTION_STATE: {
@@ -90,11 +91,23 @@ export default {
       };
 
       // Store data given by the server
-      this.connection.onmessage = (e) => {
+      this.connection.onmessage = async (e) => {
         try {
           if (e.data) {
             const dataJson = JSON.parse(e.data);
-            this.$store.commit('stats/setMempool', dataJson.mempool);
+
+            // Store server status/stats
+            this.$store.commit('server/setStatus', dataJson);
+
+            // Request latest blocks new ones are available (new block mined etc)
+            const latestAvailableBlock = dataJson.height.overnode;
+            const latestBlockRetrieved = this.$store.state.blocks.height;
+            if (latestBlockRetrieved < latestAvailableBlock &&
+              this.latestBlockRequested < latestAvailableBlock) {
+              // Request latest blocks
+              this.latestBlockRequested = latestAvailableBlock;
+              await this.$store.dispatch('blocks/getLatest');
+            }
           }
         } catch (err) {
           console.error('Error parsing/storing data from websocket server', e.data);
