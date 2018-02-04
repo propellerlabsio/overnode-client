@@ -28,8 +28,25 @@ export default {
 };
 </script>
 
+<style lang="scss">
+// Customize bulma per https://bulma.io/documentation/overview/customize/
+@import '~bulma/sass/utilities/initial-variables';
+@import '~bulma/sass/utilities/functions';
+
+
+// Our customizations
+$navbar-background-color:#1f77b4;
+$navbar-item-color: $white;
+$navbar-item-hover-color: #98df8a;
+$navbar-item-hover-background-color: #1f77b4;
+$navbar-dropdown-background-color: #1f77b4;
+$navbar-item-active-color: #1f77b4;
+$navbar-item-active-background-color: #1f77b4;
+
+@import '~bulma/bulma.sass';
+</style>
+
 <style>
-  @import 'bulma/css/bulma.css';
   @import 'font-awesome/css/font-awesome.css';
 
   section.section {
