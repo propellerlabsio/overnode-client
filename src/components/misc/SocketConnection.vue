@@ -1,25 +1,25 @@
 <template>
   <span>
     <article class="message is-info"
-      :class="{ 'is-hidden': connectionState !== CONNECTION_STATE.CONNECTING }">
+      v-if="connectionState === CONNECTION_STATE.CONNECTING">
       <div class="message-header">
         <p>
           <span class="icon">
             <i class="fa fa-info-circle"></i>
           </span>
-          Connecting to live stats server...
+          Connecting to server...
         </p>
       </div>
     </article>
     <article class="message is-warning"
-      :class="{ 'is-hidden': connectionState !== CONNECTION_STATE.CLOSING &&
-      connectionState !== CONNECTION_STATE.CLOSED }">
+      v-if="connectionState === CONNECTION_STATE.CLOSING ||
+      connectionState === CONNECTION_STATE.CLOSED">
       <div class="message-header">
         <p>
           <span class="icon">
             <i class="fa fa-exclamation-triangle"></i>
           </span>
-          Connection to live stats server lost. Attempting to reconnect...
+          Connection to server lost. Attempting to reconnect...
         </p>
       </div>
     </article>
@@ -58,7 +58,7 @@ export default {
         !this.reconnectInSecs) {
         // Attempt reconnection in 5 seconds
         this.reconnectInSecs = 5;
-        console.log('Reconnecting in ', this.reconnectInSecs);
+        console.debug('Reconnecting in ', this.reconnectInSecs);
         window.setTimeout(this.reconnectCountdown, 1000);
       }
     },
@@ -67,7 +67,7 @@ export default {
         this.reconnectInSecs -= 1;
       }
 
-      console.log('Reconnecting in ', this.reconnectInSecs);
+      console.debug('Reconnecting in ', this.reconnectInSecs);
 
       if (this.reconnectInSecs === 0) {
         this.startConnection();
@@ -86,7 +86,7 @@ export default {
 
       // Log errors
       this.connection.onerror = (error) => {
-        console.log('WebSocket Error ', error);
+        console.debug('WebSocket Error ', error);
       };
 
       // Store data given by the server

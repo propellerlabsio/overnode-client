@@ -2,9 +2,9 @@
   <div id="app" class="container">
     <section class="section">
       <navbar />
+      <socket-connection />
     </section>
     <section class="section">
-      <socket-connection />
       <router-view/>
     </section>
   </div>

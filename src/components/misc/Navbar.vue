@@ -23,12 +23,12 @@
         <a class="navbar-item" @click="navTo('/wallet')">
           Wallet
         </a>
-        <a class="navbar-item" @click="navTo('/donate')">
-          Donate
-        </a>
       </div>
 
       <div class="navbar-end">
+        <a class="navbar-item" @click="navTo('/donate')">
+          Donate
+        </a>
         <a href="https://github.com/propellerlabsio/overnode-client" target="_blank" class="navbar-item">
           <span class="icon is-hidden-mobile">
             <i class="fa fa-github fa-2x"></i>
