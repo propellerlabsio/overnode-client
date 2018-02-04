@@ -11,6 +11,9 @@
             Hash
           </th>
           <th>
+            Mined
+          </th>
+          <th class="is-hidden-mobile">
             Interval
           </th>
         </tr>
@@ -23,9 +26,13 @@
             </router-link>
           </td>
           <td>
-            <formatted-hash :hash='block.hash'/>
+            <formatted-hash :hash="block.hash"/>
           </td>
           <td>
+            <formatted-unix-time class="is-hidden-mobile" :time="block.time"/>
+            <formatted-unix-time class="is-hidden-tablet" :time="block.time" :humanized="true"/>
+          </td>
+          <td class="is-hidden-mobile">
             {{ block.interval }}
           </td>
         </tr>
@@ -36,11 +43,13 @@
 
 <script>
 import FormattedHash from '../formatters/FormattedHash';
+import FormattedUnixTime from '../formatters/FormattedUnixTime';
 
 export default {
   name: 'blocks-page',
   components: {
     FormattedHash,
+    FormattedUnixTime,
   },
   computed: {
     blocks() {
