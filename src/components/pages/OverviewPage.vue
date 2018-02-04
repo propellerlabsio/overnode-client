@@ -6,7 +6,9 @@
           class="is-unselectable" component-type="mempool-speedo" />
       </div>
       <div class="column">
-        <overview-tile title="Blocks" class="is-unselectable" component-type="blocks-graph" />
+        <overview-tile title="Blocks" class="is-unselectable"
+          component-type="blocks-graph"
+          title-link="/blocks"/>
       </div>
       <div class="column">
         <overview-tile title="Peers"

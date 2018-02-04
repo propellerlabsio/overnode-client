@@ -6,7 +6,12 @@
       </div>
       <div class="row">
         <h2 class="subtitle has-text-centered">
-          {{ this.title }}
+          <router-link v-if="titleLink" :to="titleLink">
+            {{ this.title }}
+          </router-link>
+          <span v-else>
+            {{ this.title }}
+          </span>
         </h2>
       </div>
     </div>
@@ -20,7 +25,20 @@ import PeersGraph from '../graphs/PeersGraph';
 
 export default {
   name: 'overview-tile',
-  props: ['title', 'componentType'],
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
+    componentType: {
+      type: String,
+      required: true,
+    },
+    titleLink: {
+      type: String,
+      required: false,
+    },
+  },
   components: {
     BlocksGraph,
     MempoolSpeedo,
