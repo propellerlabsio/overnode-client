@@ -6,11 +6,11 @@
           class="is-unselectable" component-type="mempool-speedo" />
       </div>
       <div class="column">
-        <overview-tile title="Peers"
-          class="is-unselectable" component-type="peers-graph" />
+        <overview-tile title="Blocks" class="is-unselectable" component-type="blocks-graph" />
       </div>
       <div class="column">
-        <overview-tile title="Blocks" class="is-unselectable" component-type="blocks-graph" />
+        <overview-tile title="Peers"
+          class="is-unselectable" component-type="peers-graph" />
       </div>
     </div>
   </div>
