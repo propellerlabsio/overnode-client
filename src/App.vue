@@ -6,6 +6,7 @@
     </section>
     <section class="section">
       <router-view/>
+      <toasts/>
     </section>
   </div>
 </template>
@@ -13,12 +14,14 @@
 <script>
 import Navbar from './components/misc/Navbar';
 import SocketConnection from './components/misc/SocketConnection';
+import Toasts from './components/misc/Toasts';
 
 export default {
   name: 'App',
   components: {
     Navbar,
     SocketConnection,
+    Toasts,
   },
   created() {
     this.$store.dispatch('blocks/getLatest');
