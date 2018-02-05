@@ -47,7 +47,7 @@ export default {
   name: 'navbar',
   data() {
     return {
-      menuActive: true,
+      menuActive: false,
     };
   },
   methods: {
