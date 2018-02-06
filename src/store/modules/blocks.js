@@ -108,6 +108,7 @@ const actions = {
     const response = await dispatch('session/request', { query, variables }, { root: true });
     commit('setHeight', response.blocks[0].height);
     commit('setLatest', response.blocks);
+
     // commit('humanizeTimes');
 
     // Create toast for each new (recent) block
@@ -122,6 +123,11 @@ const actions = {
         .forEach((block) => {
           commit('toasts/add', { message: `New block <a href="/#/block/${block.hash}">${block.height}</a> found` }, { root: true });
         });
+    }
+
+    // If user is browsing blocks but on page 1, refresh the contents
+    if (state.page.current === 1) {
+      dispatch('gotoPage', 1);
     }
   },
 
