@@ -15,7 +15,7 @@
           </th>
           <th class="is-hidden-mobile has-text-centered">
             Interval
-          </th class="has-text-centered">
+          </th>
           <th class="has-text-centered">
             # Tx
           </th>
