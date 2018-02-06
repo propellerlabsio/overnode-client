@@ -54,6 +54,7 @@
       </tbody>
     </table>
     <pager
+      :disabled="loading"
       :current-page="page.current"
       :last-page="page.last"
       @previous="gotoPage(page.current - 1)"
@@ -76,8 +77,13 @@ export default {
     FormattedBlockInterval,
     Pager,
   },
-  created() {
-    this.$store.dispatch('blocks/gotoPage', 1);
+  async created() {
+    this.gotoPage(1);
+  },
+  data() {
+    return {
+      loading: true,
+    };
   },
   computed: {
     page() {
@@ -85,8 +91,10 @@ export default {
     },
   },
   methods: {
-    gotoPage(pageNumber) {
-      this.$store.dispatch('blocks/gotoPage', pageNumber);
+    async gotoPage(pageNumber) {
+      this.loading = true;
+      await this.$store.dispatch('blocks/gotoPage', pageNumber);
+      this.loading = false;
     },
   },
 };

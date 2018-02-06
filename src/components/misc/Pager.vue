@@ -1,15 +1,18 @@
 <template>
   <nav class="pagination" role="navigation" aria-label="pagination">
-    <a class="pagination-previous" @click="gotoPreviousPage" :disabled="currentPage === 1">
+    <a class="pagination-previous"
+      @click="gotoPreviousPage"
+      :disabled="currentPage === 1 || disabled">
       Previous
     </a>
-    <a class="pagination-next" @click="gotoNextPage" :disabled="currentPage === lastPage">
+    <a class="pagination-next" @click="gotoNextPage" :disabled="currentPage === lastPage || disabled">
       Next page
     </a>
     <ul class="pagination-list">
       <li>
         <a class="pagination-link"
           @click="gotoPage(1)"
+          :disabled="disabled"
           v-if="currentPage > 2" aria-label="Goto page 1">1</a>
       </li>
       <li>
@@ -19,10 +22,12 @@
         <a class="pagination-link"
           v-if="currentPage > 1"
           @click="gotoPreviousPage"
+          :disabled="disabled"
           :aria-label="`Goto page ${previousPage}`">{{ previousPage }}</a>
       </li>
       <li>
         <a class="pagination-link is-current" :aria-label="`Page ${currentPage}`"
+          :disabled="disabled"
           aria-current="page">
           {{ currentPage }}
         </a>
@@ -30,6 +35,7 @@
       <li>
         <a v-if="nextPage"
           class="pagination-link"
+          :disabled="disabled"
           @click="gotoNextPage"
           :aria-label="`Goto page ${nextPage}`">{{ nextPage }}</a>
       </li>
@@ -39,6 +45,7 @@
       <li>
         <a v-if="currentPage !== lastPage && nextPage !== lastPage"
           class="pagination-link"
+          :disabled="disabled"
           @click="gotoPage(lastPage)"
           :aria-label="`Goto page ${lastPage}`">
           {{ lastPage }}
@@ -60,6 +67,10 @@ export default {
       type: Number,
       required: true,
     },
+    disabled: {
+      type: Boolean,
+      required: false,
+    },
   },
   computed: {
     nextPage() {
@@ -71,17 +82,19 @@ export default {
   },
   methods: {
     gotoNextPage() {
-      if (this.currentPage < this.lastPage) {
+      if (this.currentPage < this.lastPage && !this.disabled) {
         this.$emit('next');
       }
     },
     gotoPreviousPage() {
-      if (this.currentPage > 1) {
+      if (this.currentPage > 1 && !this.disabled) {
         this.$emit('previous');
       }
     },
     gotoPage(pageNumber) {
-      this.$emit('goto', pageNumber);
+      if (!this.disabled) {
+        this.$emit('goto', pageNumber);
+      }
     },
   },
 };
