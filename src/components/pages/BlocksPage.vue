@@ -7,7 +7,7 @@
           <th class="has-text-centered">
             Height
           </th>
-          <th class="has-text-centered">
+          <th class="has-text-centered is-hidden-mobile">
             Hash
           </th>
           <th class="has-text-centered">
@@ -19,7 +19,7 @@
           <th class="has-text-centered">
             # Tx
           </th>
-          <th class="has-text-centered is-hidden-mobile">
+          <th class="has-text-centered">
             Size (mb)
           </th>
         </tr>
@@ -31,15 +31,15 @@
               {{ block.height }}
             </router-link>
           </td>
-          <td>
+          <td class="is-hidden-mobile">
             <formatted-hash :hash="block.hash"/>
           </td>
           <td class="is-hidden-tablet has-text-centered">
-            <formatted-unix-time :time="block.time" :humanized="true"/>
+            {{ block.humanizedTime }}
           </td>
           <td class="is-hidden-mobile has-text-centered">
             <formatted-unix-time :time="block.time"/>
-            (<formatted-unix-time class="is-size-7" :time="block.time" :humanized="true"/>)
+            (<span class="is-size-7">{{ block.humanizedTime }}</span>)
           </td>
           <td class="is-hidden-mobile has-text-centered">
             <formatted-block-interval :interval="block.interval"/>
@@ -47,7 +47,7 @@
           <td class="has-text-right">
             {{ block.tx_count }}
           </td>
-          <td class="has-text-right is-hidden-mobile">
+          <td class="has-text-right">
             {{ (block.size / 1000000).toFixed(3) }}
           </td>
         </tr>

@@ -31,6 +31,13 @@ export default {
   },
   created() {
     this.$store.dispatch('peers/get');
+    this.periodicallyUpdateHumanizedTimes();
+  },
+  methods: {
+    periodicallyUpdateHumanizedTimes() {
+      this.$store.commit('blocks/humanizeTimes');
+      window.setTimeout(this.periodicallyUpdateHumanizedTimes, 30000);
+    },
   },
 };
 </script>

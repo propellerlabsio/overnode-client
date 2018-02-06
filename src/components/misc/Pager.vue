@@ -5,7 +5,8 @@
       :disabled="currentPage === 1 || disabled">
       Previous
     </a>
-    <a class="pagination-next" @click="gotoNextPage" :disabled="currentPage === lastPage || disabled">
+    <a class="pagination-next" @click="gotoNextPage"
+      :disabled="currentPage === lastPage || disabled">
       Next page
     </a>
     <ul class="pagination-list">
