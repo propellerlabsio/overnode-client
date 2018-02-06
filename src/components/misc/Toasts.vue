@@ -4,7 +4,7 @@
       <div v-for="toast in toasts" v-bind:key="toast.id"
         class="notification is-success">
         <button class="delete" @click="$store.commit('toasts/remove', toast.id)"></button>
-        {{ toast.message }}
+        <span v-html="toast.message"></span>
       </div>
     </div>
   </div>
