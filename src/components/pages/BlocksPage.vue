@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="title">Blocks</h1>
-    <table class="table is-striped is-bordered">
+    <table class="table is-striped is-bordered is-hoverable is-fullwidth">
       <thead>
         <tr>
           <th class="has-text-centered">
@@ -25,7 +25,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="block in page.blocks" v-bind:key="block.hash">
+        <tr v-for="block in page.blocks" v-bind:key="block.hash"
+          @click="$router.push(`/block/${block.hash}`)">
           <td>
             <router-link :to="`/block/${block.hash}`">
               {{ block.height }}
