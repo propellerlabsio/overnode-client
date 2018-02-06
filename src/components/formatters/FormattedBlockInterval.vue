@@ -12,8 +12,12 @@ export default {
   },
   computed: {
     formattedInterval() {
-      const duration = moment.duration(this.interval, 'seconds');
-      return duration.humanize();
+      let formatted;
+      if (this.interval) {
+        const duration = moment.duration(this.interval, 'seconds');
+        formatted = duration.humanize();
+      }
+      return formatted;
     },
   },
 };

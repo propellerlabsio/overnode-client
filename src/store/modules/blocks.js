@@ -5,16 +5,14 @@ import Vue from 'vue';
 import moment from 'moment';
 
 const state = {
+  limit: 15, // Limit block count in latest and on page
   height: 0, // latest block height retrieved
   latest: [], // latest blocks
   selected: {}, // selected block
-  // pager: {
-  //   blocksPerPage: 15,
-  //   page: 1,
-  //   previous: null,
-  //   next: 2,
-  //   blocks: [],
-  // },
+  page: {
+    current: 1,
+    blocks: [],
+  },
 };
 
 const mutations = {
@@ -26,6 +24,27 @@ const mutations = {
   },
   setLatest(state, blocks) {
     Vue.set(state, 'latest', blocks);
+  },
+  setPage(stae, { pageNumber, blocks }) {
+    Vue.set(state.page, 'current', pageNumber);
+    Vue.set(state.page, 'blocks', blocks);
+  },
+  // humanizeTimes(state) {
+  //   // IMPORTANT - do not updated 'latest' it forces redraw of graphs
+  //   // with bad UX side effects (lost tooltips, mouseover etc)
+  //   console.debug('Humanizing times...');
+  //   state.latest.forEach((block, index) => {
+  //     const timeMoment = moment.unix(block.time);
+  //     block.humanizedTime = timeMoment.fromNow();
+  //     Vue.set(state.latest, index, block);
+  //   });
+  // },
+};
+
+const getters = {
+  page(state) {
+    const last = Math.floor(state.height / state.limit) + 1;
+    return Object.assign(state.page, { last });
   },
 };
 
@@ -39,21 +58,47 @@ const actions = {
       dispatch('getLatest');
     }
   },
+  async gotoPage({ commit, state, dispatch }, pageNumber) {
+    if (pageNumber === 1) {
+      // We already have latest blocks always updated - no need to call server
+      commit('setPage', { pageNumber, blocks: state.latest.slice(0, state.limit) });
+    } else {
+      // We need to get blocks from server
+      const query = `query($fromHeight: Int, $limit: Int) {
+        blocks(fromHeight: $fromHeight, limit: $limit) {
+          hash
+          size
+          height
+          time
+          tx_count
+          interval
+        }
+      }`;
+
+      const variables = {
+        fromHeight: state.height - ((pageNumber - 1) * state.limit),
+        limit: state.limit,
+      };
+
+      // Get blocks
+      const response = await dispatch('session/request', { query, variables }, { root: true });
+      commit('setPage', { pageNumber, blocks: response.blocks });
+    }
+  },
   async getLatest({ dispatch, commit }) {
     const query = `query {
-    blocks {
-      hash
-      size
-      height
-      time
-      tx_count
-      interval
-      previousblockhash
-      nextblockhash
-    }
-  }`;
+      blocks {
+        hash
+        size
+        height
+        time
+        tx_count
+        interval
+      }
+    }`;
 
     const variables = {
+      limit: state.limit,
     };
 
     // Remember current block height
@@ -63,6 +108,7 @@ const actions = {
     const response = await dispatch('session/request', { query, variables }, { root: true });
     commit('setHeight', response.blocks[0].height);
     commit('setLatest', response.blocks);
+    // commit('humanizeTimes');
 
     // Create toast for each new (recent) block
     if (oldHeight) {
@@ -113,6 +159,7 @@ const actions = {
 export default {
   namespaced: true,
   state,
+  getters,
   mutations,
   actions,
 };

@@ -25,7 +25,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="block in blocks" v-bind:key="block.hash">
+        <tr v-for="block in page.blocks" v-bind:key="block.hash">
           <td>
             <router-link :to="`/block/${block.hash}`">
               {{ block.height }}
@@ -53,7 +53,12 @@
         </tr>
       </tbody>
     </table>
-    <!-- <pager /> -->
+    <pager
+      :current-page="page.current"
+      :last-page="page.last"
+      @previous="gotoPage(page.current - 1)"
+      @next="gotoPage(page.current + 1)"
+      @goto="gotoPage"/>
   </div>
 </template>
 
@@ -61,7 +66,7 @@
 import FormattedHash from '../formatters/FormattedHash';
 import FormattedUnixTime from '../formatters/FormattedUnixTime';
 import FormattedBlockInterval from '../formatters/FormattedBlockInterval';
-// import Pager from '../misc/Pager';
+import Pager from '../misc/Pager';
 
 export default {
   name: 'blocks-page',
@@ -69,11 +74,19 @@ export default {
     FormattedHash,
     FormattedUnixTime,
     FormattedBlockInterval,
-    // Pager,
+    Pager,
+  },
+  created() {
+    this.$store.dispatch('blocks/gotoPage', 1);
   },
   computed: {
-    blocks() {
-      return this.$store.state.blocks.latest;
+    page() {
+      return this.$store.getters['blocks/page'];
+    },
+  },
+  methods: {
+    gotoPage(pageNumber) {
+      this.$store.dispatch('blocks/gotoPage', pageNumber);
     },
   },
 };
