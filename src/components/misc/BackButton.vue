@@ -1,7 +1,7 @@
 <template>
   <button class="button is-white" @click="onClick">
-    <span class="icon">
-      <i class="fa fa-arrow-left"></i>
+    <span class="icon is-medium">
+      <i class="fa fa-chevron-left fa-lg"></i>
     </span>
   </button>
 </template>
