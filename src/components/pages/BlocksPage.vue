@@ -14,7 +14,10 @@
             Mined
           </th>
           <th class="is-hidden-mobile">
-            Interval
+            Wait time
+          </th>
+          <th>
+            # Tx
           </th>
         </tr>
       </thead>
@@ -33,23 +36,31 @@
             <formatted-unix-time class="is-hidden-tablet" :time="block.time" :humanized="true"/>
           </td>
           <td class="is-hidden-mobile">
-            {{ block.interval }}
+            <formatted-block-interval :interval="block.interval"/>
+          </td>
+          <td>
+            {{ block.tx_count }}
           </td>
         </tr>
       </tbody>
     </table>
+    <!-- <pager /> -->
   </div>
 </template>
 
 <script>
 import FormattedHash from '../formatters/FormattedHash';
 import FormattedUnixTime from '../formatters/FormattedUnixTime';
+import FormattedBlockInterval from '../formatters/FormattedBlockInterval';
+// import Pager from '../misc/Pager';
 
 export default {
   name: 'blocks-page',
   components: {
     FormattedHash,
     FormattedUnixTime,
+    FormattedBlockInterval,
+    // Pager,
   },
   computed: {
     blocks() {
