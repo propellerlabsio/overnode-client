@@ -2,11 +2,13 @@
   <div id="app" class="container">
     <section class="section">
       <navbar />
+      <server-error />
       <socket-connection />
     </section>
     <section class="section">
       <router-view/>
       <toasts/>
+      <!-- <debug/> -->
     </section>
   </div>
 </template>
@@ -15,6 +17,8 @@
 import Navbar from './components/misc/Navbar';
 import SocketConnection from './components/misc/SocketConnection';
 import Toasts from './components/misc/Toasts';
+import ServerError from './components/misc/ServerError';
+// import Debug from './components/misc/Debug';
 
 export default {
   name: 'App',
@@ -22,10 +26,10 @@ export default {
     Navbar,
     SocketConnection,
     Toasts,
+    ServerError,
+    // Debug,
   },
   created() {
-    this.$store.dispatch('blocks/getLatest');
-
     this.$store.dispatch('peers/get');
   },
 };

@@ -4,6 +4,7 @@ import Vue from 'vue';
 
 const state = {
   status: {
+    jobsInErrorCount: 0,
     height: {
       bitcoind: 0,
       overnode: 0,
