@@ -197,16 +197,15 @@ export default {
             // Append text for mempool size bytes value
             this.svg
               .append('text')
-              .text('32000000')
+              .text('300000000')
               .attr('id', 'size')
               .attr('class', 'is-unselectable')
               .style('fill', '#000000')
               .style('font-family', 'digital_7_mono')
               .style('font-size', '14px')
               .style('text-anchor', 'end')
-              .style('letter-spacing', '1.5')
               .attr('width', this.width)
-              .attr('x', (this.width / 2) + 30)
+              .attr('x', (this.width / 2) + 29)
               .attr('y', 132)
               .append('svg:title')
               .text('bytes');
