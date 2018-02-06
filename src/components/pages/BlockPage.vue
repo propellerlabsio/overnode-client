@@ -14,18 +14,19 @@
     </div>
     <div class="columns">
       <div :class="labelClasses">
-        Nonce
-      </div>
-      <div :class="dataClasses">
-        {{ block.nonce }}
-      </div>
-    </div>
-    <div class="columns">
-      <div :class="labelClasses">
         Mined on
       </div>
       <div :class="dataClasses">
         <formatted-unix-time :time="block.time" />
+      </div>
+    </div>
+
+    <div class="columns">
+      <div :class="labelClasses">
+        Nonce
+      </div>
+      <div :class="dataClasses">
+        {{ block.nonce }}
       </div>
     </div>
   </div>
@@ -48,6 +49,7 @@ export default {
       dataClasses: [
         'block',
         'column',
+        'is-clipped',
       ],
       labelClasses: [
         'block',
@@ -72,9 +74,10 @@ export default {
 <style scoped>
 
 .block.column {
-  padding-bottom: 0;
-  padding-top: 0;
-  margin-bottom: .75rem;
+  padding-bottom: 0.25rem;
+  padding-top: 0.25rem;
+  /* margin-top: .25rem; */
+  margin-bottom: .25rem;
 }
 </style>
 
