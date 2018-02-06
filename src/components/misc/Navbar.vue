@@ -20,9 +20,6 @@
         <a class="navbar-item" @click="navTo('/blocks')">
           Blocks
         </a>
-        <a class="navbar-item" @click="navTo('/wallet')">
-          Wallet
-        </a>
       </div>
 
       <div class="navbar-end">
