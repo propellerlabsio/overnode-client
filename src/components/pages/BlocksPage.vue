@@ -4,20 +4,23 @@
     <table class="table is-striped is-bordered">
       <thead>
         <tr>
-          <th>
+          <th class="has-text-centered">
             Height
           </th>
-          <th>
+          <th class="has-text-centered">
             Hash
           </th>
-          <th>
+          <th class="has-text-centered">
             Mined
           </th>
-          <th class="is-hidden-mobile">
-            Wait time
-          </th>
-          <th>
+          <th class="is-hidden-mobile has-text-centered">
+            Interval
+          </th class="has-text-centered">
+          <th class="has-text-centered">
             # Tx
+          </th>
+          <th class="has-text-centered is-hidden-mobile">
+            Size (mb)
           </th>
         </tr>
       </thead>
@@ -31,15 +34,21 @@
           <td>
             <formatted-hash :hash="block.hash"/>
           </td>
-          <td>
-            <formatted-unix-time class="is-hidden-mobile" :time="block.time"/>
-            <formatted-unix-time class="is-hidden-tablet" :time="block.time" :humanized="true"/>
+          <td class="is-hidden-tablet has-text-centered">
+            <formatted-unix-time :time="block.time" :humanized="true"/>
           </td>
-          <td class="is-hidden-mobile">
+          <td class="is-hidden-mobile has-text-centered">
+            <formatted-unix-time :time="block.time"/>
+            (<formatted-unix-time class="is-size-7" :time="block.time" :humanized="true"/>)
+          </td>
+          <td class="is-hidden-mobile has-text-centered">
             <formatted-block-interval :interval="block.interval"/>
           </td>
-          <td>
+          <td class="has-text-right">
             {{ block.tx_count }}
+          </td>
+          <td class="has-text-right is-hidden-mobile">
+            {{ (block.size / 1000000).toFixed(3) }}
           </td>
         </tr>
       </tbody>
