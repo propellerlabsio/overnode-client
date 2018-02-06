@@ -13,7 +13,7 @@
           v-if="currentPage > 2" aria-label="Goto page 1">1</a>
       </li>
       <li>
-        <span class="pagination-ellipsis" v-if="currentPage > 2">&hellip;</span>
+        <span class="pagination-ellipsis" v-if="currentPage > 3">&hellip;</span>
       </li>
       <li>
         <a class="pagination-link"
@@ -33,7 +33,7 @@
           @click="gotoNextPage"
           :aria-label="`Goto page ${nextPage}`">{{ nextPage }}</a>
       </li>
-      <li v-if="currentPage !== lastPage && nextPage !== lastPage">
+      <li v-if="(lastPage - currentPage) > 2">
         <span class="pagination-ellipsis">&hellip;</span>
       </li>
       <li>
