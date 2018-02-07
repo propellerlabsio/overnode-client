@@ -7,6 +7,7 @@ const state = {
 
 const mutations = {
   setCurrent(state, peers) {
+    console.debug('Peers updated.');
     state.current = peers;
   },
 };
@@ -17,21 +18,11 @@ const actions = {
       peers {
         id
         addr
-        services
-        relaytxes
-        lastsend
-        lastrecv
         bytessent
         bytesrecv
-        conntime
-        timeoffset
         pingtime
-        minping
-        version
         subver
         inbound
-        startingheight
-        banscore
       }
     }`;
 
