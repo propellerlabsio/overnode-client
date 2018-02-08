@@ -7,7 +7,6 @@ const state = {
 
 const mutations = {
   setCurrent(state, peers) {
-    console.debug('Peers updated.');
     state.current = peers;
   },
 };

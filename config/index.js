@@ -11,6 +11,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+      '/socket': {
+        target: 'ws://localhost:4000',
+        secure: false,
+        ws: true,
+      },      
       '/graphql': {
         target: 'http://localhost:4000',
         changeOrigin: true,

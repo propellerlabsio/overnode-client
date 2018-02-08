@@ -77,7 +77,10 @@ export default {
       }
     },
     startConnection() {
-      this.connection = new WebSocket('wss://overnode.org:8453/socket');
+      const protocol = location.protocol.includes('https') ?
+        'wss' :
+        'ws';
+      this.connection = new WebSocket(`${protocol}://${location.host}/socket`);
 
       // When the connection is open, send some data to the server
       this.connection.onopen = () => {
