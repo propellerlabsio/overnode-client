@@ -3,6 +3,7 @@
     <section class="section">
       <navbar />
       <server-error />
+      <server-sync-status />
       <socket-connection />
     </section>
     <section class="section">
@@ -18,6 +19,7 @@ import Navbar from './components/misc/Navbar';
 import SocketConnection from './components/misc/SocketConnection';
 import Toasts from './components/misc/Toasts';
 import ServerError from './components/misc/ServerError';
+import ServerSyncStatus from './components/misc/ServerSyncStatus';
 // import Debug from './components/misc/Debug';
 
 export default {
@@ -27,6 +29,7 @@ export default {
     SocketConnection,
     Toasts,
     ServerError,
+    ServerSyncStatus,
     // Debug,
   },
   created() {
