@@ -6,7 +6,7 @@
       <server-sync-status />
       <socket-connection />
     </section>
-    <section class="section">
+    <section class="section page">
       <router-view/>
       <toasts/>
       <!-- <debug/> -->
@@ -74,5 +74,14 @@ $navbar-item-active-background-color: #1f77b4;
   section.section.app-header > article.message {
     margin-bottom: 0;
   }
+
+  html, body, div#app, section.section.page {
+    height: 100%;
+  }
+
+  section.section.page {
+    height: calc(100% - 100px);
+  }
+
 </style>
 

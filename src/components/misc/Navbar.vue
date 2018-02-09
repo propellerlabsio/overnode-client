@@ -20,6 +20,9 @@
         <a class="navbar-item" @click="navTo('/blocks')">
           Blocks
         </a>
+        <a class="navbar-item is-hidden-mobile" @click="navTo('/query')">
+          Query
+        </a>
       </div>
 
       <div class="navbar-end">

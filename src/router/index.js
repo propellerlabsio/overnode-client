@@ -4,6 +4,7 @@ import OverviewPage from '@/components/pages/OverviewPage';
 import BlockPage from '@/components/pages/BlockPage';
 import BlocksPage from '@/components/pages/BlocksPage';
 import DonationsPage from '@/components/pages/DonationsPage';
+import QueryPage from '@/components/pages/QueryPage';
 
 Vue.use(Router);
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/donate',
       name: 'Donate',
       component: DonationsPage,
+    },
+    {
+      path: '/query',
+      name: 'Query',
+      component: QueryPage,
     },
   ],
 });
