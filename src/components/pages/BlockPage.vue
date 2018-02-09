@@ -1,9 +1,11 @@
 <template>
   <div>
-    <h1 class="title">
-      <back-button/>
-      Block {{ block.height }}
-    </h1>
+    <div class="level">
+      <div class="level-left">
+        <back-button class="level-item is-narrow"/>
+        <page-heading class="level-item" :title="`Block ${block.height}`"/>
+      </div>
+    </div>
     <div class="columns">
       <div :class="labelClasses">
         Hash
@@ -36,6 +38,7 @@
 import BackButton from '../misc/BackButton';
 import FormattedHash from '../formatters/FormattedHash';
 import FormattedUnixTime from '../formatters/FormattedUnixTime';
+import PageHeading from '../misc/PageHeading';
 
 export default {
   name: 'block-page',
@@ -43,6 +46,7 @@ export default {
     BackButton,
     FormattedHash,
     FormattedUnixTime,
+    PageHeading,
   },
   data() {
     return {
