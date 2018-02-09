@@ -6,7 +6,8 @@
           <span class="icon">
             <i class="fa fa-exclamation-triangle"></i>
           </span>
-          Graph<i>i</i>QL is a powerful query tool that is best experienced on larger screens.<br/><br/>
+          Graph<i>i</i>QL is a powerful query tool that is best experienced on larger screens.
+          <br/><br/>
           <router-link to="/">Return to home page.</router-link>
         </p>
       </div>
