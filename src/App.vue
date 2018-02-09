@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="container">
-    <section class="section">
+    <section class="section app-header">
       <navbar />
       <server-error />
       <server-sync-status />
@@ -70,4 +70,9 @@ $navbar-item-active-background-color: #1f77b4;
     padding-top: 20px;
     padding-bottom: 20px;
   }
+
+  section.section.app-header > article.message {
+    margin-bottom: 0;
+  }
 </style>
+

@@ -22,7 +22,7 @@
         <div class="column">
           <div class="columns is-mobile">
             <div class="column has-text-right">
-              Peers Height:
+              Peers height:
             </div>
             <div class="column">
               {{ height.peers }}
@@ -32,7 +32,7 @@
         <div class="column">
           <div class="columns is-mobile">
             <div class="column has-text-right">
-              Node Height:
+              Node height:
             </div>
             <div class="column">
               {{ height.bitcoind }}
@@ -42,7 +42,7 @@
         <div class="column">
           <div class="columns is-mobile">
             <div class="column has-text-right">
-              Overnode Height:
+              Overnode height:
             </div>
             <div class="column">
               {{ height.overnode }}
