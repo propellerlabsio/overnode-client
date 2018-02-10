@@ -103,7 +103,7 @@ export default {
       this.$store.dispatch('blocks/setSelected', Number(this.$route.params.height));
     },
     gotoBlock(height) {
-      if (height >= 0 && height <= this.highestBlockHeight) {
+      if (!this.loading && height >= 0 && height <= this.highestBlockHeight) {
         this.$router.push({
           name: 'Block',
           params: {
