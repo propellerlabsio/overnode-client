@@ -12,74 +12,28 @@
         </a>
         <a class="button" @click="gotoNextBlock"
           :disabled="block.height >= highestBlockHeight || isLoading">
-          Next
+          Next block
         </a>
       </div>
     </div>
 
     <!-- Block details -->
-    <loading-message v-if="isLoading" />
-    <div v-else>
-      <div class="columns">
-        <div :class="labelClasses">
-          Hash
-        </div>
-        <div :class="dataClasses">
-          <formatted-hash :hash='block.hash' :short='false'/>
-        </div>
-      </div>
-      <div class="columns">
-        <div :class="labelClasses">
-          Mined on
-        </div>
-        <div :class="dataClasses">
-          <formatted-unix-time :time="block.time" />
-        </div>
-      </div>
-
-      <div class="columns">
-        <div :class="labelClasses">
-          Nonce
-        </div>
-        <div :class="dataClasses">
-          {{ block.nonce }}
-        </div>
-      </div>
-    </div>
+    <loading-message v-if="isLoading"/>
+    <block-header v-else :block="block"/>
   </div>
 </template>
 
 <script>
-import BackButton from '../misc/BackButton';
-import FormattedHash from '../formatters/FormattedHash';
-import FormattedUnixTime from '../formatters/FormattedUnixTime';
+import BlockHeader from './BlockPage/BlockHeader';
 import LoadingMessage from '../misc/LoadingMessage';
 import PageHeading from '../misc/PageHeading';
 
 export default {
   name: 'block-page',
   components: {
-    BackButton,
-    FormattedHash,
-    FormattedUnixTime,
+    BlockHeader,
     LoadingMessage,
     PageHeading,
-  },
-  data() {
-    return {
-      dataClasses: [
-        'block',
-        'column',
-        'is-clipped',
-      ],
-      labelClasses: [
-        'block',
-        'column',
-        'is-one-quarter',
-        'has-text-right-tablet',
-        'label',
-      ],
-    };
   },
   computed: {
     isLoading() {
@@ -121,14 +75,4 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-
-.block.column {
-  padding-bottom: 0.25rem;
-  padding-top: 0.25rem;
-  /* margin-top: .25rem; */
-  margin-bottom: .25rem;
-}
-</style>
 

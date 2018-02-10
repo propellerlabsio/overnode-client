@@ -9,13 +9,21 @@ export default {
   name: 'formatted-block-interval',
   props: {
     interval: Number,
+    humanize: {
+      type: Boolean,
+      default: true,
+    },
   },
   computed: {
     formattedInterval() {
       let formatted;
       if (this.interval) {
         const duration = moment.duration(this.interval, 'seconds');
-        formatted = duration.humanize();
+        if (this.humanize) {
+          formatted = duration.humanize();
+        } else {
+          formatted = `${Math.round(duration.asMinutes())} minutes`;
+        }
       }
       return formatted;
     },

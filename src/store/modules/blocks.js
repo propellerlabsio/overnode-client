@@ -142,16 +142,26 @@ const actions = {
         confirmations
         size
         height
-        version
-        versionHex
-        merkleroot
-        tx
         time
-        mediantime
-        nonce
-        bits
-        difficulty
-        chainwork
+        summary {
+          tx_count
+          interval
+        }
+        transactions(fromIndex:0,  limit: 3) {
+          txid
+          size
+          time
+          inputs {
+            coinbase
+            txid
+            output_number
+          }
+          outputs {
+            number
+            value
+            addresses
+          }
+        }
       }
     }`;
 
