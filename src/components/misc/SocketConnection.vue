@@ -113,7 +113,7 @@ export default {
             }
           }
         } catch (err) {
-          console.error('Error parsing/storing data from websocket server', e.data);
+          console.error('Error parsing/storing data from websocket server', e.data, err);
         }
       };
     },
