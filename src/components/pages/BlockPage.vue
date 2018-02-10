@@ -5,15 +5,26 @@
       <div class="level-left">
         <page-heading class="level-item" :title="`Block ${$route.params.height}`"/>
       </div>
-      <div class="level-right">
-        <a class="button" @click="gotoPreviousBlock"
-          :disabled="block.height === 0 || isLoading">
-          Previous
-        </a>
-        <a class="button" @click="gotoNextBlock"
-          :disabled="block.height >= highestBlockHeight || isLoading">
-          Next block
-        </a>
+      <div class="level-right is-hidden-mobile">
+        <!-- Nav buttons on right (non-mobile) -->
+        <block-nav-buttons
+          :previous-disabled="previousDisabled"
+          :next-disabled="nextDisabled"
+          @previous="gotoPreviousBlock"
+          @next="gotoNextBlock"/>
+      </div>
+    </div>
+
+    <!-- Nav buttons centered (mobile only) -->
+    <div class="columns is-mobile is-hidden-tablet is-centered">
+      <div class="column is-narrow">
+        <div class="field is-grouped ">
+          <block-nav-buttons
+            :previous-disabled="previousDisabled"
+            :next-disabled="nextDisabled"
+            @previous="gotoPreviousBlock"
+            @next="gotoNextBlock"/>
+          </div>
       </div>
     </div>
 
@@ -25,6 +36,7 @@
 
 <script>
 import BlockHeader from './BlockPage/BlockHeader';
+import BlockNavButtons from './BlockPage/BlockNavButtons';
 import LoadingMessage from '../misc/LoadingMessage';
 import PageHeading from '../misc/PageHeading';
 
@@ -32,10 +44,17 @@ export default {
   name: 'block-page',
   components: {
     BlockHeader,
+    BlockNavButtons,
     LoadingMessage,
     PageHeading,
   },
   computed: {
+    previousDisabled() {
+      return this.block.height === 0 || this.isLoading;
+    },
+    nextDisabled() {
+      return this.block.height >= this.highestBlockHeight || this.isLoading;
+    },
     isLoading() {
       return !this.block || this.block.height !== Number(this.$route.params.height);
     },
