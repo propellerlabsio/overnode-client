@@ -70,7 +70,7 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('blocks/setSelected', this.$route.params.hash);
+    this.$store.dispatch('blocks/setSelected', this.$route.params.height);
   },
 };
 </script>

@@ -40,7 +40,7 @@ export default {
           number: block.height,
           interval: block.interval / 60,
           megabytes: block.size / 1000000,
-          hash: block.hash,
+          height: block.height,
         }));
     },
   },
@@ -141,7 +141,7 @@ export default {
           this.$router.push({
             name: 'Block',
             params: {
-              hash: d.hash,
+              height: d.height,
             },
           });
           d3.event.stopPropagation();

@@ -26,9 +26,9 @@
       </thead>
       <tbody>
         <tr v-for="block in page.blocks" v-bind:key="block.hash"
-          @click="$router.push(`/block/${block.hash}`)">
+          @click="$router.push(`/block/${block.height}`)">
           <td>
-            <router-link :to="`/block/${block.hash}`">
+            <router-link :to="`/block/${block.height}`">
               {{ block.height }}
             </router-link>
           </td>

@@ -122,7 +122,7 @@ const actions = {
           return block.height > oldHeight && time.isAfter(fiveMinutesAgo);
         })
         .forEach((block) => {
-          commit('toasts/add', { message: `New block <a href="/#/block/${block.hash}">${block.height}</a> found` }, { root: true });
+          commit('toasts/add', { message: `New block <a href="/#/block/${block.height}">${block.height}</a> found` }, { root: true });
         });
     }
 
@@ -132,9 +132,9 @@ const actions = {
     }
   },
 
-  async setSelected({ dispatch, commit }, hash) {
-    const query = `query($hash: String!) {
-      block(hash: $hash) {
+  async setSelected({ dispatch, commit }, height) {
+    const query = `query($height: Int!) {
+      block(height: $height) {
         hash
         confirmations
         size
@@ -149,13 +149,11 @@ const actions = {
         bits
         difficulty
         chainwork
-        previousblockhash
-        nextblockhash
       }
     }`;
 
     const variables = {
-      hash,
+      height,
     };
 
     const response = await dispatch('session/request', { query, variables }, { root: true });

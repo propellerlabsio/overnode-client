@@ -21,7 +21,7 @@ export default new Router({
       component: BlocksPage,
     },
     {
-      path: '/block/:hash',
+      path: '/block/:height',
       name: 'Block',
       component: BlockPage,
     },
