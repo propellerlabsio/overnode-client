@@ -75,8 +75,11 @@ const actions = {
         }
       }`;
 
+      // Determine from which height we want blocks based on requested page number
+      const fromHeight = state.height - ((pageNumber - 1) * state.limit);
+
       const variables = {
-        fromHeight: state.height - ((pageNumber - 1) * state.limit),
+        fromHeight,
         limit: state.limit,
       };
 
