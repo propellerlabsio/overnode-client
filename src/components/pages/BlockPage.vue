@@ -5,6 +5,16 @@
         <back-button class="level-item is-narrow"/>
         <page-heading class="level-item" :title="`Block ${block.height}`"/>
       </div>
+      <div class="level-right">
+        <a class="button" @click="gotoPreviousBlock"
+          :disabled="block.height === 0">
+          Previous
+        </a>
+        <a class="button" @click="gotoNextBlock"
+          :disabled="block.height >= highestBlockHeight">
+          Next
+        </a>
+      </div>
     </div>
     <div class="columns">
       <div :class="labelClasses">
@@ -65,12 +75,39 @@ export default {
     };
   },
   computed: {
+    highestBlockHeight() {
+      return this.$store.state.server.status.height.overnode;
+    },
     block() {
       return this.$store.state.blocks.selected;
     },
   },
+  watch: {
+    $route: 'setSelectedBlock',
+  },
   created() {
-    this.$store.dispatch('blocks/setSelected', this.$route.params.height);
+    this.setSelectedBlock();
+  },
+  methods: {
+    setSelectedBlock() {
+      this.$store.dispatch('blocks/setSelected', this.$route.params.height);
+    },
+    gotoBlock(height) {
+      if (height >= 0 && height <= this.highestBlockHeight) {
+        this.$router.push({
+          name: 'Block',
+          params: {
+            height,
+          },
+        });
+      }
+    },
+    gotoPreviousBlock() {
+      this.gotoBlock(this.block.height - 1);
+    },
+    gotoNextBlock() {
+      this.gotoBlock(this.block.height + 1);
+    },
   },
 };
 </script>
