@@ -1,5 +1,5 @@
 <template>
-  <div class="notification">
+  <div class="notification has-text-centered">
     Loading...
   </div>
 </template>
