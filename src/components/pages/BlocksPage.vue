@@ -27,12 +27,12 @@
       <tbody>
         <tr v-for="block in page.blocks" v-bind:key="block.hash"
           @click="$router.push(`/block/${block.height}`)">
-          <td>
+          <td class="has-text-centered">
             <router-link :to="`/block/${block.height}`">
               {{ block.height }}
             </router-link>
           </td>
-          <td class="is-hidden-mobile">
+          <td class="is-hidden-mobile has-text-centered">
             <formatted-hash :hash="block.hash"/>
           </td>
           <td class="is-hidden-tablet has-text-centered">
