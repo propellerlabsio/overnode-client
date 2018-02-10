@@ -3,6 +3,12 @@
 import Vue from 'vue';
 
 const state = {
+  host: {
+    hostname: '',
+    platform: '',
+    cpus: [],
+    totalmem: 0,
+  },
   status: {
     jobsInErrorCount: 0,
     height: {
@@ -19,13 +25,39 @@ const state = {
 };
 
 const mutations = {
+  setHost(state, host) {
+    Vue.set(state, 'host', host);
+  },
   setStatus(state, status) {
     Vue.set(state, 'status', status);
   },
 };
 
+const actions = {
+  async getHost({ dispatch, commit }) {
+    const query = `query {
+      host {
+        hostname
+        platform
+        cpus {
+          model
+        }
+        totalmem
+      }  
+    }`;
+
+    const variables = {
+    };
+
+    const response = await dispatch('session/request', { query, variables }, { root: true });
+    commit('setHost', response.host);
+  },
+};
+
+
 export default {
   namespaced: true,
   state,
+  actions,
   mutations,
 };

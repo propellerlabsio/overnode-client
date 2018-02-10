@@ -2,6 +2,10 @@
   <div>
     <div class="columns is-multiline">
       <div class="column">
+        <overview-tile title="Node"
+          component-type="node-info" />
+      </div>
+      <div class="column">
         <overview-tile title="Mempool"
           class="is-unselectable" component-type="mempool-speedo" />
       </div>
@@ -20,7 +24,7 @@
 
 <script>
 
-import OverviewTile from '../misc/OverviewTile';
+import OverviewTile from './OverviewPage/OverviewTile';
 
 export default {
   name: 'overview-page',

@@ -1,7 +1,7 @@
 <template>
   <div class="columns">
     <div class="column">
-      <div class="row graph-widget has-text-centered">
+      <div class="row tile-content has-text-centered">
         <component :is="componentType"></component>
       </div>
       <div class="row">
@@ -19,9 +19,10 @@
 </template>
 
 <script>
-import BlocksGraph from '../graphs/BlocksGraph';
-import MempoolSpeedo from '../graphs/MempoolSpeedo';
-import PeersGraph from '../graphs/PeersGraph';
+import BlocksGraph from './BlocksGraph';
+import MempoolSpeedo from './MempoolSpeedo';
+import NodeInfo from './NodeInfo';
+import PeersGraph from './PeersGraph';
 
 export default {
   name: 'overview-tile',
@@ -42,17 +43,19 @@ export default {
   components: {
     BlocksGraph,
     MempoolSpeedo,
+    NodeInfo,
     PeersGraph,
   },
 };
 </script>
 
 <style scoped>
-  .graph-widget {
+  .tile-content {
     display: block;
     height: 200px;
     min-width: 200px;
     overflow: hidden;
+    margin-bottom: 10px;
   }
 </style>
 

@@ -34,6 +34,7 @@ export default {
   },
   created() {
     this.$store.dispatch('peers/get');
+    this.$store.dispatch('server/getHost');
     this.periodicallyUpdateHumanizedTimes();
   },
   methods: {

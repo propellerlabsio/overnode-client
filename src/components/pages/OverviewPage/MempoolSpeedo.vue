@@ -220,12 +220,12 @@ export default {
 
 @font-face {
   font-family: digital_7;
-  src: url('../../assets/fonts/digital_7/digital_7.ttf');
+  src: url('../../../assets/fonts/digital_7/digital_7.ttf');
 }
 
 @font-face {
   font-family: digital_7_mono;
-  src: url('../../assets/fonts/digital_7/digital_7_(mono).ttf');
+  src: url('../../../assets/fonts/digital_7/digital_7_(mono).ttf');
 }
 
 text {
