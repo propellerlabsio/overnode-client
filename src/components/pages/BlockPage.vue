@@ -1,44 +1,49 @@
 <template>
   <div>
+    <!-- Title bar -->
     <div class="level">
       <div class="level-left">
-        <back-button class="level-item is-narrow"/>
-        <page-heading class="level-item" :title="`Block ${block.height}`"/>
+        <page-heading class="level-item" :title="`Block ${$route.params.height}`"/>
       </div>
       <div class="level-right">
         <a class="button" @click="gotoPreviousBlock"
-          :disabled="block.height === 0">
+          :disabled="block.height === 0 || isLoading">
           Previous
         </a>
         <a class="button" @click="gotoNextBlock"
-          :disabled="block.height >= highestBlockHeight">
+          :disabled="block.height >= highestBlockHeight || isLoading">
           Next
         </a>
       </div>
     </div>
-    <div class="columns">
-      <div :class="labelClasses">
-        Hash
-      </div>
-      <div :class="dataClasses">
-        <formatted-hash :hash='block.hash' :short='false'/>
-      </div>
-    </div>
-    <div class="columns">
-      <div :class="labelClasses">
-        Mined on
-      </div>
-      <div :class="dataClasses">
-        <formatted-unix-time :time="block.time" />
-      </div>
-    </div>
 
-    <div class="columns">
-      <div :class="labelClasses">
-        Nonce
+    <!-- Block details -->
+    <loading-message v-if="isLoading" />
+    <div v-else>
+      <div class="columns">
+        <div :class="labelClasses">
+          Hash
+        </div>
+        <div :class="dataClasses">
+          <formatted-hash :hash='block.hash' :short='false'/>
+        </div>
       </div>
-      <div :class="dataClasses">
-        {{ block.nonce }}
+      <div class="columns">
+        <div :class="labelClasses">
+          Mined on
+        </div>
+        <div :class="dataClasses">
+          <formatted-unix-time :time="block.time" />
+        </div>
+      </div>
+
+      <div class="columns">
+        <div :class="labelClasses">
+          Nonce
+        </div>
+        <div :class="dataClasses">
+          {{ block.nonce }}
+        </div>
       </div>
     </div>
   </div>
@@ -48,6 +53,7 @@
 import BackButton from '../misc/BackButton';
 import FormattedHash from '../formatters/FormattedHash';
 import FormattedUnixTime from '../formatters/FormattedUnixTime';
+import LoadingMessage from '../misc/LoadingMessage';
 import PageHeading from '../misc/PageHeading';
 
 export default {
@@ -56,6 +62,7 @@ export default {
     BackButton,
     FormattedHash,
     FormattedUnixTime,
+    LoadingMessage,
     PageHeading,
   },
   data() {
@@ -75,6 +82,9 @@ export default {
     };
   },
   computed: {
+    isLoading() {
+      return !this.block || this.block.height !== Number(this.$route.params.height);
+    },
     highestBlockHeight() {
       return this.$store.state.server.status.height.overnode;
     },
@@ -90,7 +100,7 @@ export default {
   },
   methods: {
     setSelectedBlock() {
-      this.$store.dispatch('blocks/setSelected', this.$route.params.height);
+      this.$store.dispatch('blocks/setSelected', Number(this.$route.params.height));
     },
     gotoBlock(height) {
       if (height >= 0 && height <= this.highestBlockHeight) {
