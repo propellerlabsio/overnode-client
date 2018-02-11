@@ -82,10 +82,10 @@ export default {
         'ws';
       this.connection = new WebSocket(`${protocol}://${location.host}/socket`);
 
-      // When the connection is open, send some data to the server
+      // When the connection is open, load initial static data
       this.connection.onopen = () => {
-        // Send the message 'Ping' to the server every five seconds to test connection
-        this.connection.send('Ping');
+        this.$store.dispatch('peers/get');
+        this.$store.dispatch('server/getHost');
       };
 
       // Log errors
