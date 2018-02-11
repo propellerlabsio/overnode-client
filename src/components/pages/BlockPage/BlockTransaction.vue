@@ -109,7 +109,11 @@
         <tr v-for="(output, index) in transaction.outputs"
           v-bind:key="index">
           <td>
-            {{ output.addresses.join() }}
+            <formatted-address class="is-hidden-tablet" :address='output.addresses[0]'
+              :shorten="true"/>
+            <formatted-address class="is-hidden-mobile" :address='output.addresses[0]'
+              :shorten="false"/>
+            <span v-if="output.addresses.length > 1">+</span>
           </td>
           <td>
             {{ output.value }}
@@ -121,6 +125,7 @@
 </template>
 
 <script>
+import FormattedAddress from '../../formatters/FormattedAddress';
 import FormattedHash from '../../formatters/FormattedHash';
 
 export default {
@@ -135,6 +140,7 @@ export default {
     };
   },
   components: {
+    FormattedAddress,
     FormattedHash,
   },
 };
