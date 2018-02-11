@@ -1,30 +1,17 @@
 <template>
   <div>
     <!-- Title bar -->
-    <div class="level">
+    <div class="level is-mobile">
       <div class="level-left">
         <page-title class="level-item" :title="`Block ${$route.params.height}`"/>
       </div>
-      <div class="level-right is-hidden-mobile">
-        <!-- Nav buttons on right (non-mobile) -->
+      <div class="level-right">
         <block-nav-buttons
+          class="level-item"
           :previous-disabled="previousDisabled"
           :next-disabled="nextDisabled"
           @previous="gotoPreviousBlock"
           @next="gotoNextBlock"/>
-      </div>
-    </div>
-
-    <!-- Nav buttons centered (mobile only) -->
-    <div class="columns is-mobile is-hidden-tablet is-centered">
-      <div class="column is-narrow">
-        <div class="field is-grouped ">
-          <block-nav-buttons
-            :previous-disabled="previousDisabled"
-            :next-disabled="nextDisabled"
-            @previous="gotoPreviousBlock"
-            @next="gotoNextBlock"/>
-          </div>
       </div>
     </div>
 
