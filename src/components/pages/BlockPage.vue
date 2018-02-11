@@ -3,7 +3,7 @@
     <!-- Title bar -->
     <div class="level">
       <div class="level-left">
-        <page-heading class="level-item" :title="`Block ${$route.params.height}`"/>
+        <page-title class="level-item" :title="`Block ${$route.params.height}`"/>
       </div>
       <div class="level-right is-hidden-mobile">
         <!-- Nav buttons on right (non-mobile) -->
@@ -28,25 +28,51 @@
       </div>
     </div>
 
+    <!-- Tabs -->
+    <div class="tabs">
+      <ul>
+        <li :class="{ 'is-active': activeTab === 'details' }">
+          <a @click="activeTab = 'details'">
+            Details
+          </a>
+        </li>
+        <li :class="{ 'is-active': activeTab === 'transactions' }">
+          <a @click="activeTab = 'transactions'">
+            Transactions
+          </a>
+        </li>
+      </ul>
+    </div>
+
     <!-- Block details -->
     <loading-message v-if="isLoading"/>
-    <block-header v-else :block="block"/>
+    <span v-else>
+      <block-header v-if="activeTab === 'details'" :block="block"/>
+      <block-transactions v-if="activeTab === 'transactions'"/>
+    </span>
   </div>
 </template>
 
 <script>
 import BlockHeader from './BlockPage/BlockHeader';
 import BlockNavButtons from './BlockPage/BlockNavButtons';
+import BlockTransactions from './BlockPage/BlockTransactions';
 import LoadingMessage from '../misc/LoadingMessage';
-import PageHeading from '../misc/PageHeading';
+import PageTitle from '../misc/PageTitle';
 
 export default {
   name: 'block-page',
   components: {
     BlockHeader,
     BlockNavButtons,
+    BlockTransactions,
     LoadingMessage,
-    PageHeading,
+    PageTitle,
+  },
+  data() {
+    return {
+      activeTab: 'details',
+    };
   },
   computed: {
     previousDisabled() {
@@ -94,4 +120,3 @@ export default {
   },
 };
 </script>
-
