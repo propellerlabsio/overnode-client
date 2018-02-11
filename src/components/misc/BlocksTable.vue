@@ -68,7 +68,10 @@ export default {
   },
   props: {
     blocks: Array,
-    loading: Boolean,
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
 };
 </script>

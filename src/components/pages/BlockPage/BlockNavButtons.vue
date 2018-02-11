@@ -4,7 +4,7 @@
       @click="$emit('previous')"
       :disabled="previousDisabled">
       <span class="icon is-hidden-tablet">
-        <i class="fa fa-chevron-left"></i>
+        <i class="fas fa fa-chevron-left"></i>
       </span>
       <span class="is-hidden-mobile">Previous</span>
     </a>
