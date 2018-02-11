@@ -4,6 +4,9 @@
       <thead>
         <tr>
           <th>
+            No.
+          </th>
+          <th>
             Id
           </th>
           <th>
@@ -18,7 +21,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="transaction in transactions" :key="transaction.txid">
+        <tr v-for="(transaction, index) in transactions" :key="transaction.txid">
+          <td>
+            {{ index + (page.limit * (page.current - 1)) }}
+          </td>
           <td>
             <formatted-hash class="is-hidden-tablet" :hash='transaction.txid' :shorten="true"/>
             <formatted-hash class="is-hidden-mobile" :hash='transaction.txid' :shorten="false"/>
