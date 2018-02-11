@@ -1,12 +1,12 @@
 <template>
-  <div id="app" class="container">
+  <div id="app" class="">
     <section class="section app-header">
       <navbar />
       <server-error />
       <server-sync-status />
       <socket-connection />
     </section>
-    <section class="section page">
+    <section class="container section page">
       <router-view/>
       <toasts/>
       <!-- <debug/> -->
@@ -64,6 +64,12 @@ $navbar-item-active-background-color: #1f77b4;
 
 <style>
   @import 'font-awesome/css/font-awesome.css';
+
+  section.section.app-header {
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+  }
 
   section.section {
     padding-top: 20px;
