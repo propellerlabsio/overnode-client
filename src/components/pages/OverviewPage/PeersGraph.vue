@@ -17,13 +17,15 @@
 /* eslint-disable no-param-reassign                  */
 import * as d3 from 'd3';
 
-const OUR_NODE_ID = 'Our node';
+const OUR_NODE_ID = 'Overnode';
+
+const color = d3.scaleOrdinal(d3.schemeCategory20);
 
 const CLIENT_COLOR = {
-  Unknown: 1,
-  BUCash: 2,
-  ABC: 3,
-  XT: 4,
+  Unknown: color(1),
+  ABC: color(2),
+  BUCash: color(3),
+  XT: color(4),
 };
 
 export default {
@@ -61,24 +63,34 @@ export default {
       return this.peers.concat([{
         // Add our node
         id: OUR_NODE_ID,
-        addr: 'Our Node',
+        addr: OUR_NODE_ID,
         pingtime: 0,
         minping: 0,
         subver: 'BUCash', // TODO get actual
       }]).map((node) => {
-        let group;
+        let clientColor;
+        let clientSoftware;
         if (!node.subver) {
-          group = CLIENT_COLOR.Unknown;
+          clientColor = CLIENT_COLOR.Unknown;
+          clientSoftware = 'Unknown client';
         } else if (node.subver.includes('BUCash')) {
-          group = CLIENT_COLOR.BUCash;
+          clientColor = CLIENT_COLOR.BUCash;
+          clientSoftware = 'Bitcoin Unlimited';
         } else if (node.subver.includes('ABC')) {
-          group = CLIENT_COLOR.ABC;
+          clientColor = CLIENT_COLOR.ABC;
+          clientSoftware = 'Bitcoin ABC';
         } else if (node.subver.includes('XT')) {
-          group = CLIENT_COLOR.XT;
+          clientColor = CLIENT_COLOR.XT;
+          clientSoftware = 'Bitcoin XT';
         } else {
-          group = CLIENT_COLOR.Unknown;
+          clientColor = CLIENT_COLOR.Unknown;
+          clientSoftware = node.subver;
         }
-        return Object.assign({ group }, node);
+        return Object.assign({
+          color: clientColor,
+          clientSoftware,
+          clientAddress: node.addr.split(':')[0],
+        }, node);
       });
     },
 
@@ -115,7 +127,6 @@ export default {
       this.svg.selectAll('text').remove();
       this.svg.selectAll('g').remove();
 
-      const color = d3.scaleOrdinal(d3.schemeCategory20);
 
       const simulation = d3.forceSimulation()
         .force('link', d3.forceLink().id(d => d.id))
@@ -160,14 +171,14 @@ export default {
         .enter()
         .append('circle')
         .attr('r', 5)
-        .attr('fill', d => color(d.group))
+        .attr('fill', d => d.color)
         .call(d3.drag()
           .on('start', dragstarted)
           .on('drag', dragged)
           .on('end', dragended));
 
       node.append('title')
-        .text(d => d.id);
+        .text(d => `${d.clientSoftware}; ${d.clientAddress}`);
 
       function ticked() {
         link
