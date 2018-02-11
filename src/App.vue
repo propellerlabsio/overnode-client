@@ -9,7 +9,6 @@
     <section class="section page">
       <router-view/>
       <toasts/>
-      <!-- <debug/> -->
     </section>
   </div>
 </template>
@@ -20,7 +19,6 @@ import SocketConnection from './components/misc/SocketConnection';
 import Toasts from './components/misc/Toasts';
 import ServerError from './components/misc/ServerError';
 import ServerSyncStatus from './components/misc/ServerSyncStatus';
-// import Debug from './components/misc/Debug';
 
 export default {
   name: 'App',
