@@ -11,6 +11,7 @@
           <div class="column titles">
             <h1 class="title is-hidden-mobile">
               Overnode
+              <span class="tag is-danger">Beta</span>
             </h1>
             <h2 class="subtitle is-hidden-mobile">
               Bitcoin live node monitoring and explorer powered by GraphQL.
@@ -50,6 +51,9 @@ export default {
   }
   h2 {
     padding-top: 5px;
+  }
+  span.tag {
+    margin-top: -6px; 
   }
 </style>
 
