@@ -44,7 +44,7 @@
       </ul>
     </div>
 
-    <!-- Block details -->
+    <!-- Details or transactions -->
     <loading-message v-if="isLoading"/>
     <span v-else>
       <block-header v-if="activeTab === 'details'" :block="block"/>

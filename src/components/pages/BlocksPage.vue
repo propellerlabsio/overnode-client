@@ -80,7 +80,7 @@ export default {
     PageTitle,
     Pager,
   },
-  async created() {
+  created() {
     this.gotoPage(1);
   },
   data() {
@@ -90,13 +90,13 @@ export default {
   },
   computed: {
     page() {
-      return this.$store.getters['blocks/page'];
+      return this.$store.getters['blocks/blocksPage'];
     },
   },
   methods: {
     async gotoPage(pageNumber) {
       this.loading = true;
-      await this.$store.dispatch('blocks/gotoPage', pageNumber);
+      await this.$store.dispatch('blocks/gotoBlocksPage', pageNumber);
       this.loading = false;
     },
   },
