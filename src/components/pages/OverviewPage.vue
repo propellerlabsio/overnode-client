@@ -1,5 +1,6 @@
 <template>
   <div>
+    <hero-banner />
     <div class="columns is-multiline">
       <div class="column">
         <overview-tile title="Node"
@@ -24,11 +25,13 @@
 
 <script>
 
+import HeroBanner from './OverviewPage/HeroBanner';
 import OverviewTile from './OverviewPage/OverviewTile';
 
 export default {
   name: 'overview-page',
   components: {
+    HeroBanner,
     OverviewTile,
   },
 };
