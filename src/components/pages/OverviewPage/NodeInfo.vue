@@ -1,5 +1,5 @@
 <template>
-  <table class="table is-bordered">
+  <table class="table is-bordered is-striped is-narrow">
     <tbody>
       <tr>
         <td>Server:</td>
@@ -31,11 +31,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-  table.table {
-    width: 300px;
-    height: 200px;
-    margin: 0 auto;
-  }
-</style>

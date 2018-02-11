@@ -1,9 +1,6 @@
 <template>
   <div class="columns">
     <div class="column">
-      <div class="row tile-content has-text-centered">
-        <component :is="componentType"></component>
-      </div>
       <div class="row">
         <h2 class="subtitle has-text-centered">
           <router-link v-if="titleLink" :to="titleLink">
@@ -13,6 +10,9 @@
             {{ this.title }}
           </span>
         </h2>
+      </div>
+      <div class="row tile-content has-text-centered">
+        <component :is="componentType"></component>
       </div>
     </div>
   </div>
@@ -55,7 +55,7 @@ export default {
     height: 200px;
     min-width: 200px;
     overflow: hidden;
-    margin-bottom: 10px;
+    margin-top: 15px;
   }
 </style>
 
