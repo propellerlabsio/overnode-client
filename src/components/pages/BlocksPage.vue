@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-heading title="Blocks"/>
+    <page-title title="Blocks"/>
     <table class="table is-striped is-bordered is-hoverable is-fullwidth">
       <thead>
         <tr>
@@ -68,7 +68,7 @@
 import FormattedHash from '../formatters/FormattedHash';
 import FormattedUnixTime from '../formatters/FormattedUnixTime';
 import FormattedBlockInterval from '../formatters/FormattedBlockInterval';
-import PageHeading from '../misc/PageHeading';
+import PageTitle from '../misc/PageTitle';
 import Pager from '../misc/Pager';
 
 export default {
@@ -77,7 +77,7 @@ export default {
     FormattedHash,
     FormattedUnixTime,
     FormattedBlockInterval,
-    PageHeading,
+    PageTitle,
     Pager,
   },
   async created() {
