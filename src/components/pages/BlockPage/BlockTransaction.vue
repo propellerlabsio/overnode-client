@@ -109,11 +109,13 @@
         <tr v-for="(output, index) in transaction.outputs"
           v-bind:key="index">
           <td>
-            <formatted-address class="is-hidden-tablet" :address='output.addresses[0]'
-              :shorten="true"/>
-            <formatted-address class="is-hidden-mobile" :address='output.addresses[0]'
-              :shorten="false"/>
-            <span v-if="output.addresses.length > 1">+</span>
+            <span v-if="output.addresses">
+              <formatted-address class="is-hidden-tablet" :address='output.addresses[0]'
+                :shorten="true"/>
+              <formatted-address class="is-hidden-mobile" :address='output.addresses[0]'
+                :shorten="false"/>
+              <span v-if="output.addresses.length > 1">+</span>
+            </span>
           </td>
           <td>
             {{ output.value }}
