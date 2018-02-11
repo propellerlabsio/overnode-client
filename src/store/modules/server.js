@@ -9,6 +9,11 @@ const state = {
     cpus: [],
     totalmem: 0,
   },
+  node: {
+    fork: '',
+    status: '',
+    testnet: null,
+  },
   status: {
     jobsInErrorCount: 0,
     height: {
@@ -27,6 +32,9 @@ const state = {
 const mutations = {
   setHost(state, host) {
     Vue.set(state, 'host', host);
+  },
+  setNode(state, node) {
+    Vue.set(state, 'node', node);
   },
   setStatus(state, status) {
     Vue.set(state, 'status', status);
@@ -51,6 +59,21 @@ const actions = {
 
     const response = await dispatch('session/request', { query, variables }, { root: true });
     commit('setHost', response.host);
+  },
+  async getNode({ dispatch, commit }) {
+    const query = `query {
+      node {
+        fork
+        status
+        testnet
+      }
+    }`;
+
+    const variables = {
+    };
+
+    const response = await dispatch('session/request', { query, variables }, { root: true });
+    commit('setNode', response.node);
   },
 };
 

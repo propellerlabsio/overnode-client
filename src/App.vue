@@ -33,6 +33,8 @@ export default {
     // Debug,
   },
   created() {
+    this.$store.dispatch('server/getHost');
+    this.$store.dispatch('server/getNode');
     this.periodicallyUpdateHumanizedTimes();
   },
   methods: {

@@ -85,7 +85,6 @@ export default {
       // When the connection is open, load initial static data
       this.connection.onopen = () => {
         this.$store.dispatch('peers/get');
-        this.$store.dispatch('server/getHost');
       };
 
       // Log errors
