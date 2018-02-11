@@ -1,6 +1,6 @@
 <template>
   <span>
-    <span v-if="short">{{ shortHash }}</span>
+    <span v-if="shorten">{{ shortHash }}</span>
     <span v-else>{{ trimmedHash }}</span>
   </span>
 </template>
@@ -10,14 +10,18 @@ export default {
   name: 'formatted-hash',
   props: {
     hash: String,
-    short: {
+    shorten: {
       type: Boolean,
       default: true,
     },
   },
   computed: {
     trimmedHash() {
-      return this.hash ? this.hash.substr(17) : '';
+      let trimmed = this.hash;
+      if (trimmed && this.hash.substr(0, 17) === '00000000000000000') {
+        trimmed = this.hash.substr(17);
+      }
+      return trimmed;
     },
     shortHash() {
       let shortHash = this.trimmedHash;
