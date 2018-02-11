@@ -13,13 +13,13 @@
               Overnode
             </h1>
             <h2 class="subtitle is-hidden-mobile">
-              <br/>A Bitcoin live node monitoring and explorer app powered by GraphQL.
+              Bitcoin live node monitoring and explorer powered by GraphQL.
             </h2>
             <h1 class="title is-hidden-tablet is-4">
               Overnode
             </h1>
             <h2 class="subtitle is-hidden-tablet is-6">
-              <br/>Bitcoin live node monitoring and explorer.
+              Bitcoin live node monitoring and explorer.
             </h2>
           </div>
         </div>
@@ -47,6 +47,9 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+  h2 {
+    padding-top: 5px;
   }
 </style>
 
