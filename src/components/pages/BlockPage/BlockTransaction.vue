@@ -8,30 +8,16 @@
             <i class="fa fa-chevron-left"></i>
           </span>
         </a>
-        <h2 class="level-item subtitle">Transaction</h2>
+        <h2 class="level-item subtitle">Transaction&nbsp;
+            <formatted-hash class="is-hidden-tablet" :hash='transaction.txid' :shorten="true"/>
+            <formatted-hash class="is-hidden-mobile" :hash='transaction.txid' :shorten="false"/>
+        </h2>
       </div>
     </div>
 
     <!-- Transaction details -->
     <table class="table">
       <tbody>
-        <tr>
-          <th>
-            No.
-          </th>
-          <td>
-            {{ index }}
-          </td>
-        </tr>
-        <tr>
-          <th>
-            Id
-          </th>
-          <td>
-            <formatted-hash class="is-hidden-tablet" :hash='transaction.txid' :shorten="true"/>
-            <formatted-hash class="is-hidden-mobile" :hash='transaction.txid' :shorten="false"/>
-          </td>
-        </tr>
         <tr>
           <th>
             Size
@@ -134,7 +120,6 @@ export default {
   name: 'block-transaction',
   props: {
     transaction: Object,
-    index: Number,
   },
   data() {
     return {

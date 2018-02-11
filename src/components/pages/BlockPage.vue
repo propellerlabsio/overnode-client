@@ -1,13 +1,12 @@
 <template>
   <div>
     <!-- Title bar -->
-    <div class="level is-mobile">
+    <div v-if="!selectedTransaction" class="level is-mobile">
       <div class="level-left">
         <page-title class="level-item" :title="`Block ${$route.params.height}`"/>
       </div>
       <div class="level-right">
         <block-nav-buttons
-          class="level-item"
           :previous-disabled="previousDisabled"
           :next-disabled="nextDisabled"
           @previous="gotoPreviousBlock"
@@ -16,7 +15,7 @@
     </div>
 
     <!-- Tabs -->
-    <div class="tabs">
+    <div v-if="!selectedTransaction" class="tabs">
       <ul>
         <li :class="{ 'is-active': activeTab === 'details' }">
           <a @click="activeTab = 'details'">
@@ -31,18 +30,32 @@
       </ul>
     </div>
 
-    <!-- Details or transactions -->
-    <loading-message v-if="isLoading"/>
-    <span v-else>
-      <block-header v-if="activeTab === 'details'" :block="block"/>
-      <block-transactions v-if="activeTab === 'transactions'"/>
-    </span>
+    <!-- Loading message -->
+    <loading-message v-if="!selectedTransaction && isBlockLoading"/>
+
+    <!-- Block header details -->
+    <block-header v-if="!isBlockLoading && activeTab === 'details' &&
+      !selectedTransaction" :block="block"/>
+
+
+    <!-- Transactions table -->
+    <block-transactions
+      v-if="!isBlockLoading && !selectedTransaction && activeTab === 'transactions'"
+      :transactions="transactions"
+      @selected="selectTransaction"/>
+
+    <!-- Selected transaction -->
+    <block-transaction
+      v-if="selectedTransaction"
+      :transaction="selectedTransaction"
+      @back="selectedTransaction = null"/>
   </div>
 </template>
 
 <script>
 import BlockHeader from './BlockPage/BlockHeader';
 import BlockNavButtons from './BlockPage/BlockNavButtons';
+import BlockTransaction from './BlockPage/BlockTransaction';
 import BlockTransactions from './BlockPage/BlockTransactions';
 import LoadingMessage from '../misc/LoadingMessage';
 import PageTitle from '../misc/PageTitle';
@@ -52,6 +65,7 @@ export default {
   components: {
     BlockHeader,
     BlockNavButtons,
+    BlockTransaction,
     BlockTransactions,
     LoadingMessage,
     PageTitle,
@@ -59,16 +73,17 @@ export default {
   data() {
     return {
       activeTab: 'details',
+      selectedTransaction: null,
     };
   },
   computed: {
     previousDisabled() {
-      return this.block.height === 0 || this.isLoading;
+      return this.block.height === 0 || this.isBlockLoading;
     },
     nextDisabled() {
-      return this.block.height >= this.highestBlockHeight || this.isLoading;
+      return this.block.height >= this.highestBlockHeight || this.isBlockLoading;
     },
-    isLoading() {
+    isBlockLoading() {
       return !this.block || this.block.height !== Number(this.$route.params.height);
     },
     highestBlockHeight() {
@@ -77,11 +92,14 @@ export default {
     block() {
       return this.$store.state.blocks.selected;
     },
+    transactions() {
+      return this.$store.state.blocks.transactionsPage.transactions;
+    },
   },
   watch: {
     $route: 'setSelectedBlock',
   },
-  created() {
+  async created() {
     this.setSelectedBlock();
   },
   methods: {
@@ -89,7 +107,7 @@ export default {
       this.$store.dispatch('blocks/setSelected', Number(this.$route.params.height));
     },
     gotoBlock(height) {
-      if (!this.loading && height >= 0 && height <= this.highestBlockHeight) {
+      if (!this.isBlockLoading && height >= 0 && height <= this.highestBlockHeight) {
         this.$router.push({
           name: 'Block',
           params: {
@@ -103,6 +121,9 @@ export default {
     },
     gotoNextBlock() {
       this.gotoBlock(this.block.height + 1);
+    },
+    selectTransaction(indexOnPage) {
+      this.selectedTransaction = this.transactions[indexOnPage];
     },
   },
 };
