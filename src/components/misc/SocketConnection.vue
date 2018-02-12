@@ -46,6 +46,17 @@ export default {
       },
     };
   },
+  computed: {
+    connectedPeerIds() {
+      return this.$store.state.server.status.peerIds;
+    },
+  },
+  watch: {
+    connectedPeerIds() {
+      // Get peers if connected peers has changed
+      this.$store.dispatch('peers/get');
+    },
+  },
   created() {
     this.startConnection();
     window.setInterval(this.checkConnection, 500);
@@ -84,7 +95,6 @@ export default {
 
       // When the connection is open, load initial static data
       this.connection.onopen = () => {
-        this.$store.dispatch('peers/get');
       };
 
       // Log errors

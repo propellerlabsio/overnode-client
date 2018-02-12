@@ -1,13 +1,14 @@
 <template>
   <svg class="chart-block-times" width="100%" height="100%" :viewBox="`0 0 ${width} ${height}`"
-    ref="svg">
+    ref="peersGraph">
     <defs>
       <marker id="arrow" markerWidth="25" markerHeight="25"
         refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
         <path d="M0,0 L0,6 L9,3 z" fill="grey" />
       </marker>
     </defs>
-    <text x="10" y="35" font-size="35">Loading d3...</text>
+    <g class="links"></g>
+    <g class="nodes"></g>
   </svg>
 </template>
 
@@ -32,7 +33,6 @@ export default {
   name: 'peers-graph',
   data() {
     return {
-      svg: null,
       width: 100,
       height: 100,
       margins: {
@@ -50,7 +50,7 @@ export default {
   },
   mounted() {
     // Draw graph when we have a dom element for d3 to hook on to
-    this.initGraph();
+    this.drawGraph();
   },
   watch: {
     peers() {
@@ -97,6 +97,7 @@ export default {
     getLinks() {
       const links = this.peers
         .map(peer => ({
+          id: peer.id,
           source: peer.inbound ? peer.id : OUR_NODE_ID,
           target: peer.inbound ? OUR_NODE_ID : peer.id,
           distance: peer.pingtime,
@@ -105,28 +106,16 @@ export default {
       return links;
     },
 
-    initGraph() {
-      this.drawGraph();
-      // Get reference to this svg
-      const domElement = this.$refs.svg;
-      this.svg = d3.select(domElement);
-
-      this.drawGraph();
-    },
-
     drawGraph() {
       // Check we have reference to DOM element
-      if (!this.svg) {
+      const svg = d3.select(this.$refs.peersGraph);
+      if (!svg) {
+        // No dom element yet
         return;
       }
 
       const nodes = this.getNodes();
       const links = this.getLinks();
-
-      // Remove loading message and graph for old data
-      this.svg.selectAll('text').remove();
-      this.svg.selectAll('g').remove();
-
 
       const simulation = d3.forceSimulation()
         .force('link', d3.forceLink().id(d => d.id))
@@ -152,36 +141,56 @@ export default {
         d.fy = null;
       }
 
-      const link = this.svg.append('g')
-        .attr('class', 'links')
-        .selectAll('line')
-        .data(links)
+      const svgLinks = svg
+        .select('g.links')
+        .selectAll('.link')
+        .data(links, d => d.id);
+
+      const svgLinksEnter = svgLinks
         .enter()
         .append('polyline')
+        .merge(svgLinks)
+        .attr('class', 'link')
         .attr('points', '0 0 0 0 0 0')
         .style('stroke', 'lightgrey')
         .style('fill', 'none')
         .attr('stroke-width', '0.5')
         .attr('marker-mid', 'url(#arrow)');
 
-      const node = this.svg.append('g')
-        .attr('class', 'nodes')
-        .selectAll('circle')
-        .data(nodes)
+      svgLinks
+        .exit()
+        .remove();
+
+      const svgNodes = svg
+        .select('g.nodes')
+        .selectAll('.node')
+        .data(nodes, d => d.id);
+
+      const svgNodesEnter = svgNodes
         .enter()
         .append('circle')
+        .merge(svgNodes)
+        .attr('class', 'node')
         .attr('r', 5)
-        .attr('fill', d => d.color)
-        .call(d3.drag()
-          .on('start', dragstarted)
-          .on('drag', dragged)
-          .on('end', dragended));
+        .attr('fill', d => d.color);
 
-      node.append('title')
+      svgNodesEnter.call(d3.drag()
+        .on('start', dragstarted)
+        .on('drag', dragged)
+        .on('end', dragended));
+
+      svgNodes
+        .exit()
+        .transition()
+        .duration(100)
+        .attr('r', 10)
+        .remove();
+
+      svgNodesEnter.append('title')
         .text(d => `${d.clientSoftware}; ${d.clientAddress}`);
 
       function ticked() {
-        link
+        svgLinksEnter
           .attr('points', (d) => {
             // New points
             const points = {
@@ -198,7 +207,7 @@ export default {
             return `${points.x1},${points.y1} ${points.x2},${points.y2} ${points.x3},${points.y3} `;
           });
 
-        node
+        svgNodesEnter
           .attr('cx', d => d.x)
           .attr('cy', d => d.y);
       }

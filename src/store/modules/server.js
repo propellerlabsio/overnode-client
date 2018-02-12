@@ -26,6 +26,7 @@ const state = {
       txPerSecond: 0,
       bytes: 0,
     },
+    peerIds: [],
   },
 };
 
@@ -37,7 +38,12 @@ const mutations = {
     Vue.set(state, 'node', node);
   },
   setStatus(state, status) {
-    Vue.set(state, 'status', status);
+    Vue.set(state.status, 'jobsInErrorCount', status.jobsInErrorCount);
+    Vue.set(state.status, 'height', status.height);
+    Vue.set(state.status, 'mempool', status.mempool);
+    if (state.status.peerIds.toString() !== status.peerIds.toString()) {
+      Vue.set(state.status, 'peerIds', status.peerIds);
+    }
   },
 };
 
