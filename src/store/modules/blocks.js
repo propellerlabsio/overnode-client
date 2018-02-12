@@ -29,6 +29,9 @@ const mutations = {
   },
   setLatest(state, blocks) {
     Vue.set(state, 'latest', blocks);
+    if (state.blocksPage === 1) {
+      Vue.set(state.blocksPage, 'blocks', blocks);
+    }
   },
   setBlocksPage(state, { pageNumber, blocks }) {
     Vue.set(state.blocksPage, 'current', pageNumber);
