@@ -67,6 +67,8 @@ export default {
         pingtime: 0,
         minping: 0,
         subver: 'BUCash', // TODO get actual
+        fx: this.width / 2,
+        fy: this.height / 2,
       }]).map((node) => {
         let clientColor;
         let clientSoftware;
