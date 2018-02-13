@@ -2,19 +2,20 @@
   <section class="hero is-light">
     <div class="hero-body">
       <div class="container">
-        <div class="columns is-mobile">
+        <div class="columns is-mobile is-flex">
           <div class="column titles has-text-centered">
-            <h1 class="title is-hidden-mobile">
+            <h1 class="title is-hidden-touch">
               overnode.org
               <span class="tag is-danger">Beta</span>
             </h1>
-            <h2 class="subtitle is-hidden-mobile">
+            <h2 class="subtitle is-hidden-touch">
               Bitcoin live node monitoring and explorer powered by GraphQL.
             </h2>
-            <h1 class="title is-hidden-tablet is-4">
+            <h1 class="title is-hidden-desktop is-4">
               overnode.org
+              <span class="tag is-danger">Beta</span>
             </h1>
-            <h2 class="subtitle is-hidden-tablet is-6">
+            <h2 class="subtitle is-hidden-desktop is-6">
               Bitcoin live node monitoring and explorer.
             </h2>
           </div>
