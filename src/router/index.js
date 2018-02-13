@@ -4,6 +4,7 @@ import OverviewPage from '@/components/pages/OverviewPage';
 import BlockPage from '@/components/pages/BlockPage';
 import BlocksPage from '@/components/pages/BlocksPage';
 import DonationsPage from '@/components/pages/DonationsPage';
+import PeerPage from '@/components/pages/PeerPage';
 import PeersPage from '@/components/pages/PeersPage';
 import QueryPage from '@/components/pages/QueryPage';
 
@@ -30,6 +31,11 @@ export default new Router({
       path: '/donate',
       name: 'Donate',
       component: DonationsPage,
+    },
+    {
+      path: '/peer/:peerId',
+      name: 'Peer',
+      component: PeerPage,
     },
     {
       path: '/peers',
