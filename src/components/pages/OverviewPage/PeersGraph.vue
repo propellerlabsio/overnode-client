@@ -20,15 +20,6 @@ import * as d3 from 'd3';
 
 const OUR_NODE_ID = 'Overnode';
 
-const color = d3.scaleOrdinal(d3.schemeCategory20);
-
-const CLIENT_COLOR = {
-  Unknown: color(1),
-  ABC: color(2),
-  BUCash: color(3),
-  XT: color(4),
-};
-
 export default {
   name: 'peers-graph',
   data() {
@@ -44,6 +35,9 @@ export default {
     };
   },
   computed: {
+    colors() {
+      return this.$store.state.peers.colors;
+    },
     peers() {
       return this.$store.state.peers.current;
     },
@@ -69,31 +63,10 @@ export default {
         subver: 'BUCash', // TODO get actual
         fx: this.width / 2,
         fy: this.height / 2,
-      }]).map((node) => {
-        let clientColor;
-        let clientSoftware;
-        if (!node.subver) {
-          clientColor = CLIENT_COLOR.Unknown;
-          clientSoftware = 'Unknown client';
-        } else if (node.subver.includes('BUCash')) {
-          clientColor = CLIENT_COLOR.BUCash;
-          clientSoftware = 'Bitcoin Unlimited';
-        } else if (node.subver.includes('ABC')) {
-          clientColor = CLIENT_COLOR.ABC;
-          clientSoftware = 'Bitcoin ABC';
-        } else if (node.subver.includes('XT')) {
-          clientColor = CLIENT_COLOR.XT;
-          clientSoftware = 'Bitcoin XT';
-        } else {
-          clientColor = CLIENT_COLOR.Unknown;
-          clientSoftware = node.subver;
-        }
-        return Object.assign({
-          color: clientColor,
-          clientSoftware,
-          clientAddress: node.addr.split(':')[0],
-        }, node);
-      });
+        location,
+        color: this.colors.BUCash,
+        title: 'Bitcoin Unlimited; Overnode',
+      }]);
     },
 
     getLinks() {
@@ -189,7 +162,7 @@ export default {
         .remove();
 
       svgNodesEnter.append('title')
-        .text(d => `${d.clientSoftware}; ${d.clientAddress}`);
+        .text(d => d.title);
 
       function ticked() {
         svgLinksEnter

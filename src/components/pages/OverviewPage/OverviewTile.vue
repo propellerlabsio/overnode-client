@@ -23,6 +23,8 @@ import BlocksGraph from './BlocksGraph';
 import MempoolSpeedo from './MempoolSpeedo';
 import NodeInfo from './NodeInfo';
 import PeersGraph from './PeersGraph';
+import PeerLocations from './PeerLocations';
+import RecentBlocks from './RecentBlocks';
 
 export default {
   name: 'overview-tile',
@@ -44,7 +46,9 @@ export default {
     BlocksGraph,
     MempoolSpeedo,
     NodeInfo,
+    PeerLocations,
     PeersGraph,
+    RecentBlocks,
   },
 };
 </script>

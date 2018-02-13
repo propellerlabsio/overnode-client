@@ -3,21 +3,16 @@
     <div class="hero-body">
       <div class="container">
         <div class="columns is-mobile">
-          <div class="column is-narrow">
-            <figure class="image is-128x128">
-              <img src="../../../assets/hero.png">
-            </figure>
-          </div>
-          <div class="column titles">
+          <div class="column titles has-text-centered">
             <h1 class="title is-hidden-mobile">
-              Overnode
+              overnode.org
               <span class="tag is-danger">Beta</span>
             </h1>
             <h2 class="subtitle is-hidden-mobile">
               Bitcoin live node monitoring and explorer powered by GraphQL.
             </h2>
             <h1 class="title is-hidden-tablet is-4">
-              Overnode
+              overnode.org
             </h1>
             <h2 class="subtitle is-hidden-tablet is-6">
               Bitcoin live node monitoring and explorer.
@@ -43,6 +38,9 @@ export default {
   div.hero-body {
     padding-top: 24px;
     padding-bottom: 24px;
+    background-image: url('../../../assets/hero.png');
+    background-repeat: no-repeat;
+    background-size: contain;
   }
   div.titles {
     display: flex;

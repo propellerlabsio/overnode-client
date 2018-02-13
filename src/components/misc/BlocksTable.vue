@@ -1,5 +1,6 @@
 <template>
-  <table class="table is-striped is-bordered is-hoverable is-fullwidth">
+  <table class="table is-striped is-hoverable is-fullwidth"
+    :class="{ 'is-narrow': this.compact }">
     <thead>
       <tr>
         <th class="has-text-centered">
@@ -11,14 +12,14 @@
         <th class="has-text-centered">
           Mined
         </th>
-        <th class="is-hidden-mobile has-text-centered">
+        <th v-if="!compact" class="is-hidden-mobile has-text-centered">
           Interval
         </th>
         <th class="has-text-centered">
-          # Tx
+          Tx
         </th>
         <th class="has-text-centered">
-          Size (mb)
+          Mb
         </th>
       </tr>
     </thead>
@@ -33,14 +34,14 @@
         <td class="is-hidden-mobile has-text-centered">
           <formatted-hash :hash="block.hash"/>
         </td>
-        <td class="is-hidden-tablet has-text-centered">
+        <td class="has-text-centered" :class="{ 'is-hidden-tablet': !compact }">
           {{ block.humanizedTime }}
         </td>
-        <td class="is-hidden-mobile has-text-centered">
+        <td v-if="!compact" class="is-hidden-mobile has-text-centered">
           <formatted-unix-time :time="block.time"/>
           (<span class="is-size-7">{{ block.humanizedTime }}</span>)
         </td>
-        <td class="is-hidden-mobile has-text-centered">
+        <td v-if="!compact" class="is-hidden-mobile has-text-centered">
           <formatted-block-interval :interval="block.interval"/>
         </td>
         <td class="has-text-right">
@@ -69,6 +70,10 @@ export default {
   props: {
     blocks: Array,
     loading: {
+      type: Boolean,
+      default: false,
+    },
+    compact: {
       type: Boolean,
       default: false,
     },

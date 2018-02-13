@@ -1,1 +1,0 @@
-The `hero.png` image has been purchased from Shutterstock for use on Overnode.org.  IANAL but I do not believe the license covers hosting of this image on additional sites.
