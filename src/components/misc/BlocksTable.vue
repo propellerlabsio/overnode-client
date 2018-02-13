@@ -21,6 +21,9 @@
         <th class="has-text-centered">
           Mb
         </th>
+        <th>
+          <!-- Nav to block -->
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -49,6 +52,13 @@
         </td>
         <td class="has-text-right">
           {{ (block.size / 1000000).toFixed(3) }}
+        </td>
+        <td class="has-text-centered">
+          <a class="button is-white is-small">
+            <span class="icon">
+              <i class="fa fa-chevron-right"></i>
+            </span>
+          </a>
         </td>
       </tr>
     </tbody>
