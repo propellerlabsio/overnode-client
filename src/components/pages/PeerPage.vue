@@ -31,7 +31,7 @@
                 Sent
               </th>
               <td>
-                {{ peer.bytessent }}
+                <formatted-bytes :bytes="peer.bytessent" :tx-or-rx="peer.tx"/>
               </td>
             </tr>
             <tr>
@@ -39,7 +39,7 @@
                 Received
               </th>
               <td>
-                {{ peer.bytesrecv }}
+                <formatted-bytes :bytes="peer.bytesrecv" :tx-or-rx="peer.rx"/>
               </td>
             </tr>
             <tr>
@@ -101,6 +101,7 @@
 </template>
 
 <script>
+import FormattedBytes from '../formatters/FormattedBytes';
 import FormattedSubver from '../formatters/FormattedSubver';
 import LoadingMessage from '../misc/LoadingMessage';
 import PageTitle from '../misc/PageTitle';
@@ -108,6 +109,7 @@ import PageTitle from '../misc/PageTitle';
 export default {
   name: 'peer-page',
   components: {
+    FormattedBytes,
     FormattedSubver,
     LoadingMessage,
     PageTitle,
@@ -127,7 +129,7 @@ export default {
   },
   computed: {
     peer() {
-      return this.$store.state.peers.selected;
+      return this.$store.getters['peers/selected'];
     },
   },
   methods: {

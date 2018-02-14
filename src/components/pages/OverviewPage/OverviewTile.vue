@@ -23,7 +23,7 @@ import BlocksGraph from './BlocksGraph';
 import MempoolSpeedo from './MempoolSpeedo';
 import NodeInfo from './NodeInfo';
 import PeersGraph from './PeersGraph';
-import PeerLocations from './PeerLocations';
+import PeersMap from './PeersMap';
 import RecentBlocks from './RecentBlocks';
 
 export default {
@@ -46,7 +46,7 @@ export default {
     BlocksGraph,
     MempoolSpeedo,
     NodeInfo,
-    PeerLocations,
+    PeersMap,
     PeersGraph,
     RecentBlocks,
   },

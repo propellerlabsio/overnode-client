@@ -7,7 +7,7 @@
 import * as d3 from 'd3';
 
 export default {
-  name: 'peer-locations',
+  name: 'peers-map',
   data() {
     return {
       width: 374,
@@ -63,15 +63,15 @@ export default {
       };
     },
     nodes() {
-      return this.$store.state.peers.all;
+      return this.$store.getters['peers/peers'];
     },
   },
   mounted() {
-    this.draw();
+    this.drawNodes();
   },
   watch: {
     nodes() {
-      this.draw();
+      this.drawNodes();
     },
   },
   methods: {
@@ -89,7 +89,7 @@ export default {
       }
       return x;
     },
-    draw() {
+    drawNodes() {
       const svg = d3.select(this.$refs.map);
       if (svg.empty()) {
         // No DOM element yet
@@ -106,7 +106,10 @@ export default {
         .merge(svgNodes)
         .attr('class', 'node')
         .style('fill', d => d.color)
-        .style('stroke', 'darkslategrey')
+        // eslint-disable-next-line
+        .style('stroke', (d) => {
+          return d.tx || d.rx ? 'lightgreen' : 'darkslategrey';
+        })
         .attr('r', 5)
         .attr('cx', this.convertLongitude)
         .attr('cy', this.convertLatitude)

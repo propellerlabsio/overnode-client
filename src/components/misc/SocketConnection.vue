@@ -112,7 +112,7 @@ export default {
             this.$store.commit('server/setStatus', dataJson.liveData);
 
             // Update peers data values
-            this.$store.commit('peers/updateDataValues', dataJson.liveData.peers);
+            this.$store.commit('peers/updateTxRx', dataJson.liveData.peers);
 
             // Request latest blocks new ones are available (new block mined etc)
             const latestAvailableBlock = dataJson.liveData.height.overnode;

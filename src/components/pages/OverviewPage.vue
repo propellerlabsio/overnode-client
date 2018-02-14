@@ -23,7 +23,7 @@
       </div>
       <div class="column">
         <overview-tile title="Peer Locations"
-          class="is-unselectable" component-type="peer-locations" />
+          class="is-unselectable" component-type="peers-map" />
       </div>
       <div class="column">
         <overview-tile title="Recent Blocks"

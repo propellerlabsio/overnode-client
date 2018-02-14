@@ -34,13 +34,11 @@
               {{ peer.location.country }}
             </span>
           </td>
-          <td class="has-text-right is-hidden-touch"
-            :class="{ 'has-text-success': peer.changed.bytesrecv }">
-            {{ peer.bytesrecv }}
+          <td class="has-text-right is-hidden-touch">
+            <formatted-bytes :bytes="peer.bytesrecv" :tx-or-rx="peer.rx"/>
           </td>
-          <td class="has-text-right is-hidden-touch"
-            :class="{ 'has-text-success': peer.changed.bytessent }">
-            {{ peer.bytessent }}
+          <td class="has-text-right is-hidden-touch">
+            <formatted-bytes :bytes="peer.bytessent" :tx-or-rx="peer.tx"/>
           </td>
           <td class="has-text-right is-hidden-touch">
             {{ pingToMilliseconds(peer.pingtime) }}
@@ -62,12 +60,14 @@
 </template>
 
 <script>
+import FormattedBytes from '../formatters/FormattedBytes';
 import FormattedSubver from '../formatters/FormattedSubver';
 import PageTitle from '../misc/PageTitle';
 
 export default {
   name: 'peers-page',
   components: {
+    FormattedBytes,
     FormattedSubver,
     PageTitle,
   },
@@ -77,7 +77,7 @@ export default {
   },
   computed: {
     peers() {
-      return this.$store.state.peers.all;
+      return this.$store.getters['peers/peers'];
     },
   },
   methods: {
