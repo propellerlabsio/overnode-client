@@ -35,11 +35,11 @@
             </span>
           </td>
           <td class="has-text-right is-hidden-touch"
-            :class="{ 'has-text-info': peer.changed.bytesrecv }">
+            :class="{ 'has-text-success': peer.changed.bytesrecv }">
             {{ peer.bytesrecv }}
           </td>
           <td class="has-text-right is-hidden-touch"
-            :class="{ 'has-text-info': peer.changed.bytessent }">
+            :class="{ 'has-text-success': peer.changed.bytessent }">
             {{ peer.bytessent }}
           </td>
           <td class="has-text-right is-hidden-touch">

@@ -58,18 +58,31 @@ const mutations = {
   setSelected(state, peer) {
     Vue.set(state, 'selected', peer);
   },
-  updateValues(state, peers) {
+
+  /**
+   * Update bytessent bytesrecv values from an array of peers and flag
+   * time it was updated.  This is to allow visual elements to
+   * highlight tx/rx
+   * @param {*} state - Vuex state object
+   * @param {Object[]} peers - Peers that might have changed data values.
+   * @param {string} peers[].bytesrecv - The new bytesrecv value.
+   * @param {string} peers[].bytessent - The new bytessent value.
+   */
+  updateDataValues(state, peers) {
     state.all.forEach((existing) => {
       // Find new values in array provided
       const newValues = peers.find(peer => peer.id === existing.id);
       if (newValues) {
-        // Vue.set(state.all, index, merged);
-        Vue.set(existing.changed, 'bytesrecv', existing.bytesrecv !== newValues.bytesrecv);
-        Vue.set(existing.changed, 'bytessent', existing.bytessent !== newValues.bytessent);
-        Vue.set(existing.changed, 'pingtime', existing.pingtime !== newValues.pinttime);
-        Vue.set(existing, 'bytesrecv', newValues.bytesrecv);
-        Vue.set(existing, 'bytessent', newValues.bytessent);
-        Vue.set(existing, 'pingtime', newValues.pingtime);
+        const receivedChanged = newValues.bytesrecv && existing.bytesrecv !== newValues.bytesrecv;
+        const sentChanged = newValues.bytessent && existing.bytessent !== newValues.bytessent;
+        Vue.set(existing.changed, 'bytesrecv', receivedChanged);
+        Vue.set(existing.changed, 'bytessent', sentChanged);
+        if (receivedChanged) {
+          Vue.set(existing, 'bytesrecv', newValues.bytesrecv);
+        }
+        if (sentChanged) {
+          Vue.set(existing, 'bytessent', newValues.bytessent);
+        }
       }
     });
   },
@@ -137,25 +150,6 @@ const actions = {
     // Execute query and set data in store
     const response = await dispatch('session/request', { query, variables }, { root: true });
     commit('setSelected', response.peer);
-  },
-  /**
-   * Uses lighter wieght query just to update bytes sent/received and ping time.
-   */
-  async updateValues({ dispatch, commit }) {
-    const query = `query {
-      peers {
-        id
-        bytessent
-        bytesrecv
-        pingtime
-      }
-    }`;
-
-    const variables = {
-    };
-
-    const response = await dispatch('session/request', { query, variables }, { root: true });
-    commit('updateValues', response.peers);
   },
 };
 
