@@ -12,14 +12,14 @@
           <th class="has-text-centered is-hidden-touch">Sent</th>
           <th class="has-text-centered is-hidden-touch">Ping (ms)</th>
           <th class="has-text-centered">Direction</th>
-          <!-- <th> -->
+          <th>
             <!-- Nav to peer -->
-          <!-- </th> -->
+          </th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="peer in peers" v-bind:key="peer.id">
-          <!-- @click="$router.push(`/peer/${peer.id}`)"> -->
+        <tr v-for="peer in peers" v-bind:key="peer.id"
+          @click="$router.push(`/peer/${peer.id}`)">
           <td>{{ peer.id }}</td>
           <td class="is-hidden-mobile">{{ peer.addr }}</td>
           <td class="is-hidden-mobile"><formatted-subver :subver="peer.subver" /></td>
@@ -48,13 +48,13 @@
           <td class="has-text-centered">
             {{ peer.inbound ? 'in' : 'out' }}
           </td>
-          <!-- <td class="has-text-centered">
+          <td class="has-text-centered">
             <a class="button is-white is-small">
               <span class="icon">
                 <i class="fa fa-chevron-right"></i>
               </span>
             </a>
-          </td> -->
+          </td>
         </tr>
       </tbody>
     </table>

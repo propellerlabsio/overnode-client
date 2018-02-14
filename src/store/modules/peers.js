@@ -7,6 +7,7 @@ const color = d3.scaleOrdinal(d3.schemeCategory20);
 
 const state = {
   all: [],
+  selected: {},
   colors: {
     Unknown: color(1),
     ABC: color(2),
@@ -54,6 +55,9 @@ const mutations = {
         }, node);
       });
   },
+  setSelected(state, peer) {
+    Vue.set(state, 'selected', peer);
+  },
   updateValues(state, peers) {
     state.all.forEach((existing) => {
       // Find new values in array provided
@@ -99,6 +103,40 @@ const actions = {
 
     const response = await dispatch('session/request', { query, variables }, { root: true });
     commit('setAll', response.peers);
+  },
+  async setSelected({ commit, dispatch }, peerId) {
+    // Clear the previous selection in the store
+    commit('setSelected', null);
+
+    const query = `query($peerId: Int!) {
+      peer(id: $peerId) {
+        id
+        addr
+        bytessent
+        bytesrecv
+        pingtime
+        subver
+        inbound
+        location {
+          country
+          country_code
+          region
+          region_name
+          city
+          lat
+          lon
+          as
+        }        
+      }
+    }`;
+
+    const variables = {
+      peerId,
+    };
+
+    // Execute query and set data in store
+    const response = await dispatch('session/request', { query, variables }, { root: true });
+    commit('setSelected', response.peer);
   },
   /**
    * Uses lighter wieght query just to update bytes sent/received and ping time.
