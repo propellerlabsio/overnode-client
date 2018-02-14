@@ -1,5 +1,6 @@
 /* Can't use vuex mutations with these airbnb rules:                                */
 /* eslint-disable no-shadow, no-param-reassign                                      */
+import Vue from 'vue';
 import * as d3 from 'd3';
 
 const color = d3.scaleOrdinal(d3.schemeCategory20);
@@ -49,8 +50,24 @@ const mutations = {
           color: clientColor,
           software,
           title,
+          changed: {},
         }, node);
       });
+  },
+  updateValues(state, peers) {
+    state.all.forEach((existing) => {
+      // Find new values in array provided
+      const newValues = peers.find(peer => peer.id === existing.id);
+      if (newValues) {
+        // Vue.set(state.all, index, merged);
+        Vue.set(existing.changed, 'bytesrecv', existing.bytesrecv !== newValues.bytesrecv);
+        Vue.set(existing.changed, 'bytessent', existing.bytessent !== newValues.bytessent);
+        Vue.set(existing.changed, 'pingtime', existing.pingtime !== newValues.pinttime);
+        Vue.set(existing, 'bytesrecv', newValues.bytesrecv);
+        Vue.set(existing, 'bytessent', newValues.bytessent);
+        Vue.set(existing, 'pingtime', newValues.pingtime);
+      }
+    });
   },
 };
 
@@ -82,6 +99,25 @@ const actions = {
 
     const response = await dispatch('session/request', { query, variables }, { root: true });
     commit('setAll', response.peers);
+  },
+  /**
+   * Uses lighter wieght query just to update bytes sent/received and ping time.
+   */
+  async updateValues({ dispatch, commit }) {
+    const query = `query {
+      peers {
+        id
+        bytessent
+        bytesrecv
+        pingtime
+      }
+    }`;
+
+    const variables = {
+    };
+
+    const response = await dispatch('session/request', { query, variables }, { root: true });
+    commit('updateValues', response.peers);
   },
 };
 

@@ -10,7 +10,7 @@
           <th class="has-text-centered">Location</th>
           <th class="has-text-centered is-hidden-touch">Received</th>
           <th class="has-text-centered is-hidden-touch">Sent</th>
-          <th class="has-text-centered is-hidden-touch">Ping</th>
+          <th class="has-text-centered is-hidden-touch">Ping (ms)</th>
           <th class="has-text-centered">Direction</th>
           <!-- <th> -->
             <!-- Nav to peer -->
@@ -22,24 +22,28 @@
           <!-- @click="$router.push(`/peer/${peer.id}`)"> -->
           <td>{{ peer.id }}</td>
           <td class="is-hidden-mobile">{{ peer.addr }}</td>
-          <td class="is-hidden-mobile">{{ peer.subver }}</td>
+          <td class="is-hidden-mobile"><formatted-subver :subver="peer.subver" /></td>
           <td>
-            <span v-if="peer.location.city">
-              {{ peer.location.city }},
+            <span v-if="peer.location">
+              <span v-if="peer.location.city">
+                {{ peer.location.city }},
+              </span>
+              <span v-if="peer.location.region">
+                {{ peer.location.region }},
+              </span>
+              {{ peer.location.country }}
             </span>
-            <span v-if="peer.location.region">
-              {{ peer.location.region }},
-            </span>
-            {{ peer.location.country }}
           </td>
-          <td class="has-text-right is-hidden-touch">
+          <td class="has-text-right is-hidden-touch"
+            :class="{ 'has-text-info': peer.changed.bytesrecv }">
             {{ peer.bytesrecv }}
           </td>
-          <td class="has-text-right is-hidden-touch">
+          <td class="has-text-right is-hidden-touch"
+            :class="{ 'has-text-info': peer.changed.bytessent }">
             {{ peer.bytessent }}
           </td>
           <td class="has-text-right is-hidden-touch">
-            {{ pingToMilliseconds(peer.pingtime) }} ms
+            {{ pingToMilliseconds(peer.pingtime) }}
           </td>
           <td class="has-text-centered">
             {{ peer.inbound ? 'in' : 'out' }}
@@ -58,16 +62,20 @@
 </template>
 
 <script>
+import FormattedSubver from '../formatters/FormattedSubver';
 import PageTitle from '../misc/PageTitle';
 
 export default {
   name: 'peers-page',
   components: {
+    FormattedSubver,
     PageTitle,
   },
   created() {
     // Refresh full peers data
     this.$store.dispatch('peers/getAll');
+
+    this.updateValues();
   },
   computed: {
     peers() {
@@ -75,6 +83,17 @@ export default {
     },
   },
   methods: {
+    /**
+     * Update values (bytes sent/received, ping) once per second
+     */
+    async updateValues() {
+      await this.$store.dispatch('peers/updateValues');
+      window.setTimeout(this.updateValues, 1000);
+    },
+
+    /**
+     * Convert ping to milliseconds
+     */
     pingToMilliseconds(ping) {
       return Math.round(ping * 1000);
     },
