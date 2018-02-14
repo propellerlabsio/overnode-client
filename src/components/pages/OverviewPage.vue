@@ -19,10 +19,6 @@
       </div>
       <div class="column">
         <overview-tile title="Peers"
-          class="is-unselectable" component-type="peers-graph" />
-      </div>
-      <div class="column">
-        <overview-tile title="Peer Locations"
           class="is-unselectable" component-type="peers-map" />
       </div>
       <div class="column">
