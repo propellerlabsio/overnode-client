@@ -34,7 +34,10 @@ export default {
     this.$store.dispatch('server/getHost');
     this.$store.dispatch('server/getNode');
     this.periodicallyUpdateHumanizedTimes();
-    this.periodicallyUpdatePeerValues();
+
+    // Temporarily disabling until I can work out issue.  Think nginx
+    // flood control is kicking in
+    // this.periodicallyUpdatePeerValues();
   },
   methods: {
     periodicallyUpdateHumanizedTimes() {
