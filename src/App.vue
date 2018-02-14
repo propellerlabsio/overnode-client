@@ -34,12 +34,24 @@ export default {
     this.$store.dispatch('server/getHost');
     this.$store.dispatch('server/getNode');
     this.periodicallyUpdateHumanizedTimes();
+    this.periodicallyUpdatePeerValues();
   },
   methods: {
     periodicallyUpdateHumanizedTimes() {
       this.$store.commit('blocks/humanizeTimes');
       window.setTimeout(this.periodicallyUpdateHumanizedTimes, 30000);
     },
+    /**
+     * Update values (bytes sent/received, ping) once per second
+     * if we are on a page that uses those values
+     */
+    async periodicallyUpdatePeerValues() {
+      if (this.$route.name === 'Peers') {
+        await this.$store.dispatch('peers/updateValues');
+      }
+      window.setTimeout(this.periodicallyUpdatePeerValues, 1000);
+    },
+
   },
 };
 </script>

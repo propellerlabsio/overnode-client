@@ -74,8 +74,6 @@ export default {
   created() {
     // Refresh full peers data
     this.$store.dispatch('peers/getAll');
-
-    this.updateValues();
   },
   computed: {
     peers() {
@@ -83,14 +81,6 @@ export default {
     },
   },
   methods: {
-    /**
-     * Update values (bytes sent/received, ping) once per second
-     */
-    async updateValues() {
-      await this.$store.dispatch('peers/updateValues');
-      window.setTimeout(this.updateValues, 1000);
-    },
-
     /**
      * Convert ping to milliseconds
      */
