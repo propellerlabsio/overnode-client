@@ -41,8 +41,9 @@ const mutations = {
     Vue.set(state.status, 'jobsInErrorCount', status.jobsInErrorCount);
     Vue.set(state.status, 'height', status.height);
     Vue.set(state.status, 'mempool', status.mempool);
-    if (state.status.peerIds.toString() !== status.peerIds.toString()) {
-      Vue.set(state.status, 'peerIds', status.peerIds);
+    const newPeerIds = status.peers.map(peer => peer.id);
+    if (state.status.peerIds.toString() !== newPeerIds.toString()) {
+      Vue.set(state.status, 'peerIds', newPeerIds);
     }
   },
 };

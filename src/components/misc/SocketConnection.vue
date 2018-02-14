@@ -108,11 +108,11 @@ export default {
           if (e.data) {
             const dataJson = JSON.parse(e.data);
 
-            // Store server status/stats
-            this.$store.commit('server/setStatus', dataJson);
+            // Store server provided live data
+            this.$store.commit('server/setStatus', dataJson.liveData);
 
             // Request latest blocks new ones are available (new block mined etc)
-            const latestAvailableBlock = dataJson.height.overnode;
+            const latestAvailableBlock = dataJson.liveData.height.overnode;
             const latestBlockRetrieved = this.$store.state.blocks.height;
             if (latestBlockRetrieved < latestAvailableBlock &&
               this.latestBlockRequested < latestAvailableBlock) {
