@@ -100,7 +100,7 @@ export default {
         .selectAll('.node')
         .data(this.nodes, d => d.id);
 
-      svgNodes
+      const svgNodesEnter = svgNodes
         .enter()
         .append('circle')
         .merge(svgNodes)
@@ -110,6 +110,22 @@ export default {
         .attr('r', 5)
         .attr('cx', this.convertLongitude)
         .attr('cy', this.convertLatitude)
+        .on('click', (d) => {
+          this.$router.push({
+            name: 'Peer',
+            params: {
+              peerId: d.id,
+            },
+          });
+        })
+        .on('mouseover', function onMouseover() {
+          d3.select(this).style('cursor', 'pointer');
+        })
+        .on('mouseout', function onMouseout() {
+          d3.select(this).style('cursor', 'default');
+        });
+
+      svgNodesEnter
         .append('title')
         .text(d => d.title);
 

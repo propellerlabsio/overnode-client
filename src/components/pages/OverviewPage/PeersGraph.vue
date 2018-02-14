@@ -147,7 +147,25 @@ export default {
         .merge(svgNodes)
         .attr('class', 'node')
         .attr('r', 5)
-        .attr('fill', d => d.color);
+        .attr('fill', d => d.color)
+        .on('click', (d) => {
+          if (d.id !== OUR_NODE_ID) {
+            this.$router.push({
+              name: 'Peer',
+              params: {
+                peerId: d.id,
+              },
+            });
+          }
+        })
+        .on('mouseover', function onMouseover(d) {
+          if (d.id !== OUR_NODE_ID) {
+            d3.select(this).style('cursor', 'pointer');
+          }
+        })
+        .on('mouseout', function onMouseout() {
+          d3.select(this).style('cursor', 'default');
+        });
 
       svgNodesEnter.call(d3.drag()
         .on('start', dragstarted)
