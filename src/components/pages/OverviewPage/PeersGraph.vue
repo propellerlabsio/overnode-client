@@ -39,7 +39,7 @@ export default {
       return this.$store.state.peers.colors;
     },
     peers() {
-      return this.$store.state.peers.current;
+      return this.$store.state.peers.all;
     },
   },
   mounted() {

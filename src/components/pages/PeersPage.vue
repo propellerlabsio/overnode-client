@@ -67,11 +67,11 @@ export default {
   },
   created() {
     // Refresh full peers data
-    this.$store.dispatch('peers/get');
+    this.$store.dispatch('peers/getAll');
   },
   computed: {
     peers() {
-      return this.$store.state.peers.current;
+      return this.$store.state.peers.all;
     },
   },
   methods: {

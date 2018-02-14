@@ -54,7 +54,7 @@ export default {
   watch: {
     connectedPeerIds() {
       // Get peers if connected peers has changed
-      this.$store.dispatch('peers/get');
+      this.$store.dispatch('peers/getAll');
     },
   },
   created() {

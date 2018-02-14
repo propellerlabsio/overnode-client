@@ -63,7 +63,7 @@ export default {
       };
     },
     nodes() {
-      return this.$store.state.peers.current;
+      return this.$store.state.peers.all;
     },
   },
   mounted() {

@@ -5,7 +5,7 @@ import * as d3 from 'd3';
 const color = d3.scaleOrdinal(d3.schemeCategory20);
 
 const state = {
-  current: [],
+  all: [],
   colors: {
     Unknown: color(1),
     ABC: color(2),
@@ -38,8 +38,8 @@ function getClientInfo(state, nodeSubversion) {
 
 
 const mutations = {
-  setCurrent(state, peers) {
-    state.current = peers
+  setAll(state, peers) {
+    state.all = peers
       .map((node) => {
         const { clientColor, software } = getClientInfo(state, node.subver);
         const title = node.location && node.location.country ?
@@ -55,7 +55,7 @@ const mutations = {
 };
 
 const actions = {
-  async get({ dispatch, commit }) {
+  async getAll({ dispatch, commit }) {
     const query = `query {
       peers {
         id
@@ -81,7 +81,7 @@ const actions = {
     };
 
     const response = await dispatch('session/request', { query, variables }, { root: true });
-    commit('setCurrent', response.peers);
+    commit('setAll', response.peers);
   },
 };
 
