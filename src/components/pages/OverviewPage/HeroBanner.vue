@@ -1,21 +1,29 @@
 <template>
   <section class="hero is-light">
-    <div class="hero-body">
+    <div class="hero-body is-hidden-touch">
+      <div class="container">
+        <div class="columns is-flex has-background-image">
+          <div class="column titles has-text-centered">
+            <h1 class="title">
+              overnode.org
+              <span class="tag is-danger">Beta</span>
+            </h1>
+            <h2 class="subtitle">
+              Bitcoin live node monitoring and explorer powered by GraphQL.
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-body is-hidden-desktop">
       <div class="container">
         <div class="columns is-mobile is-flex">
           <div class="column titles has-text-centered">
-            <h1 class="title is-hidden-touch">
+            <h1 class="title">
               overnode.org
               <span class="tag is-danger">Beta</span>
             </h1>
-            <h2 class="subtitle is-hidden-touch">
-              Bitcoin live node monitoring and explorer powered by GraphQL.
-            </h2>
-            <h1 class="title is-hidden-desktop is-4">
-              overnode.org
-              <span class="tag is-danger">Beta</span>
-            </h1>
-            <h2 class="subtitle is-hidden-desktop is-6">
+            <h2 class="subtitle">
               Bitcoin live node monitoring and explorer.
             </h2>
           </div>
@@ -39,10 +47,14 @@ export default {
   div.hero-body {
     padding-top: 24px;
     padding-bottom: 24px;
+  }
+
+  div.has-background-image {
     background-image: url('../../../assets/hero.png');
     background-repeat: no-repeat;
     background-size: contain;
   }
+
   div.titles {
     display: flex;
     flex-direction: column;
