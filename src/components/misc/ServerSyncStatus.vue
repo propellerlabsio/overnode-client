@@ -67,8 +67,11 @@ export default {
       return this.$store.state.server.status.height;
     },
     syncing() {
+      // Check if blockchain is ahead or behind of our overnode database
       const diffOvernodeBitcoind = Math.abs(this.height.overnode - this.height.bitcoind);
-      const diffBitcoindPeers = Math.abs(this.height.bitcoind - this.height.peers);
+
+      // Check if peers are head of us
+      const diffBitcoindPeers = this.height.bitcoind - this.height.peers;
 
       // Ingore 1 block differences which will be quickly resolved
       return diffOvernodeBitcoind > 1 || diffBitcoindPeers > 1;
