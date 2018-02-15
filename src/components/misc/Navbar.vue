@@ -2,7 +2,7 @@
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link class="navbar-item" to="/">
-        <img src="../../assets/logo.png"
+        <img src="../../assets/logo-navbar.png"
           alt="Bulma: a modern CSS framework based on Flexbox"/>
       </router-link>
 

@@ -4,10 +4,10 @@
       <div class="container">
         <div class="columns is-flex has-background-image">
           <div class="column titles has-text-centered">
-            <h1 class="title">
-              overnode.org
+            <h2 class="subtitle is-2">
+              <img src="../../../assets/logo-hero.png" alt="overnode"/>
               <span class="tag is-danger">Beta</span>
-            </h1>
+            </h2>
             <h2 class="subtitle">
               Bitcoin live node monitoring and explorer powered by GraphQL.
             </h2>
@@ -19,12 +19,9 @@
       <div class="container">
         <div class="columns is-mobile is-flex">
           <div class="column titles has-text-centered">
-            <h1 class="title">
-              overnode.org
-              <span class="tag is-danger">Beta</span>
-            </h1>
             <h2 class="subtitle">
               Bitcoin live node monitoring and explorer.
+              <span class="tag is-danger">Beta</span>
             </h2>
           </div>
         </div>
@@ -50,9 +47,10 @@ export default {
   }
 
   div.has-background-image {
-    background-image: url('../../../assets/hero.png');
+    background-image: url('../../../assets/hero-at-logo-width.png');
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: 188px 125px;
+    height: 125px;
   }
 
   div.titles {
@@ -60,8 +58,9 @@ export default {
     flex-direction: column;
     justify-content: center;
   }
-  h2 {
-    padding-top: 5px;
+  h2.subtitle.is-2 {
+    padding-bottom: 0px;
+    margin-bottom: 0px;
   }
   span.tag {
     margin-top: -6px;

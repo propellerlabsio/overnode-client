@@ -5,6 +5,7 @@
       <server-error />
       <server-sync-status />
       <socket-connection />
+      <hero-banner v-if="$route.name === 'Home'" />
     </section>
     <section class="section page">
       <router-view/>
@@ -14,6 +15,7 @@
 </template>
 
 <script>
+import HeroBanner from './components/pages/OverviewPage/HeroBanner';
 import Navbar from './components/misc/Navbar';
 import SocketConnection from './components/misc/SocketConnection';
 import Toasts from './components/misc/Toasts';
@@ -23,6 +25,7 @@ import ServerSyncStatus from './components/misc/ServerSyncStatus';
 export default {
   name: 'App',
   components: {
+    HeroBanner,
     Navbar,
     SocketConnection,
     Toasts,
@@ -71,6 +74,10 @@ $navbar-item-active-background-color: #1f77b4;
   }
 
   section.section.app-header > article.message {
+    margin-bottom: 0;
+  }
+
+  section.section.app-header > section.hero {
     margin-bottom: 0;
   }
 

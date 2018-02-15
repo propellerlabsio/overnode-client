@@ -1,8 +1,5 @@
 <template>
   <div>
-    <!-- Hero -->
-    <hero-banner />
-
     <!-- Overview tiles -->
     <div class="columns is-multiline">
       <div class="column">
@@ -30,23 +27,13 @@
 </template>
 
 <script>
-
-import HeroBanner from './OverviewPage/HeroBanner';
 import OverviewTile from './OverviewPage/OverviewTile';
 
 export default {
   name: 'overview-page',
   components: {
-    HeroBanner,
     OverviewTile,
   },
 };
 </script>
-
-<style scoped>
-  .level {
-    margin-top: 48px;
-    margin-bottom: 12px;
-  }
-</style>
 

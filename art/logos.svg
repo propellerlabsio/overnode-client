@@ -26,9 +26,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.49497475"
-     inkscape:cx="-24.959218"
-     inkscape:cy="548.10883"
+     inkscape:zoom="0.24748738"
+     inkscape:cx="346.65071"
+     inkscape:cy="98.121873"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -575,5 +575,22 @@
              sodipodi:role="line">N</tspan></text>
       </g>
     </g>
-  </g>
+    <flowRoot
+       transform="matrix(0.34244782,0,0,0.34244782,-107.24406,27.843522)"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:96px;line-height:1.25;font-family:'OCR A Std';-inkscape-font-specification:'OCR A Std';letter-spacing:-13.29685402px;word-spacing:0px;fill:#595a5a;fill-opacity:1;stroke:#4e4e4e;stroke-opacity:1;"
+       id="flowRoot934"
+       xml:space="preserve"
+       inkscape:export-filename="C:\Users\LYHENG_\Git\overnode\client\src\assets\logo-hero.png"
+       inkscape:export-xdpi="27.92"
+       inkscape:export-ydpi="27.92"><flowRegion
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:96px;font-family:'OCR A Std';-inkscape-font-specification:'OCR A Std';letter-spacing:-13.29685402px;fill:#595a5a;fill-opacity:1;stroke:#4e4e4e;stroke-opacity:1;"
+         id="flowRegion930"><rect
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:96px;font-family:'OCR A Std';-inkscape-font-specification:'OCR A Std';letter-spacing:-13.29685402px;fill:#595a5a;fill-opacity:1;stroke:#4e4e4e;stroke-opacity:1;"
+           y="498.24542"
+           x="365.67523"
+           height="137.38075"
+           width="513.15747"
+           id="rect928" /></flowRegion><flowPara
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'OCR A Std';-inkscape-font-specification:'OCR A Std';letter-spacing:-13.29685402px;fill:#595a5a;stroke:#4e4e4e;stroke-opacity:1;fill-opacity:1;"
+         id="flowPara932">overnode</flowPara></flowRoot>  </g>
 </svg>
