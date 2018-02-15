@@ -1,5 +1,5 @@
 <template>
-  <blocks-table :blocks="blocks" :compact="true"/>
+  <blocks-table :blocks="blocks"/>
 </template>
 
 <script>

@@ -1,18 +1,17 @@
 <template>
-  <table class="table is-striped is-hoverable is-fullwidth"
-    :class="{ 'is-narrow': this.compact }">
+  <table class="table is-striped is-hoverable is-fullwidth is-narrow">
     <thead>
       <tr>
         <th class="has-text-centered">
           Height
         </th>
-        <th class="has-text-centered is-hidden-mobile">
+        <th class="has-text-centered is-hidden-touch">
           Hash
         </th>
         <th class="has-text-centered">
           Mined
         </th>
-        <th v-if="!compact" class="is-hidden-mobile has-text-centered">
+        <th class="is-hidden-touch is-hidden-desktop-only has-text-centered">
           Interval
         </th>
         <th class="has-text-centered">
@@ -34,17 +33,17 @@
             {{ block.height }}
           </router-link>
         </td>
-        <td class="is-hidden-mobile has-text-centered">
+        <td class="is-hidden-touch has-text-centered">
           <formatted-hash :hash="block.hash"/>
         </td>
-        <td class="has-text-centered" :class="{ 'is-hidden-tablet': !compact }">
+        <td class="has-text-centered is-hidden-widescreen">
           {{ block.humanizedTime }}
         </td>
-        <td v-if="!compact" class="is-hidden-mobile has-text-centered">
+        <td v-if="!compact" class="is-hidden-touch is-hidden-desktop-only has-text-centered">
           <formatted-unix-time :time="block.time"/>
           (<span class="is-size-7">{{ block.humanizedTime }}</span>)
         </td>
-        <td v-if="!compact" class="is-hidden-mobile has-text-centered">
+        <td class="is-hidden-touch is-hidden-desktop-only has-text-centered">
           <formatted-block-interval :interval="block.interval"/>
         </td>
         <td class="has-text-right">
