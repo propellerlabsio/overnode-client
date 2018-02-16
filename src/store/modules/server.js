@@ -8,6 +8,7 @@ const state = {
     platform: '',
     cpus: [],
     totalmem: 0,
+    donation_address: '',
   },
   node: {
     fork: '',
@@ -58,6 +59,7 @@ const actions = {
           model
         }
         totalmem
+        donation_address
       }  
     }`;
 

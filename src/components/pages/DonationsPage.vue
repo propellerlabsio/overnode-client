@@ -1,14 +1,17 @@
 <template>
   <div>
     <page-title title="Donations"/>
-    <p>Thank you for your interest in supporting this project. You may send donations to:</p>
+    <p>Thank you for your interest in supporting this project.
+      <span v-if="donationAddress"> You may send donations to:</span>
+      <span v-else>Please contact the site admin for donation address details.</span>
+    </p>
     <br/>
-    <p>
+    <p v-if="donationAddress">
       <span class="tag is-large is-success is-hidden-mobile">
-        {{ address }}
+        {{ donationAddress }}
       </span>
       <span class="tag is-success is-hidden-tablet">
-        {{ address }}
+        {{ donationAddress }}
       </span>
     </p>
     <br/>
@@ -23,13 +26,13 @@ import PageTitle from '../misc/PageTitle';
 
 export default {
   name: 'donations-page',
-  data() {
-    return {
-      address: 'bitcoincash:qqtfhm837rqfteckfm5khxj69y8yyscywc6g4e70em',
-    };
-  },
   components: {
     PageTitle,
+  },
+  computed: {
+    donationAddress() {
+      return this.$store.state.server.host.donation_address;
+    },
   },
 };
 </script>
