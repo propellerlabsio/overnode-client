@@ -9,10 +9,6 @@ export default {
   name: 'formatted-subver',
   props: {
     subver: String,
-    shorten: {
-      type: Boolean,
-      default: true,
-    },
   },
   computed: {
     /**
@@ -20,7 +16,8 @@ export default {
      * two forward strokes /<value>/
      */
     formattedSubver() {
-      return this.subver.split('/')[1];
+      const components = this.subver.split('/');
+      return `${components[1]} ${components[2]}`;
     },
   },
 };
