@@ -31,7 +31,8 @@
                 Sent
               </th>
               <td>
-                <formatted-bytes :bytes="peer.bytessent" :tx-or-rx="peer.tx"/>
+                <formatted-bytes :bytes="peer.bytessent"
+                  :show-megabytes="false" :tx-or-rx="peer.tx"/>
               </td>
             </tr>
             <tr>
@@ -39,7 +40,8 @@
                 Received
               </th>
               <td>
-                <formatted-bytes :bytes="peer.bytesrecv" :tx-or-rx="peer.rx"/>
+                <formatted-bytes :bytes="peer.bytesrecv"
+                  :show-megabytes="false" :tx-or-rx="peer.rx"/>
               </td>
             </tr>
             <tr>

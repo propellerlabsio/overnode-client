@@ -8,8 +8,8 @@
           <th class="has-text-centered is-hidden-mobile">Address</th>
           <th class="has-text-centered is-hidden-mobile">Version</th>
           <th class="has-text-centered">Location</th>
-          <th class="has-text-centered is-hidden-touch">Received</th>
-          <th class="has-text-centered is-hidden-touch">Sent</th>
+          <th class="has-text-centered is-hidden-touch">Received (mb)</th>
+          <th class="has-text-centered is-hidden-touch">Sent (mb)</th>
           <th class="has-text-centered is-hidden-touch">Ping (ms)</th>
           <th class="has-text-centered">Direction</th>
           <th>
