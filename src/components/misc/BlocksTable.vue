@@ -1,5 +1,6 @@
 <template>
-  <table class="table is-striped is-hoverable is-fullwidth is-narrow">
+  <table class="table is-striped is-hoverable is-fullwidth"
+    :class="{ 'is-narrow': isNarrow }">
     <thead>
       <tr>
         <th class="has-text-centered">
@@ -78,6 +79,7 @@ export default {
   },
   props: {
     blocks: Array,
+    isNarrow: Boolean,
     loading: {
       type: Boolean,
       default: false,
