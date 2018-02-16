@@ -28,6 +28,9 @@ const state = {
       bytes: 0,
     },
     peerIds: [],
+    overnode: {
+      clients: 0, // Number of connected clients
+    },
   },
 };
 
@@ -42,6 +45,7 @@ const mutations = {
     Vue.set(state.status, 'jobsInErrorCount', status.jobsInErrorCount);
     Vue.set(state.status, 'height', status.height);
     Vue.set(state.status, 'mempool', status.mempool);
+    Vue.set(state.status, 'overnode', status.overnode);
     const newPeerIds = status.peers.map(peer => peer.id);
     if (state.status.peerIds.toString() !== newPeerIds.toString()) {
       Vue.set(state.status, 'peerIds', newPeerIds);

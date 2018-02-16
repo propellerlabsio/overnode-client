@@ -23,6 +23,9 @@
           component-type="recent-blocks" />
       </div>
     </div>
+    <p class="connected-client-info has-text-centered is-size-7">
+      There are {{ connectedClientCount }} client(s) monitoring this server
+    </p>
   </div>
 </template>
 
@@ -34,6 +37,17 @@ export default {
   components: {
     OverviewTile,
   },
+  computed: {
+    connectedClientCount() {
+      return this.$store.state.server.status.overnode.clients;
+    },
+  },
 };
 </script>
+
+<style>
+  .connected-client-info {
+    margin-top: 50px;
+  }
+</style>
 
