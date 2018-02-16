@@ -41,7 +41,7 @@
             <formatted-bytes :bytes="peer.bytessent" :tx-or-rx="peer.tx"/>
           </td>
           <td class="has-text-right is-hidden-touch">
-            {{ pingToMilliseconds(peer.pingtime) }}
+            <formatted-ping :ping="peer.pingtime"/>
           </td>
           <td class="has-text-centered">
             {{ peer.inbound ? 'in' : 'out' }}
@@ -61,6 +61,7 @@
 
 <script>
 import FormattedBytes from '../formatters/FormattedBytes';
+import FormattedPing from '../formatters/FormattedPing';
 import FormattedSubver from '../formatters/FormattedSubver';
 import PageTitle from '../misc/PageTitle';
 
@@ -68,6 +69,7 @@ export default {
   name: 'peers-page',
   components: {
     FormattedBytes,
+    FormattedPing,
     FormattedSubver,
     PageTitle,
   },
@@ -78,14 +80,6 @@ export default {
   computed: {
     peers() {
       return this.$store.getters['peers/peers'];
-    },
-  },
-  methods: {
-    /**
-     * Convert ping to milliseconds
-     */
-    pingToMilliseconds(ping) {
-      return Math.round(ping * 1000);
     },
   },
 };

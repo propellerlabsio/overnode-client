@@ -23,7 +23,7 @@
                 Ping
               </th>
               <td>
-                {{ peer.pingtime }}
+                <formatted-ping :ping="peer.pingtime"/> ms
               </td>
             </tr>
             <tr>
@@ -32,7 +32,7 @@
               </th>
               <td>
                 <formatted-bytes :bytes="peer.bytessent"
-                  :show-megabytes="false" :tx-or-rx="peer.tx"/>
+                  :show-megabytes="false" :tx-or-rx="peer.tx"/> bytes
               </td>
             </tr>
             <tr>
@@ -41,7 +41,7 @@
               </th>
               <td>
                 <formatted-bytes :bytes="peer.bytesrecv"
-                  :show-megabytes="false" :tx-or-rx="peer.rx"/>
+                  :show-megabytes="false" :tx-or-rx="peer.rx"/> bytes
               </td>
             </tr>
             <tr>
@@ -104,6 +104,7 @@
 
 <script>
 import FormattedBytes from '../formatters/FormattedBytes';
+import FormattedPing from '../formatters/FormattedPing';
 import FormattedSubver from '../formatters/FormattedSubver';
 import LoadingMessage from '../misc/LoadingMessage';
 import PageTitle from '../misc/PageTitle';
@@ -112,6 +113,7 @@ export default {
   name: 'peer-page',
   components: {
     FormattedBytes,
+    FormattedPing,
     FormattedSubver,
     LoadingMessage,
     PageTitle,
