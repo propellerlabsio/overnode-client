@@ -24,7 +24,7 @@
       </div>
     </div>
     <p class="connected-client-info has-text-centered is-size-7">
-      There are {{ connectedClientCount }} client(s) monitoring this server
+      There are {{ connectedClientCount }} client(s) currently monitoring this node
     </p>
   </div>
 </template>
