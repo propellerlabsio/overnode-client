@@ -95,6 +95,8 @@ export default {
 
       // When the connection is open, load initial static data
       this.connection.onopen = () => {
+        this.$store.dispatch('server/getHost');
+        this.$store.dispatch('server/getNode');
       };
 
       // Log errors
