@@ -23,7 +23,7 @@
           component-type="recent-blocks" />
       </div>
     </div>
-    <p class="connected-client-info has-text-centered is-size-7">
+    <p v-if="connectedClientCount" class="connected-client-info has-text-centered is-size-7">
       There are {{ connectedClientCount }} client(s) currently monitoring this node
     </p>
   </div>
