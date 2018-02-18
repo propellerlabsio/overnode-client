@@ -58,8 +58,7 @@ const getters = {
     return Object.assign(state.blocksPage, { last });
   },
   transactionsPage(state) {
-    const txCount = state.selected.summary ?
-      state.selected.summary.tx_count : 0;
+    const txCount = state.selected.tx_count;
     const last = Math.floor(txCount / state.transactionsPage.limit) + 1;
     return Object.assign(state.transactionsPage, { last });
   },
@@ -210,10 +209,8 @@ const actions = {
         size
         height
         time
-        summary {
-          tx_count
-          interval
-        }
+        tx_count
+        interval
         transactions(fromIndex:0,  limit: $txLimit) {
           txid
           size

@@ -65,7 +65,7 @@
       </div>
       <div class="column">
         <div :class="dataClasses">
-          <formatted-block-interval :interval="block.summary.interval" :humanize="false" />
+          <formatted-block-interval :interval="block.interval" :humanize="false" />
         </div>
       </div>
     </div>
@@ -79,7 +79,7 @@
       </div>
       <div class="column">
         <div :class="dataClasses">
-          {{ block.summary.tx_count }}
+          {{ block.tx_count }}
         </div>
       </div>
     </div>
