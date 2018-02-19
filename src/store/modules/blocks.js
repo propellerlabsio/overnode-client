@@ -156,8 +156,8 @@ const actions = {
   },
 
   async getLatest({ dispatch, commit }) {
-    const query = `query {
-      blocks {
+    const query = `query($limit: Int!) {
+      blocks(limit: $limit) {
         hash
         size
         height
@@ -168,7 +168,7 @@ const actions = {
     }`;
 
     const variables = {
-      limit: state.limit,
+      limit: state.blocksPage.limit,
     };
 
     // Remember current block height
