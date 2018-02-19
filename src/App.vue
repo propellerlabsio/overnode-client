@@ -5,6 +5,7 @@
       <server-error />
       <server-sync-status />
       <socket-connection />
+      <upgrade-watcher />
       <hero-banner v-if="$route.name === 'Home'" />
     </section>
     <section class="section page">
@@ -21,6 +22,7 @@ import SocketConnection from './components/misc/SocketConnection';
 import Toasts from './components/misc/Toasts';
 import ServerError from './components/misc/ServerError';
 import ServerSyncStatus from './components/misc/ServerSyncStatus';
+import UpgradeWatcher from './components/misc/UpgradeWatcher';
 
 export default {
   name: 'App',
@@ -31,7 +33,7 @@ export default {
     Toasts,
     ServerError,
     ServerSyncStatus,
-    // Debug,
+    UpgradeWatcher,
   },
   created() {
     this.periodicallyUpdateHumanizedTimes();

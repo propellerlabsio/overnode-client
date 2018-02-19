@@ -9,6 +9,7 @@ const state = {
     cpus: [],
     totalmem: 0,
     donation_address: '',
+    overnode_version: '',
   },
   node: {
     fork: '',
@@ -64,6 +65,7 @@ const actions = {
         }
         totalmem
         donation_address
+        overnode_version
       }  
     }`;
 
