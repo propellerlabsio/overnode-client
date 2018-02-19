@@ -22,6 +22,14 @@ npm run build
 npm run build --report
 ```
 
+## Deploying
+
+Prior to deploying, on your development machine, run `npm version patch` to:
+
+1. Increment the package version in `package.json`.
+2. Commit and push the new version to Github.
+3. Publish the new release.
+
 # VueJs template information
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
