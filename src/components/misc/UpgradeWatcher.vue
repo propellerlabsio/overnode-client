@@ -29,6 +29,7 @@ export default {
       if (this.lastVersion && this.overnodeVersion !== this.lastVersion) {
         this.showModal = true;
       }
+      this.lastVersion = this.overnodeVersion;
     },
   },
 };
