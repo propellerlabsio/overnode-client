@@ -16,6 +16,7 @@ export default {
   data() {
     return {
       showModal: false,
+      lastVersion: null,
     };
   },
   computed: {
@@ -25,7 +26,7 @@ export default {
   },
   watch: {
     overnodeVersion() {
-      if (this.overnodeVersion) {
+      if (this.lastVersion && this.overnodeVersion !== this.lastVersion) {
         this.showModal = true;
       }
     },
