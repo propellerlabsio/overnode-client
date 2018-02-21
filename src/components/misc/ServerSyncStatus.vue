@@ -1,15 +1,14 @@
 <template>
-  <article class="message is-danger"
-    v-if="syncing">
+  <article class="message is-warning" v-if="syncing">
     <div class="message-header">
       <p>
         <span class="icon">
           <i class="fa fa-wrench"></i>
         </span>
-        Server is currently syncing with the blockchain.
-        Not all features will work reliably until this is complete.
+        The server is syncing with the blockchain.
+        Not all features will work until this has completed.
       </p>
-      <button class="button is-small is-danger is-pulled-right" aria-label="details"
+      <button class="button is-small is-warning is-pulled-right" aria-label="details"
         @click="showDetails = !showDetails">
         <span class="icon">
           <i class="fa" :class="{ 'fa-chevron-down': !showDetails,

@@ -3,15 +3,22 @@
     <div class="message-header">
       <p>
         <span class="icon">
-          <i class="fa fa-info-circle"></i>
+          <i class="fa fa-exclamation-circle"></i>
         </span>
         The server is having a problem. Results may be unreliable.
-        <a v-if="!showDetails" @click="onClickDetails">Details</a>
       </p>
+      <button class="button is-small is-danger is-pulled-right" aria-label="details"
+        @click="showDetails = !showDetails">
+        <span class="icon">
+          <i class="fa" :class="{ 'fa-chevron-down': !showDetails,
+            'fa-chevron-up': showDetails }"></i>
+        </span>
+      </button>
     </div>
     <div v-if="showDetails" class="message-body">
       <p v-for="error in errorDetails" v-bind:key="error.function_name">
-        {{ error }}
+        <b>Error in job '{{ error.function_name }}'</b><br/>
+        Message: {{ error.error_message }}
       </p>
     </div>
   </article>
@@ -42,19 +49,11 @@ export default {
           }
         }`;
         const response = await this.$store.dispatch('session/request', { query });
-        this.errorDetails = response
-          .jobs
-          .map(job =>
-            `${job.function_name}: ${job.error_message}`);
+        this.errorDetails = response.jobs;
       } else {
         this.showDetails = false;
         this.errorDetails = [];
       }
-    },
-  },
-  methods: {
-    onClickDetails() {
-      this.showDetails = true;
     },
   },
 };
