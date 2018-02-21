@@ -35,6 +35,20 @@ export default {
     ServerSyncStatus,
     UpgradeWatcher,
   },
+  computed: {
+    prioritySyncing() {
+      return this.$store.state.server.status.prioritySyncing;
+    },
+  },
+  watch: {
+    prioritySyncing() {
+      if (this.prioritySyncing) {
+        this.$router.push({ name: 'PrioritySyncing' });
+      } else {
+        this.$router.push({ name: 'Home' });
+      }
+    },
+  },
   created() {
     this.periodicallyUpdateHumanizedTimes();
   },
@@ -53,7 +67,7 @@ export default {
 @import '~bulma/sass/utilities/functions';
 
 
-// Our customizations
+// Our customizations of standard bulma classes
 $navbar-background-color:#1f77b4;
 $navbar-item-color: $white;
 $navbar-item-hover-color: #98df8a;
@@ -61,6 +75,17 @@ $navbar-item-hover-background-color: #1f77b4;
 $navbar-dropdown-background-color: #1f77b4;
 $navbar-item-active-color: #1f77b4;
 $navbar-item-active-background-color: #1f77b4;
+
+// Setup our Custom Colors
+$overnode-dark: #1f77b4;
+$overnode-dark-invert: findColorInvert($overnode-dark);
+
+// Add new color variables to the color map.
+@import "~bulma/sass/utilities/derived-variables.sass";
+$addColors: (
+  "overnode-dark":($overnode-dark, $overnode-dark-invert),
+);
+$colors: map-merge($colors, $addColors);
 
 @import '~bulma/bulma.sass';
 </style>

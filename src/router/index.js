@@ -7,6 +7,7 @@ import DonationsPage from '@/components/pages/DonationsPage';
 import PeerPage from '@/components/pages/PeerPage';
 import PeersPage from '@/components/pages/PeersPage';
 import QueryPage from '@/components/pages/QueryPage';
+import PrioritySyncingPage from '@/components/pages/PrioritySyncingPage';
 
 Vue.use(Router);
 
@@ -46,6 +47,11 @@ export default new Router({
       path: '/query',
       name: 'Query',
       component: QueryPage,
+    },
+    {
+      path: '/syncing',
+      name: 'PrioritySyncing',
+      component: PrioritySyncingPage,
     },
   ],
 });

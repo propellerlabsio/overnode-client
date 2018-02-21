@@ -3,7 +3,7 @@
     <div class="navbar-brand">
       <router-link class="navbar-item" to="/">
         <img src="../../assets/logo-navbar.png"
-          alt="Bulma: a modern CSS framework based on Flexbox"/>
+          alt="Overnode logo"/>
       </router-link>
 
       <button class="button navbar-burger" :class="{ 'is-active': menuActive }"

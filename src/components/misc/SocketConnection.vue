@@ -117,13 +117,16 @@ export default {
             this.$store.commit('peers/updateTxRx', dataJson.liveData.peers);
 
             // Request latest blocks new ones are available (new block mined etc)
-            const latestAvailableBlock = dataJson.liveData.height.overnode;
-            const latestBlockRetrieved = this.$store.state.blocks.height;
-            if (latestBlockRetrieved < latestAvailableBlock &&
-              this.latestBlockRequested < latestAvailableBlock) {
-              // Request latest blocks
-              this.latestBlockRequested = latestAvailableBlock;
-              await this.$store.dispatch('blocks/getLatest');
+            // if we aren't currently prioritySyncing
+            if (!this.$store.state.server.status.prioritySyncing) {
+              const latestAvailableBlock = dataJson.liveData.height.overnode;
+              const latestBlockRetrieved = this.$store.state.blocks.height;
+              if (latestBlockRetrieved < latestAvailableBlock &&
+                this.latestBlockRequested < latestAvailableBlock) {
+                // Request latest blocks
+                this.latestBlockRequested = latestAvailableBlock;
+                await this.$store.dispatch('blocks/getLatest');
+              }
             }
           }
         } catch (err) {
