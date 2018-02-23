@@ -70,7 +70,7 @@ export default {
       const diffOvernodeBitcoind = Math.abs(this.height.overnode - this.height.bitcoind);
 
       // Check if peers are head of us
-      const diffBitcoindPeers = this.height.bitcoind - this.height.peers;
+      const diffBitcoindPeers = this.height.peers - this.height.bitcoind;
 
       // Ingore 1 block differences which will be quickly resolved
       return diffOvernodeBitcoind > 1 || diffBitcoindPeers > 1;
