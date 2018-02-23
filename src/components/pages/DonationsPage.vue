@@ -10,13 +10,8 @@
       <p>
         <qrcode :address="donationAddress"/>
       </p>
-      <p>
-        <span class="tag is-large is-success is-hidden-mobile">
-          {{ donationAddress }}
-        </span>
-        <span class="tag is-success is-hidden-tablet">
-          {{ donationAddress }}
-        </span>
+      <p class="break-word-wrap">
+        <a :href="donationAddress">{{ donationAddress }}</a>
       </p>
     </div>
     <br/>
@@ -43,4 +38,11 @@ export default {
   },
 };
 </script>
+
+<style>
+  .break-word-wrap {
+    word-wrap: break-word;
+    max-width: 100%;
+  }
+</style>
 
