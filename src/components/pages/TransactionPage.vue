@@ -3,20 +3,19 @@
     <!-- Header -->
     <div class="level is-mobile">
       <div class="level-left">
-        <a class="level-item button" @click="$emit('back')">
-          <span class="icon">
-            <i class="fa fa-chevron-left"></i>
-          </span>
-        </a>
         <h2 class="level-item subtitle">Transaction&nbsp;
-            <formatted-hash class="is-hidden-tablet" :hash='transaction.txid' :shorten="true"/>
-            <formatted-hash class="is-hidden-mobile" :hash='transaction.txid' :shorten="false"/>
+            <formatted-hash v-if="transaction" class="is-hidden-tablet"
+              :hash='transaction.transaction_id'
+              :shorten="true"/>
+            <formatted-hash v-if="transaction"
+              class="is-hidden-mobile" :hash='transaction.transaction_id'
+              :shorten="false"/>
         </h2>
       </div>
     </div>
 
     <!-- Transaction details -->
-    <table class="table">
+    <table v-if="transaction" class="table">
       <tbody>
         <tr>
           <th>
@@ -29,24 +28,26 @@
       </tbody>
     </table>
 
+    <loading-message v-if="!transaction"/>
+
     <!-- Tabs -->
-    <div class="tabs">
+    <div v-if="transaction" class="tabs">
       <ul>
         <li :class="{ 'is-active': activeTab === 'inputs' }">
           <a @click="activeTab = 'inputs'">
-            Inputs ({{ transaction.inputs.length }})
+            Inputs ({{ transaction.input_count }})
           </a>
         </li>
         <li :class="{ 'is-active': activeTab === 'outputs' }">
           <a @click="activeTab = 'outputs'">
-            Outputs ({{ transaction.outputs.length }})
+            Outputs ({{ transaction.output_count }})
           </a>
         </li>
       </ul>
     </div>
 
     <!-- Transaction inputs -->
-    <table v-if="activeTab === 'inputs'" class="table">
+    <table v-if="transaction && activeTab === 'inputs'" class="table">
       <thead>
         <tr>
           <th>
@@ -64,11 +65,13 @@
         <tr v-for="(input, index) in transaction.inputs"
           v-bind:key="index">
           <td>
-            <formatted-hash class="is-hidden-tablet" :hash='input.txid' :shorten="true"/>
-            <formatted-hash class="is-hidden-mobile" :hash='input.txid' :shorten="false"/>
+            <formatted-hash class="is-hidden-tablet" :hash='input.output_transaction_id'
+              :shorten="true"/>
+            <formatted-hash class="is-hidden-mobile" :hash='input.output_transaction_id'
+              :shorten="false"/>
           </td>
           <td>
-            {{ input.output_number }}
+            {{ input.output_index }}
           </td>
           <td>
             <span v-if="input.coinbase" class="icon has-text-success">
@@ -80,7 +83,7 @@
     </table>
 
     <!-- Transaction outputs -->
-    <table v-if="activeTab === 'outputs'" class="table">
+    <table v-if="transaction && activeTab === 'outputs'" class="table">
       <thead>
         <tr>
           <th>
@@ -95,10 +98,10 @@
         <tr v-for="(output, index) in transaction.outputs"
           v-bind:key="index">
           <td>
-            <span v-if="output.addresses">
-              <formatted-address class="is-hidden-tablet" :address='output.addresses[0]'
-                :shorten="true"/>
-              <formatted-address class="is-hidden-mobile" :address='output.addresses[0]'
+            <span v-for="address in output.addresses" v-bind:key="address">
+              <formatted-address class="is-hidden-tablet" :address='address'
+                :shorten="false"/>
+              <formatted-address class="is-hidden-mobile" :address='address'
                 :shorten="false"/>
               <span v-if="output.addresses.length > 1">+</span>
             </span>
@@ -113,28 +116,45 @@
 </template>
 
 <script>
-import FormattedAddress from '../../formatters/FormattedAddress';
-import FormattedHash from '../../formatters/FormattedHash';
+import FormattedAddress from '../formatters/FormattedAddress';
+import FormattedHash from '../formatters/FormattedHash';
+import LoadingMessage from '../misc/LoadingMessage';
 
 export default {
-  name: 'block-transaction',
-  props: {
-    transaction: Object,
-  },
+  name: 'transaction-page',
   data() {
     return {
       activeTab: 'inputs',
     };
   },
+  computed: {
+    transaction() {
+      return this.$store.state.transaction.selected;
+    },
+  },
+  watch: {
+    $route() {
+      this.setSelectedTransaction();
+    },
+  },
+  async created() {
+    this.setSelectedTransaction();
+  },
   components: {
     FormattedAddress,
     FormattedHash,
+    LoadingMessage,
+  },
+  methods: {
+    setSelectedTransaction() {
+      this.$store.dispatch('transaction/setSelected', this.$route.params.transactionId);
+    },
   },
 };
 </script>
 
 <style scoped>
-  th {
+  /* th {
     width: 100px;
-  }
+  } */
 </style>

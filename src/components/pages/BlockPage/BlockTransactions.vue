@@ -24,20 +24,22 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(transaction, index) in transactions" :key="transaction.txid"
-          @click="$emit('selected', index)">
+        <tr v-for="transaction in transactions" :key="transaction.txid"
+          @click="$emit('selected', transaction.transaction_id)">
           <td>
-            {{ getTransactionIndex(index) }}
+            {{ transaction.transaction_index }}
           </td>
           <td>
-            <formatted-hash class="is-hidden-tablet" :hash='transaction.txid' :shorten="true"/>
-            <formatted-hash class="is-hidden-mobile" :hash='transaction.txid' :shorten="false"/>
+            <formatted-hash class="is-hidden-tablet"
+              :hash='transaction.transaction_id' :shorten="true"/>
+            <formatted-hash class="is-hidden-mobile"
+              :hash='transaction.transaction_id' :shorten="false"/>
           </td>
           <td class="is-hidden-mobile has-text-right">
-            {{ transaction.inputs.length }}
+            {{ transaction.input_count }}
           </td>
           <td class="is-hidden-mobile has-text-right">
-            {{ transaction.outputs.length }}
+            {{ transaction.output_count }}
           </td>
           <td class="has-text-right">
             {{ transaction.size }}
@@ -87,9 +89,6 @@ export default {
     },
   },
   methods: {
-    getTransactionIndex(indexOnPage) {
-      return indexOnPage + (this.page.limit * (this.page.current - 1));
-    },
     async gotoTransactionsPage(pageNumber) {
       this.isPageLoading = true;
       await this.$store.dispatch('blocks/gotoTransactionsPage', pageNumber);

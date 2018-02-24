@@ -1,6 +1,6 @@
 <template>
   <span>
-    <span v-if="shorten">{{ shortAddress }}</span>
+    <span v-if="removePrefix">{{ shortAddress }}</span>
     <span v-else>{{ address }}</span>
   </span>
 </template>
@@ -10,9 +10,9 @@ export default {
   name: 'formatted-address',
   props: {
     address: String,
-    shorten: {
+    removePrefix: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   computed: {

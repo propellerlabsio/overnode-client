@@ -8,6 +8,7 @@ import PeerPage from '@/components/pages/PeerPage';
 import PeersPage from '@/components/pages/PeersPage';
 import QueryPage from '@/components/pages/QueryPage';
 import PrioritySyncingPage from '@/components/pages/PrioritySyncingPage';
+import TransactionPage from '@/components/pages/TransactionPage';
 
 Vue.use(Router);
 
@@ -52,6 +53,11 @@ export default new Router({
       path: '/syncing',
       name: 'PrioritySyncing',
       component: PrioritySyncingPage,
+    },
+    {
+      path: '/transaction/:transactionId',
+      name: 'Transaction',
+      component: TransactionPage,
     },
   ],
 });

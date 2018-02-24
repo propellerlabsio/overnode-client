@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Title bar -->
-    <div v-if="!selectedTransaction" class="level is-mobile">
+    <div class="level is-mobile">
       <div class="level-left">
         <page-title class="level-item" :title="`Block ${$route.params.height}`"/>
       </div>
@@ -15,7 +15,7 @@
     </div>
 
     <!-- Tabs -->
-    <div v-if="!selectedTransaction" class="tabs">
+    <div class="tabs">
       <ul>
         <li :class="{ 'is-active': activeTab === 'details' }">
           <a @click="activeTab = 'details'">
@@ -31,31 +31,23 @@
     </div>
 
     <!-- Loading message -->
-    <loading-message v-if="!selectedTransaction && isBlockLoading"/>
+    <loading-message v-if="isBlockLoading"/>
 
     <!-- Block header details -->
-    <block-header v-if="!isBlockLoading && activeTab === 'details' &&
-      !selectedTransaction" :block="block"/>
+    <block-header v-if="!isBlockLoading && activeTab === 'details'" :block="block"/>
 
 
     <!-- Transactions table -->
     <block-transactions
-      v-if="!isBlockLoading && !selectedTransaction && activeTab === 'transactions'"
+      v-if="!isBlockLoading && activeTab === 'transactions'"
       :transactions="transactions"
       @selected="selectTransaction"/>
-
-    <!-- Selected transaction -->
-    <block-transaction
-      v-if="selectedTransaction"
-      :transaction="selectedTransaction"
-      @back="selectedTransaction = null"/>
   </div>
 </template>
 
 <script>
 import BlockHeader from './BlockPage/BlockHeader';
 import BlockNavButtons from './BlockPage/BlockNavButtons';
-import BlockTransaction from './BlockPage/BlockTransaction';
 import BlockTransactions from './BlockPage/BlockTransactions';
 import LoadingMessage from '../misc/LoadingMessage';
 import PageTitle from '../misc/PageTitle';
@@ -65,7 +57,6 @@ export default {
   components: {
     BlockHeader,
     BlockNavButtons,
-    BlockTransaction,
     BlockTransactions,
     LoadingMessage,
     PageTitle,
@@ -73,7 +64,6 @@ export default {
   data() {
     return {
       activeTab: 'details',
-      selectedTransaction: null,
     };
   },
   computed: {
@@ -122,8 +112,13 @@ export default {
     gotoNextBlock() {
       this.gotoBlock(this.block.height + 1);
     },
-    selectTransaction(indexOnPage) {
-      this.selectedTransaction = this.transactions[indexOnPage];
+    selectTransaction(transactionId) {
+      this.$router.push({
+        name: 'Transaction',
+        params: {
+          transactionId,
+        },
+      });
     },
   },
 };

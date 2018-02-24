@@ -120,19 +120,12 @@ const actions = {
       const query = `query($height: Int!, $fromIndex: Int!, $txLimit: Int!) {
         block(height: $height) {
           transactions(fromIndex: $fromIndex,  limit: $txLimit) {
-            txid
+            transaction_id
+            transaction_index
             size
             time
-            inputs {
-              coinbase
-              txid
-              output_number
-            }
-            outputs {
-              number
-              value
-              addresses
-            }
+            input_count
+            output_count
           }
         }
       }`;
@@ -205,26 +198,18 @@ const actions = {
     const query = `query($height: Int!, $txLimit: Int!) {
       block(height: $height) {
         hash
-        confirmations
         size
         height
         time
         tx_count
         interval
         transactions(fromIndex:0,  limit: $txLimit) {
-          txid
+          transaction_id
+          transaction_index
           size
           time
-          inputs {
-            coinbase
-            txid
-            output_number
-          }
-          outputs {
-            number
-            value
-            addresses
-          }
+          input_count
+          output_count
         }
       }
     }`;
