@@ -1,5 +1,5 @@
 <template>
-  <article class="message is-danger" v-if="jobsInErrorCount">
+  <article class="message is-danger" v-if="syncInErrorCount">
     <div class="message-header">
       <p>
         <span class="icon">
@@ -17,7 +17,7 @@
     </div>
     <div v-if="showDetails" class="message-body">
       <p v-for="error in errorDetails" v-bind:key="error.function_name">
-        <b>Error in job '{{ error.function_name }}'</b><br/>
+        <b>Error in sync job '{{ error.name }}'</b><br/>
         Message: {{ error.error_message }}
       </p>
     </div>
@@ -35,21 +35,21 @@ export default {
     };
   },
   computed: {
-    jobsInErrorCount() {
-      return this.$store.state.server.status.jobsInErrorCount;
+    syncInErrorCount() {
+      return this.$store.state.server.status.syncInErrorCount;
     },
   },
   watch: {
-    async jobsInErrorCount() {
-      if (this.jobsInErrorCount) {
+    async syncInErrorCount() {
+      if (this.syncInErrorCount) {
         const query = `{
-          jobs(onlyJobsInError: true) {
-            function_name
+          sync(onlyJobsInError: true) {
+            name
             error_message
           }
         }`;
         const response = await this.$store.dispatch('session/request', { query });
-        this.errorDetails = response.jobs;
+        this.errorDetails = response.sync;
       } else {
         this.showDetails = false;
         this.errorDetails = [];

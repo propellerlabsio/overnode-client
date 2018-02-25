@@ -18,7 +18,7 @@ const state = {
   },
   status: {
     prioritySyncing: false,
-    jobsInErrorCount: 0,
+    syncInErrorCount: 0,
     height: {
       bitcoind: 0,
       overnode: 0,
@@ -44,7 +44,7 @@ const mutations = {
     Vue.set(state, 'node', node);
   },
   setStatus(state, status) {
-    Vue.set(state.status, 'jobsInErrorCount', status.jobsInErrorCount);
+    Vue.set(state.status, 'syncInErrorCount', status.syncInErrorCount);
     Vue.set(state.status, 'prioritySyncing', status.prioritySyncing);
     Vue.set(state.status, 'height', status.height);
     Vue.set(state.status, 'mempool', status.mempool);
