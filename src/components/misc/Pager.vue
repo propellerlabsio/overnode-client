@@ -1,5 +1,5 @@
 <template>
-  <nav class="pagination" role="navigation" aria-label="pagination">
+  <nav v-if="lastPage > 1" class="pagination" role="navigation" aria-label="pagination">
     <a class="pagination-previous"
       @click="gotoPreviousPage"
       :disabled="currentPage === 1 || disabled">
