@@ -44,7 +44,8 @@
               Overnode height:
             </div>
             <div class="column">
-              {{ height.overnode }}
+              {{ height.overnode.from }} -
+              {{ height.overnode.to }}
             </div>
           </div>
         </div>
@@ -66,14 +67,18 @@ export default {
       return this.$store.state.server.status.height;
     },
     syncing() {
+      // Check if we are still syncing backwards (ie don't have full history)
+      const backSyncing = this.height.overnode.from !== 0;
+
       // Check if blockchain is ahead or behind of our overnode database
-      const diffOvernodeBitcoind = Math.abs(this.height.overnode - this.height.bitcoind);
+      const diffOvernodeBitcoind = Math.abs(this.height.overnode.to - this.height.bitcoind);
 
       // Check if peers are head of us
       const diffBitcoindPeers = this.height.peers - this.height.bitcoind;
 
-      // Ingore 1 block differences which will be quickly resolved
-      return diffOvernodeBitcoind > 1 || diffBitcoindPeers > 1;
+      // Return true if anything is not full synced
+      // (Ingore 1 block differences which will be quickly resolved)
+      return backSyncing || diffOvernodeBitcoind > 1 || diffBitcoindPeers > 1;
     },
   },
 };
