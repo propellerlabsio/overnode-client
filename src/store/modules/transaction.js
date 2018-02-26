@@ -40,28 +40,40 @@ const mutations = {
 
 const getters = {
   inputsPage(state) {
-    const paging = state.inputsPaging;
-    const inputCount = state.selected.input_count;
-    const inputs = state.selected.inputs.slice(paging.fromIndex, paging.fromIndex + paging.limit);
-    return {
-      fromIndex: paging.fromIndex,
-      limit: paging.limit,
-      current: Math.floor(paging.fromIndex / paging.limit) + 1,
-      last: Math.floor(inputCount / paging.limit) + 1,
-      inputs,
-    };
+    let result = null;
+    if (state.selected) {
+      const paging = state.inputsPaging;
+      const inputCount = state.selected.input_count;
+      const inputs = state.selected.inputs.slice(paging.fromIndex, paging.fromIndex + paging.limit);
+
+      result = {
+        fromIndex: paging.fromIndex,
+        limit: paging.limit,
+        current: Math.floor(paging.fromIndex / paging.limit) + 1,
+        last: Math.floor(inputCount / paging.limit) + 1,
+        inputs,
+      };
+    }
+    return result;
   },
   outputsPage(state) {
-    const paging = state.outputsPaging;
-    const outputCount = state.selected.output_count;
-    const outputs = state.selected.outputs.slice(paging.fromIndex, paging.fromIndex + paging.limit);
-    return {
-      fromIndex: paging.fromIndex,
-      limit: paging.limit,
-      current: Math.floor(paging.fromIndex / paging.limit) + 1,
-      last: Math.floor(outputCount / paging.limit) + 1,
-      outputs,
-    };
+    let result = null;
+    if (state.selected) {
+      const paging = state.outputsPaging;
+      const outputCount = state.selected.output_count;
+      const outputs = state.selected.outputs.slice(
+        paging.fromIndex,
+        paging.fromIndex + paging.limit,
+      );
+      result = {
+        fromIndex: paging.fromIndex,
+        limit: paging.limit,
+        current: Math.floor(paging.fromIndex / paging.limit) + 1,
+        last: Math.floor(outputCount / paging.limit) + 1,
+        outputs,
+      };
+    }
+    return result;
   },
 };
 
