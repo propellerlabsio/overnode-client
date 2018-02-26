@@ -77,7 +77,7 @@ export default {
       return !this.block || this.block.height !== Number(this.$route.params.height);
     },
     highestBlockHeight() {
-      return this.$store.state.server.status.height.overnode;
+      return this.$store.state.server.status.height.overnode.to;
     },
     block() {
       return this.$store.state.blocks.selected;

@@ -1,8 +1,8 @@
 /* Can't use vuex mutations with these airbnb rules:                                */
-/* eslint-disable no-shadow, no-param-reassign                                      */
+/* eslint-disable no-param-reassign                                      */
 import Vue from 'vue';
 
-const state = {
+const initialState = {
   host: {
     hostname: '',
     platform: '',
@@ -21,7 +21,10 @@ const state = {
     syncInErrorCount: 0,
     height: {
       bitcoind: 0,
-      overnode: 0,
+      overnode: {
+        from: null,
+        to: null,
+      },
       peers: 0,
     },
     mempool: {
@@ -94,10 +97,9 @@ const actions = {
   },
 };
 
-
 export default {
   namespaced: true,
-  state,
+  state: initialState,
   actions,
   mutations,
 };
