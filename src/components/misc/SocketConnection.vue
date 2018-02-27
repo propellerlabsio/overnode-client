@@ -64,7 +64,8 @@ export default {
   methods: {
     checkConnection() {
       const lastState = this.connectionState;
-      this.connectionState = this.connection.readyState;
+      this.connectionState = this.connection ?
+        this.connection.readyState : this.CONNECTION_STATE.CLOSED;
       if (lastState !== this.connectionState &&
         this.connectionState === this.CONNECTION_STATE.CLOSED &&
         !this.reconnectInSecs) {
@@ -88,10 +89,17 @@ export default {
       }
     },
     startConnection() {
-      const protocol = location.protocol.includes('https') ?
-        'wss' :
-        'ws';
-      this.connection = new WebSocket(`${protocol}://${location.host}/socket`);
+      try {
+        const protocol = location.protocol.includes('https') ?
+          'wss' :
+          'ws';
+        this.connection = new WebSocket(`${protocol}://${location.host}/socket`);
+      } catch (err) {
+        // Can't even create WebSocket.  Just exit and allow reconnection logic to
+        // try again later
+        console.error('Error creating websocket: ', err.message);
+        return;
+      }
 
       // When the connection is open, load initial static data
       this.connection.onopen = () => {
@@ -101,7 +109,7 @@ export default {
 
       // Log errors
       this.connection.onerror = (error) => {
-        console.debug('WebSocket Error ', error);
+        console.error('WebSocket Error', error.message);
       };
 
       // Store data given by the server
