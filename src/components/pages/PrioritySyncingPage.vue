@@ -19,10 +19,10 @@
             </div>
             <div class="column">
               <p>
-                We are currently upgrading our server.</p>
+                We are currently upgrading our server.  Please try again later.</p>
               <br/>
               <p>
-                Please come back again later or leave this page open and you will be redirected
+                You can leave this page open and you will be redirected
                 automatically when the upgrade has finished.
               </p>
             </div>
