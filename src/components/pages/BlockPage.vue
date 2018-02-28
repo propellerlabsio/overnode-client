@@ -40,7 +40,6 @@
     <!-- Transactions table -->
     <block-transactions
       v-if="!isBlockLoading && activeTab === 'transactions'"
-      :transactions="transactions"
       @selected="selectTransaction"/>
   </div>
 </template>
@@ -81,9 +80,6 @@ export default {
     },
     block() {
       return this.$store.state.blocks.selected;
-    },
-    transactions() {
-      return this.$store.state.blocks.transactionsPage.transactions;
     },
   },
   watch: {

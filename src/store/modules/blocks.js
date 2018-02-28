@@ -3,21 +3,22 @@
 
 import Vue from 'vue';
 import moment from 'moment';
+import paging from './util/paging';
 
 const state = {
   height: 0, // latest block height retrieved
   latest: [], // latest blocks
   selected: {}, // selected block
-  blocksPage: {
+  blocksPaging: {
     limit: 15,
-    current: 1,
-    blocks: [],
+    offset: 0,
   },
-  transactionsPage: {
+  pageBlocks: [],
+  transactionsPaging: {
     limit: 10,
-    current: 1,
-    transactions: [],
+    offset: 0,
   },
+  pageTransactions: [],
 };
 
 const mutations = {
@@ -29,39 +30,38 @@ const mutations = {
   },
   setLatest(state, blocks) {
     Vue.set(state, 'latest', blocks);
-    if (state.blocksPage === 1) {
-      Vue.set(state.blocksPage, 'blocks', blocks);
+    if (state.blocksPaging.offset === 0) {
+      Vue.set(state, 'pageBlocks', blocks);
     }
   },
-  setBlocksPage(state, { pageNumber, blocks }) {
-    Vue.set(state.blocksPage, 'current', pageNumber);
-    Vue.set(state.blocksPage, 'blocks', blocks);
+  setBlocksPaging(state, pageNumber) {
+    paging.setPaging(state.blocksPaging, pageNumber);
   },
-  setTransactionsPage(state, { pageNumber, transactions }) {
-    Vue.set(state.transactionsPage, 'current', pageNumber);
-    Vue.set(state.transactionsPage, 'transactions', transactions);
+  setPageBlocks(state, blocks) {
+    Vue.set(state, 'pageBlocks', blocks);
+  },
+  setTransactionsPaging(state, pageNumber) {
+    paging.setPaging(state.transactionsPaging, pageNumber);
+  },
+  setPageTransactions(state, transactions) {
+    Vue.set(state, 'pageTransactions', transactions);
   },
   humanizeTimes(state) {
     // IMPORTANT - do not updated 'latest' it forces redraw of graphs
     // with bad UX side effects (lost tooltips, mouseover etc)
-    state.blocksPage.blocks.forEach((block, index) => {
+    state.pageBlocks.forEach((block, index) => {
       const timeMoment = moment.unix(block.time);
       block.humanizedTime = timeMoment.fromNow();
-      Vue.set(state.blocksPage.blocks, index, block);
+      Vue.set(state.pageBlocks, index, block);
     });
   },
 };
 
 const getters = {
-  blocksPage(state) {
-    const last = Math.floor(state.height / state.blocksPage.limit) + 1;
-    return Object.assign(state.blocksPage, { last });
-  },
-  transactionsPage(state) {
-    const txCount = state.selected.tx_count;
-    const last = Math.floor(txCount / state.transactionsPage.limit) + 1;
-    return Object.assign(state.transactionsPage, { last });
-  },
+  blocksPage: state =>
+    paging.getPage(state.blocksPaging, state.pageBlocks, state.height),
+  transactionsPage: state =>
+    paging.getPage(state.transactionsPaging, state.pageTransactions, state.selected.tx_count),
 };
 
 const actions = {
@@ -75,15 +75,17 @@ const actions = {
     }
   },
 
-  async gotoBlocksPage({ commit, state, dispatch }, pageNumber) {
+  async setBlocksPage({ dispatch, commit, state }, pageNumber) {
+    commit('setBlocksPaging', pageNumber);
+
     if (pageNumber === 1) {
       // We already have latest blocks always updated - no need to call server
-      commit('setBlocksPage', { pageNumber, blocks: state.latest.slice(0, state.blocksPage.limit) });
+      commit('setPageBlocks', state.latest.slice(0, state.blocksPaging.limit));
       commit('humanizeTimes');
     } else {
       // We need to get blocks from server
-      const query = `query($fromHeight: Int, $limit: Int) {
-        blocks(fromHeight: $fromHeight, limit: $limit) {
+      const query = `query($paging: Paging) {
+        blocks(paging: $paging) {
           hash
           size
           height
@@ -93,33 +95,29 @@ const actions = {
         }
       }`;
 
-      // Determine from which height we want blocks based on requested page number
-      const fromHeight = state.height - ((pageNumber - 1) * state.blocksPage.limit);
-
       const variables = {
-        fromHeight,
-        limit: state.blocksPage.limit,
+        paging: state.blocksPaging,
       };
 
       // Get blocks
       const response = await dispatch('session/request', { query, variables }, { root: true });
-      commit('setBlocksPage', { pageNumber, blocks: response.blocks });
+      commit('setPageBlocks', response.blocks);
       commit('humanizeTimes');
     }
   },
 
-  async gotoTransactionsPage({ commit, state, dispatch }, pageNumber) {
+  async setTransactionsPage({ commit, state, dispatch }, pageNumber) {
+    // Set paging control values
+    commit('setTransactionsPaging', pageNumber);
+
     if (pageNumber === 1) {
       // We already have first page of transactions - no need to call server
-      commit('setTransactionsPage', {
-        pageNumber,
-        transactions: state.selected.transactions.slice(0, state.transactionsPage.limit),
-      });
+      commit('setPageTransactions', state.selected.transactions.slice(0, state.transactionsPaging.limit));
     } else {
       // We need to get transactions from server
-      const query = `query($height: Int!, $fromIndex: Int!, $txLimit: Int!) {
+      const query = `query($height: Int!, $paging: Paging!) {
         block(height: $height) {
-          transactions(fromIndex: $fromIndex,  limit: $txLimit) {
+          transactions(paging: $paging) {
             transaction_id
             transaction_index
             size
@@ -130,27 +128,20 @@ const actions = {
         }
       }`;
 
-      // Determine from which index we want transactions based on requested page number
-      const fromIndex = (pageNumber - 1) * state.transactionsPage.limit;
-
       const variables = {
         height: state.selected.height,
-        fromIndex,
-        txLimit: state.transactionsPage.limit,
+        paging: state.transactionsPaging,
       };
 
       // Get transactions
       const response = await dispatch('session/request', { query, variables }, { root: true });
-      commit('setTransactionsPage', {
-        pageNumber,
-        transactions: response.block.transactions,
-      });
+      commit('setPageTransactions', response.block.transactions);
     }
   },
 
   async getLatest({ dispatch, commit }) {
-    const query = `query($limit: Int!) {
-      blocks(limit: $limit) {
+    const query = `query($paging: Paging!) {
+      blocks(paging: $paging) {
         hash
         size
         height
@@ -161,7 +152,10 @@ const actions = {
     }`;
 
     const variables = {
-      limit: state.blocksPage.limit,
+      paging: {
+        limit: state.blocksPaging.limit,
+        offset: 0,
+      },
     };
 
     // Remember current block height
@@ -189,13 +183,14 @@ const actions = {
     }
 
     // If user is browsing blocks but on page 1, refresh the contents
-    if (state.blocksPage.current === 1) {
-      dispatch('gotoBlocksPage', 1);
+    if (state.blocksPaging.offset === 0) {
+      dispatch('setBlocksPage', 1);
     }
   },
 
   async setSelected({ dispatch, commit, state }, height) {
-    const query = `query($height: Int!, $txLimit: Int!) {
+    commit('setTransactionsPaging', 1);
+    const query = `query($height: Int!, $transactionsPaging: Paging!) {
       block(height: $height) {
         hash
         size
@@ -203,7 +198,7 @@ const actions = {
         time
         tx_count
         interval
-        transactions(fromIndex:0,  limit: $txLimit) {
+        transactions(paging: $transactionsPaging) {
           transaction_id
           transaction_index
           size
@@ -216,7 +211,7 @@ const actions = {
 
     const variables = {
       height,
-      txLimit: state.transactionsPage.limit,
+      transactionsPaging: state.transactionsPaging,
     };
 
     const response = await dispatch('session/request', { query, variables }, { root: true });

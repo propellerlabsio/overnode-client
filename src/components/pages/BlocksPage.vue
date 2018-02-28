@@ -1,8 +1,8 @@
 <template>
   <div>
     <page-title title="Blocks"/>
-    <blocks-table :blocks="page.blocks" :loading="loading"/>
-    <pager
+    <blocks-table :blocks="page.pageData" :loading="loading"/>
+    <pager v-if="page.pageData"
       :disabled="loading"
       :current-page="page.current"
       :last-page="page.last"
@@ -46,7 +46,7 @@ export default {
   methods: {
     async gotoPage(pageNumber) {
       this.loading = true;
-      await this.$store.dispatch('blocks/gotoBlocksPage', pageNumber);
+      await this.$store.dispatch('blocks/setBlocksPage', pageNumber);
       this.loading = false;
     },
   },
