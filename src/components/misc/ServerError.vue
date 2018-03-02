@@ -16,9 +16,8 @@
       </button>
     </div>
     <div v-if="showDetails" class="message-body">
-      <p v-for="error in errorDetails" v-bind:key="error.function_name">
-        <b>Error in sync job '{{ error.name }}'</b><br/>
-        Message: {{ error.error_message }}
+      <p>
+        Error syncing {{ syncInErrorCount }} blocks.  Run query 'sync_error' for details.
       </p>
     </div>
   </article>
@@ -31,29 +30,11 @@ export default {
   data() {
     return {
       showDetails: false,
-      errorDetails: [],
     };
   },
   computed: {
     syncInErrorCount() {
       return this.$store.state.server.status.syncInErrorCount;
-    },
-  },
-  watch: {
-    async syncInErrorCount() {
-      if (this.syncInErrorCount) {
-        const query = `{
-          sync(onlyJobsInError: true) {
-            name
-            error_message
-          }
-        }`;
-        const response = await this.$store.dispatch('session/request', { query });
-        this.errorDetails = response.sync;
-      } else {
-        this.showDetails = false;
-        this.errorDetails = [];
-      }
     },
   },
 };
