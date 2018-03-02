@@ -2,7 +2,6 @@
   <div id="app" class="container">
     <section class="section app-header">
       <navbar />
-      <server-error />
       <server-sync-status />
       <socket-connection />
       <upgrade-watcher />
@@ -20,7 +19,6 @@ import HeroBanner from './components/pages/OverviewPage/HeroBanner';
 import Navbar from './components/misc/Navbar';
 import SocketConnection from './components/misc/SocketConnection';
 import Toasts from './components/misc/Toasts';
-import ServerError from './components/misc/ServerError';
 import ServerSyncStatus from './components/misc/ServerSyncStatus';
 import UpgradeWatcher from './components/misc/UpgradeWatcher';
 
@@ -31,7 +29,6 @@ export default {
     Navbar,
     SocketConnection,
     Toasts,
-    ServerError,
     ServerSyncStatus,
     UpgradeWatcher,
   },
