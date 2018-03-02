@@ -1,16 +1,17 @@
-/* Can't use vuex mutations with these airbnb rules:                                */
+/* Can't use vuex mutations with these airbnb rules:                     */
 /* eslint-disable no-param-reassign                                      */
 import Vue from 'vue';
+import paging from './util/paging';
 
 const initialState = {
   selected: null,
   inputsPaging: {
     limit: 10,
-    fromIndex: 0,
+    offset: 0,
   },
   outputsPaging: {
     limit: 10,
-    fromIndex: 0,
+    offset: 0,
   },
 };
 
@@ -21,70 +22,28 @@ const mutations = {
   addOutputs(state, outputs) {
     outputs.forEach(output => state.selected.outputs.push(output));
   },
-  resetInputsPage(state) {
-    state.inputsPaging.fromIndex = 0;
-  },
-  resetOutputsPage(state) {
-    state.outputsPaging.fromIndex = 0;
-  },
-  setInputsPage(state, fromIndex) {
-    state.inputsPaging.fromIndex = fromIndex;
-  },
-  setOutputsPage(state, fromIndex) {
-    state.outputsPaging.fromIndex = fromIndex;
-  },
+  setInputsPage: (state, pageNumber) => paging.setPaging(state.inputsPaging, pageNumber),
+  setOutputsPage: (state, pageNumber) => paging.setPaging(state.outputsPaging, pageNumber),
   setSelected(state, transaction) {
     Vue.set(state, 'selected', transaction);
+    state.inputsPaging.offset = 0;
+    state.outputsPaging.offset = 0;
   },
 };
 
 const getters = {
-  inputsPage(state) {
-    let result = null;
-    if (state.selected) {
-      const paging = state.inputsPaging;
-      const inputCount = state.selected.input_count;
-      const inputs = state.selected.inputs.slice(paging.fromIndex, paging.fromIndex + paging.limit);
-
-      result = {
-        fromIndex: paging.fromIndex,
-        limit: paging.limit,
-        current: Math.floor(paging.fromIndex / paging.limit) + 1,
-        last: Math.floor(inputCount / paging.limit) + 1,
-        inputs,
-      };
-    }
-    return result;
-  },
-  outputsPage(state) {
-    let result = null;
-    if (state.selected) {
-      const paging = state.outputsPaging;
-      const outputCount = state.selected.output_count;
-      const outputs = state.selected.outputs.slice(
-        paging.fromIndex,
-        paging.fromIndex + paging.limit,
-      );
-      result = {
-        fromIndex: paging.fromIndex,
-        limit: paging.limit,
-        current: Math.floor(paging.fromIndex / paging.limit) + 1,
-        last: Math.floor(outputCount / paging.limit) + 1,
-        outputs,
-      };
-    }
-    return result;
-  },
+  inputsPage: state => paging.getPage(state.inputsPaging, state.selected.inputs, state.selected.input_count, 'input_index'),
+  outputsPage: state => paging.getPage(state.outputsPaging, state.selected.outputs, state.selected.output_count, 'output_index'),
 };
 
 const actions = {
   /**
-   * Fetch additional inputs from the server and add to the store
+   * Fetch additional inputs from the server for the current page and add to the store
    */
-  async addInputs({ dispatch, commit, state }, fromIndex) {
-    const query = `query($transactionId: String!, $fromIndex: Int!, $limit: Int!) {
+  async addInputs({ dispatch, commit, state }) {
+    const query = `query($transactionId: String!, $paging: Paging!) {
       transaction(transaction_id: $transactionId) {
-        inputs(fromIndex: $fromIndex, limit: $limit) {
+        inputs(paging: $paging) {
           input_index
           coinbase
           output_transaction_id
@@ -95,8 +54,7 @@ const actions = {
 
     const variables = {
       transactionId: state.selected.transaction_id,
-      fromIndex,
-      limit: state.inputsPaging.limit,
+      paging: state.inputsPaging,
     };
 
     // Execute query and set data in store
@@ -105,12 +63,12 @@ const actions = {
   },
 
   /**
-   * Fetch additional outputs from the server and add to the store
+   * Fetch additional outputs from the server for the current page and add to the store
    */
-  async addOutputs({ dispatch, commit, state }, fromIndex) {
-    const query = `query($transactionId: String!, $fromIndex: Int!, $limit: Int!) {
+  async addOutputs({ dispatch, commit, state }) {
+    const query = `query($transactionId: String!, $paging: Paging!) {
       transaction(transaction_id: $transactionId) {
-        outputs(fromIndex: $fromIndex, limit: $limit) {
+        outputs(paging: $paging) {
           transaction_id
           output_index
           value
@@ -121,8 +79,7 @@ const actions = {
 
     const variables = {
       transactionId: state.selected.transaction_id,
-      fromIndex,
-      limit: state.outputsPaging.limit,
+      paging: state.outputsPaging,
     };
 
     // Execute query and set data in store
@@ -130,31 +87,33 @@ const actions = {
     commit('addOutputs', response.transaction.outputs);
   },
 
-  async setInputsPage({ dispatch, commit, state }, fromIndex) {
-    // Check to see if we aleady have inputs from index given
-    const input = state.selected.inputs[fromIndex];
+  async setInputsPage({ dispatch, commit, state }, pageNumber) {
+    commit('setInputsPage', pageNumber);
+
+    // Check to see if we aleady have data for this page
+    const offset = state.inputsPaging.offset;
+    const input = state.selected.inputs[offset];
     if (!input) {
-      // Get inputs from server and add to store
-      await dispatch('addInputs', fromIndex);
+      // Get additional data for this page from server and add to store
+      await dispatch('addInputs');
     }
-    commit('setInputsPage', fromIndex);
   },
 
-  async setOutputsPage({ dispatch, commit, state }, fromIndex) {
-    // Check to see if we aleady have outputs from index given
-    const output = state.selected.outputs[fromIndex];
+  async setOutputsPage({ dispatch, commit, state }, pageNumber) {
+    commit('setOutputsPage', pageNumber);
+
+    // Check to see if we aleady have data for this page
+    const offset = state.outputsPaging.offset;
+    const output = state.selected.outputs[offset];
     if (!output) {
-      // Get inputs from server and add to store
-      await dispatch('addOutputs', fromIndex);
+      // Get additional data for this page from server and add to store
+      await dispatch('addOutputs');
     }
-    commit('setOutputsPage', fromIndex);
   },
 
   async setSelected({ dispatch, commit, state }, transactionId) {
     commit('setSelected', null);
-    commit('resetInputsPage');
-    commit('resetOutputsPage');
-    const query = `query($transactionId: String!, $inputsFromIndex: Int!, $inputsLimit: Int!, $outputsFromIndex: Int!, $outputsLimit: Int!) {
+    const query = `query($transactionId: String!, $inputsPaging: Paging!, $outputsPaging: Paging!) {
       transaction(transaction_id: $transactionId) {
         transaction_id
         transaction_index
@@ -163,13 +122,13 @@ const actions = {
         time
         input_count
         output_count
-        inputs(fromIndex: $inputsFromIndex, limit: $inputsLimit) {
+        inputs(paging: $inputsPaging) {
           input_index
           coinbase
           output_transaction_id
           output_index
         }
-        outputs(fromIndex: $outputsFromIndex, limit: $outputsLimit) {
+        outputs(paging: $outputsPaging) {
           transaction_id
           output_index
           value
@@ -180,10 +139,8 @@ const actions = {
 
     const variables = {
       transactionId,
-      inputsFromIndex: state.inputsPaging.fromIndex,
-      inputsLimit: state.inputsPaging.limit,
-      outputsFromIndex: state.outputsPaging.fromIndex,
-      outputsLimit: state.outputsPaging.limit,
+      inputsPaging: state.inputsPaging,
+      outputsPaging: state.outputsPaging,
     };
 
     // Execute query and set data in store

@@ -41,11 +41,22 @@
         <div class="column">
           <div class="columns is-mobile">
             <div class="column has-text-right">
-              Overnode height:
+              Overnode coverage:
             </div>
             <div class="column">
               {{ height.overnode.from }} -
               {{ height.overnode.to }}
+              ({{ coveragePercent }}%)
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="columns is-mobile">
+            <div class="column has-text-right">
+              Sync errors:
+            </div>
+            <div class="column">
+              {{ syncInErrorCount }}
             </div>
           </div>
         </div>
@@ -63,6 +74,10 @@ export default {
     };
   },
   computed: {
+    coveragePercent() {
+      const numBlocks = this.height.overnode.to - this.height.overnode.from;
+      return ((numBlocks / this.height.bitcoind) * 100).toPrecision(2);
+    },
     height() {
       return this.$store.state.server.status.height;
     },
@@ -79,6 +94,9 @@ export default {
       // Return true if anything is not full synced
       // (Ingore 1 block differences which will be quickly resolved)
       return backSyncing || diffOvernodeBitcoind > 1 || diffBitcoindPeers > 1;
+    },
+    syncInErrorCount() {
+      return this.$store.state.server.status.syncInErrorCount;
     },
   },
 };

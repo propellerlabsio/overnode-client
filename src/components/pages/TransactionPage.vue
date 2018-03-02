@@ -62,7 +62,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="input in inputsPage.inputs"
+        <tr v-for="input in inputsPage.pageData"
           v-bind:key="input.input_index">
           <td>
             <formatted-hash class="is-hidden-tablet" :hash='input.output_transaction_id'
@@ -105,7 +105,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="output in outputsPage.outputs"
+        <tr v-for="output in outputsPage.pageData"
           v-bind:key="output.output_index">
           <td>
             <span v-for="address in output.addresses" v-bind:key="address">
@@ -179,14 +179,12 @@ export default {
   methods: {
     async gotoInputsPage(pageNumber) {
       this.inputsLoading = true;
-      const fromIndex = this.inputsPage.limit * (pageNumber - 1);
-      await this.$store.dispatch('transaction/setInputsPage', fromIndex);
+      await this.$store.dispatch('transaction/setInputsPage', pageNumber);
       this.inputsLoading = false;
     },
     async gotoOutputsPage(pageNumber) {
       this.outputsLoading = true;
-      const fromIndex = this.outputsPage.limit * (pageNumber - 1);
-      await this.$store.dispatch('transaction/setOutputsPage', fromIndex);
+      await this.$store.dispatch('transaction/setOutputsPage', pageNumber);
       this.outputsLoading = false;
     },
     setSelectedTransaction() {

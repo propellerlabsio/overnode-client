@@ -24,7 +24,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="transaction in transactions" :key="transaction.txid"
+        <tr v-for="transaction in page.pageData" :key="transaction.txid"
           @click="$emit('selected', transaction.transaction_id)">
           <td>
             {{ transaction.transaction_index }}
@@ -55,6 +55,7 @@
       </tbody>
     </table>
     <pager
+      v-if="page.pageData"
       :disabled="isPageLoading"
       :current-page="page.current"
       :last-page="page.last"
@@ -70,7 +71,6 @@ import Pager from '../../misc/Pager';
 
 export default {
   name: 'block-transactions',
-  props: ['transactions'],
   components: {
     FormattedHash,
     Pager,
@@ -91,7 +91,7 @@ export default {
   methods: {
     async gotoTransactionsPage(pageNumber) {
       this.isPageLoading = true;
-      await this.$store.dispatch('blocks/gotoTransactionsPage', pageNumber);
+      await this.$store.dispatch('blocks/setTransactionsPage', pageNumber);
       this.isPageLoading = false;
     },
   },
