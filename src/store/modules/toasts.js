@@ -8,13 +8,14 @@ const state = {
 };
 
 const mutations = {
-  add(state, { message, timeoutSecs = 10 }) {
+  add(state, { message, timeoutSecs = 10, type = 'success' }) {
     const now = new Date();
     const expires = new Date(now.valueOf() + (timeoutSecs * 1000));
     state.current.push({
       id: now.valueOf(),
       expires,
       message,
+      type,
     });
   },
   remove(state, id) {
