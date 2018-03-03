@@ -2,11 +2,6 @@
   <section class="">
     <div class="columns body is-centered">
       <div class="column is-half">
-        <figure>
-          <img id="coinvis-hero-image" src="~@/assets/hero_image.jpg" alt="CoinVis.com">
-        </figure>
-      </div>
-      <div class="column is-half">
         <div class="tabs">
           <ul>
             <li :class="activeTab === 0 ? 'is-active' : ''">
@@ -55,7 +50,7 @@
 <script>
 
 export default {
-  name: 'landing-page',
+  name: 'signing-form',
   data() {
     return {
       loading: false,
@@ -74,17 +69,16 @@ export default {
         });
         this.activeTab = 0;
         this.password = '';
-        this.$toastr('add', {
-          title: 'Account created!',
-          msg: 'Please sign-in to your new account',
-          timeout: 5000,
+        this.$store.commit('toasts/add', {
+          message: 'Account created! Please sign-in to your new account',
+          timeoutSecs: 5,
           type: 'success',
         });
       } catch (err) {
-        this.$toastr('add', {
-          msg: err.message,
-          timeout: 5000,
-          type: 'error',
+        this.$store.commit('toasts/add', {
+          message: err.message,
+          timeoutSecs: 8,
+          type: 'danger',
         });
       }
     },
@@ -101,10 +95,10 @@ export default {
         this.loading = false;
       } catch (err) {
         this.loading = false;
-        this.$toastr('add', {
-          msg: err.message,
-          timeout: 5000,
-          type: 'error',
+        this.$store.commit('toasts/add', {
+          message: err.message,
+          timeoutSecs: 8,
+          type: 'danger',
         });
       }
     },

@@ -36,6 +36,12 @@ const initialState = {
   tokenExpires: null,
 };
 
+const getters = {
+  statuses() {
+    return sessionStatuses;
+  },
+};
+
 const mutations = {
   setAccessToken(state, accessToken) {
     state.accessToken = accessToken;
@@ -59,7 +65,7 @@ const actions = {
    *
    * @param {any} { commit, state }
    */
-  async start({ commit, dispatch }, accessToken) {
+  async start({ commit }, accessToken) {
     if (!accessToken) {
       // No token provided
       throw new Error('No access token');
@@ -69,12 +75,6 @@ const actions = {
         localStorage.setItem('accessToken', accessToken);
       }
     }
-
-    await Promise.all([
-      dispatch('coins/load', {}, { root: true }),
-      dispatch('trades/load', {}, { root: true }),
-      dispatch('strategies/load', {}, { root: true }),
-    ]);
 
     commit('setStatus', sessionStatuses.READY);
   },
@@ -135,6 +135,7 @@ const actions = {
 export default {
   namespaced: true,
   state: initialState,
+  getters,
   mutations,
   actions,
 };
