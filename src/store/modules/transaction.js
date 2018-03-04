@@ -48,6 +48,7 @@ const actions = {
           coinbase
           output_transaction_id
           output_index
+          output_value
         }
       }
     }`;
@@ -127,6 +128,7 @@ const actions = {
           coinbase
           output_transaction_id
           output_index
+          output_value
         }
         outputs(paging: $outputsPaging) {
           transaction_id

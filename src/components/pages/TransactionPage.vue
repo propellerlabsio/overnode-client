@@ -59,6 +59,9 @@
           <th>
             Coinbase?
           </th>
+          <th>
+            Value
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -77,6 +80,9 @@
             <span v-if="input.coinbase" class="icon has-text-success">
               <i class="fa fa-check"></i>
             </span>
+          </td>
+          <td>
+            {{ input.output_value }}
           </td>
         </tr>
       </tbody>
