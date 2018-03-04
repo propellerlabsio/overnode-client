@@ -64,6 +64,11 @@ export default new Router({
       component: PeersPage,
     },
     {
+      path: '/peers/page/:pageNumber',
+      name: 'PeersPage',
+      component: PeersPage,
+    },
+    {
       path: '/query',
       name: 'Query',
       component: QueryPage,

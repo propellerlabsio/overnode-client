@@ -21,16 +21,25 @@ const paging = {
    * @param {*} allData         All available data from which page data is sourced
    * @param {*} allCount        Total number of records for all pages
    * @param {*} indexProperty   Name of property in allData that is the record index if
-   *                            page data is a subset of allData.
+   *                            page data is a subset of allData.  Use 'array'
+   *                            if no index property is available and allData represents
+   *                            all data not just all available data.  Leave blank
+   *                            if allData represents only the page data.
    */
   getPage(pagingState, allData, allCount, indexProperty) {
     let result = [];
     if (allData.length) {
-      const fromIndex = pagingState.offset;
-      const toIndex = (fromIndex + pagingState.limit) - 1;
       let pageData;
-      if (indexProperty) {
-        // Page data is a subset of allData
+      if (indexProperty === 'array') {
+        // Page data is a subset of allData and we use array position to determine
+        // subset
+        const fromIndex = pagingState.offset;
+        const toIndex = fromIndex + pagingState.limit;
+        pageData = allData.slice(fromIndex, toIndex);
+      } else if (indexProperty) {
+        // Page data is a subset of allData and index to use is a column in allData
+        const fromIndex = pagingState.offset;
+        const toIndex = (fromIndex + pagingState.limit) - 1;
         pageData = allData
           .filter(rec => rec[indexProperty] >= fromIndex && rec[indexProperty] <= toIndex);
       } else {
