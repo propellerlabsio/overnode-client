@@ -12,14 +12,17 @@
       </div>
       <div class="column">
         <overview-tile title="Block Times" class="is-unselectable"
+          title-link="/blocks"
           component-type="blocks-graph"/>
       </div>
       <div class="column">
-        <overview-tile title="Peers"
+        <overview-tile :title="`${peersCount} Peers`"
+          title-link="/peers"
           class="is-unselectable" component-type="peers-map" />
       </div>
       <div class="column">
         <overview-tile title="Recent Blocks"
+          title-link="/blocks"
           component-type="recent-blocks" />
       </div>
     </div>
@@ -38,6 +41,9 @@ export default {
     OverviewTile,
   },
   computed: {
+    peersCount() {
+      return this.$store.state.peers.all.length;
+    },
     connectedClientCount() {
       return this.$store.state.server.status.overnode.clients;
     },

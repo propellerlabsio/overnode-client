@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-title title="Peers"/>
+    <page-title title="Peers" :count="peersCount"/>
     <table class="table is-striped is-hoverable">
       <thead>
         <tr>
@@ -78,6 +78,9 @@ export default {
     this.$store.dispatch('peers/getAll');
   },
   computed: {
+    peersCount() {
+      return this.$store.state.peers.all.length;
+    },
     peers() {
       return this.$store.getters['peers/peers'];
     },
