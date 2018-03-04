@@ -34,6 +34,11 @@ export default new Router({
       component: BlocksPage,
     },
     {
+      path: '/blocks/page/:pageNumber',
+      name: 'BlocksPage',
+      component: BlocksPage,
+    },
+    {
       path: '/block/:height',
       name: 'Block',
       component: BlockPage,

@@ -115,7 +115,7 @@ const actions = {
         .then((response) => {
           if (response.data.errors) {
             const serverMessage = response.data.errors[0].message;
-            reject(new Error(`Server returned error: ${serverMessage}`));
+            reject(new Error(`Error: ${serverMessage}`));
           } else {
             resolve(response.data.data);
           }
