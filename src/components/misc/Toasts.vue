@@ -2,7 +2,8 @@
   <div v-if="toasts.length" class="columns toasts">
     <div class="column">
       <div v-for="toast in toasts" v-bind:key="toast.id"
-        class="notification is-success">
+        class="notification"
+        :class="`is-${toast.type}`">
         <button class="delete" @click="$store.commit('toasts/remove', toast.id)"></button>
         <span v-html="toast.message"></span>
       </div>

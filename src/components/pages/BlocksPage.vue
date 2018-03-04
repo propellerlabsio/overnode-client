@@ -31,12 +31,17 @@ export default {
     Pager,
   },
   created() {
-    this.gotoPage(1);
+    this.loadBlocks();
   },
   data() {
     return {
       loading: true,
     };
+  },
+  watch: {
+    $route() {
+      this.loadBlocks();
+    },
   },
   computed: {
     page() {
@@ -44,10 +49,19 @@ export default {
     },
   },
   methods: {
-    async gotoPage(pageNumber) {
+    async loadBlocks() {
+      const pageNumber = this.$route.params.pageNumber || 1;
       this.loading = true;
       await this.$store.dispatch('blocks/setBlocksPage', pageNumber);
       this.loading = false;
+    },
+    async gotoPage(pageNumber) {
+      this.$router.push({
+        name: 'BlocksPage',
+        params: {
+          pageNumber,
+        },
+      });
     },
   },
 };

@@ -26,6 +26,9 @@
         <a class="navbar-item is-hidden-mobile" @click="navTo('/query')">
           Query
         </a>
+        <a class="navbar-item" @click="navTo('/admin')">
+          Admin
+        </a>
       </div>
 
       <div class="navbar-end">

@@ -5,8 +5,7 @@
         <span class="icon">
           <i class="fa fa-wrench"></i>
         </span>
-        The server is syncing with the blockchain.
-        Not all features will work until this has completed.
+        Overnode is syncing.  Not all data is available yet.
       </p>
       <button class="button is-small is-warning is-pulled-right" aria-label="details"
         @click="showDetails = !showDetails">
@@ -44,8 +43,13 @@
               Overnode coverage:
             </div>
             <div class="column">
-              {{ height.overnode.from }} -
-              {{ height.overnode.to }}
+              <router-link :to="{ name: 'Block', params: { height: height.overnode.from } }">
+                {{ height.overnode.from }}
+              </router-link>
+              -
+              <router-link :to="{ name: 'Block', params: { height: height.overnode.to } }">
+                {{ height.overnode.to }}
+              </router-link>
               ({{ coveragePercent }}%)
             </div>
           </div>
