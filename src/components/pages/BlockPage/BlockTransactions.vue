@@ -56,12 +56,12 @@
     </table>
     <pager
       v-if="page.pageData"
-      :disabled="isPageLoading"
+      :disabled="isLoading"
       :current-page="page.current"
       :last-page="page.last"
-      @previous="gotoTransactionsPage(page.current - 1)"
-      @next="gotoTransactionsPage(page.current + 1)"
-      @goto="gotoTransactionsPage"/>
+      @previous="navToTransactionsPage(page.current - 1)"
+      @next="navToTransactionsPage(page.current + 1)"
+      @goto="navToTransactionsPage"/>
   </div>
 </template>
 
@@ -75,13 +75,8 @@ export default {
     FormattedHash,
     Pager,
   },
-  data() {
-    return {
-      isPageLoading: false,
-    };
-  },
-  created() {
-    this.gotoTransactionsPage(1);
+  props: {
+    isLoading: false,
   },
   computed: {
     page() {
@@ -89,10 +84,14 @@ export default {
     },
   },
   methods: {
-    async gotoTransactionsPage(pageNumber) {
-      this.isPageLoading = true;
-      await this.$store.dispatch('blocks/setTransactionsPage', pageNumber);
-      this.isPageLoading = false;
+    navToTransactionsPage(pageNumber) {
+      this.$router.push({
+        name: 'BlockTransactions',
+        params: {
+          height: this.$route.params.height,
+          pageNumber,
+        },
+      });
     },
   },
 };

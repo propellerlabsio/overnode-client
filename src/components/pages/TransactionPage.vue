@@ -1,14 +1,14 @@
 <template>
   <div>
     <!-- Header -->
-    <div class="level is-mobile">
-      <div class="level-left">
-        <h2 class="level-item subtitle">Transaction&nbsp;
+    <div class="level is-mobile is-clipped">
+      <div class="level-left is-clipped">
+        <h2 class="level-item subtitle is-4 is-clipped">Transaction&nbsp;
             <formatted-hash v-if="transaction" class="is-hidden-tablet"
               :hash='transaction.transaction_id'
               :shorten="true"/>
             <formatted-hash v-if="transaction"
-              class="is-hidden-mobile" :hash='transaction.transaction_id'
+              class="is-hidden-mobile is-clipped" :hash='transaction.transaction_id'
               :shorten="false"/>
         </h2>
       </div>
@@ -68,9 +68,9 @@
         <tr v-for="input in inputsPage.pageData"
           v-bind:key="input.input_index">
           <td>
-            <formatted-hash class="is-hidden-tablet" :hash='input.output_transaction_id'
+            <formatted-hash class="is-hidden-desktop" :hash='input.output_transaction_id'
               :shorten="true"/>
-            <formatted-hash class="is-hidden-mobile" :hash='input.output_transaction_id'
+            <formatted-hash class="is-hidden-touch" :hash='input.output_transaction_id'
               :shorten="false"/>
           </td>
           <td>
@@ -147,6 +147,7 @@ import FormattedAddress from '../formatters/FormattedAddress';
 import FormattedHash from '../formatters/FormattedHash';
 import LoadingMessage from '../misc/LoadingMessage';
 import Pager from '../misc/Pager';
+import PageTitle from '../misc/PageTitle';
 
 export default {
   name: 'transaction-page',
@@ -181,6 +182,7 @@ export default {
     FormattedHash,
     LoadingMessage,
     Pager,
+    PageTitle,
   },
   methods: {
     async gotoInputsPage(pageNumber) {

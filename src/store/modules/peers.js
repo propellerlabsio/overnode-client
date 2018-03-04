@@ -2,12 +2,17 @@
 /* eslint-disable no-shadow, no-param-reassign                                      */
 import Vue from 'vue';
 import * as d3 from 'd3';
+import paging from './util/paging';
 
 const color = d3.scaleOrdinal(d3.schemeCategory20);
 
 const state = {
   all: [],
   selected: {},
+  paging: {
+    limit: 10,
+    offset: 0,
+  },
   txrx: [], // Cutdown and modified copy of peers for reactive UI updates
   colors: {
     Unknown: color(1),
@@ -39,6 +44,22 @@ function getClientInfo(state, nodeSubversion) {
   return { clientColor, software };
 }
 
+/**
+ * Return data merged from from all and txrx state properties to get
+ * reactive flag that bytes sent/recd has changed
+ *
+ * @param {*} state Vuex state
+ */
+function getMergedPeersRxTx(state) {
+  const all = state.all;
+  const txrx = state.txrx;
+
+  // Return merged
+  return all.map((peer) => {
+    const toMerge = txrx.find(candidate => candidate.id === peer.id);
+    return Object.assign({}, peer, toMerge);
+  });
+}
 
 const mutations = {
   setAll(state, peers) {
@@ -64,6 +85,8 @@ const mutations = {
         };
       });
   },
+
+  setPage: (state, pageNumber) => paging.setPaging(state.paging, pageNumber),
 
   setSelected(state, peer) {
     Vue.set(state, 'selected', peer);
@@ -112,6 +135,9 @@ const mutations = {
 };
 
 const getters = {
+  page: state =>
+    paging.getPage(state.paging, getMergedPeersRxTx(state), state.all.length, 'array'),
+
   selected(state) {
     if (!state.selected) {
       return null;
@@ -125,18 +151,7 @@ const getters = {
     // Return merged
     return Object.assign({}, selected, txrx);
   },
-  peers(state) {
-    // Merge data from all and txrx to get
-    // reactive flag that bytes sent/recd has changed
-    const all = state.all;
-    const txrx = state.txrx;
-
-    // Return merged
-    return all.map((peer) => {
-      const toMerge = txrx.find(candidate => candidate.id === peer.id);
-      return Object.assign({}, peer, toMerge);
-    });
-  },
+  peers: state => getMergedPeersRxTx(state),
 };
 
 const actions = {
@@ -202,6 +217,18 @@ const actions = {
     // Execute query and set data in store
     const response = await dispatch('session/request', { query, variables }, { root: true });
     commit('setSelected', response.peer);
+  },
+
+  /**
+   * Wrapper around setPage mutation.  Action not needed since we already have all data
+   * and don't need async fetch but this action makes the paging interface consistent
+   * with other store modules in this app
+   *
+   * @param {*} Vuex        Vuex provided objects
+   * @param {*} pageNumber  Page number to be set
+   */
+  async setPage({ commit }, pageNumber) {
+    commit('setPage', pageNumber);
   },
 };
 

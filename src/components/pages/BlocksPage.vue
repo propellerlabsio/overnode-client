@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-title title="Blocks"/>
+    <page-title title="Blocks" :count="blocksCount"/>
     <blocks-table :blocks="page.pageData" :loading="loading"/>
     <pager v-if="page.pageData"
       :disabled="loading"
@@ -46,6 +46,9 @@ export default {
   computed: {
     page() {
       return this.$store.getters['blocks/blocksPage'];
+    },
+    blocksCount() {
+      return this.$store.state.server.status.height.overnode.to;
     },
   },
   methods: {

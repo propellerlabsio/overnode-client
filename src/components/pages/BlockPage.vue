@@ -17,29 +17,26 @@
     <!-- Tabs -->
     <div class="tabs">
       <ul>
-        <li :class="{ 'is-active': activeTab === 'details' }">
-          <a @click="activeTab = 'details'">
+        <li :class="{ 'is-active': $route.name === 'Block' }">
+          <a @click="navToDetailsTab">
             Details
           </a>
         </li>
-        <li :class="{ 'is-active': activeTab === 'transactions' }">
-          <a @click="activeTab = 'transactions'">
+        <li :class="{ 'is-active': $route.name === 'BlockTransactions' }">
+          <a @click="navToTransactionsTab">
             Transactions
           </a>
         </li>
       </ul>
     </div>
 
-    <!-- Loading message -->
-    <loading-message v-if="isBlockLoading"/>
-
     <!-- Block header details -->
-    <block-header v-if="!isBlockLoading && activeTab === 'details'" :block="block"/>
-
+    <block-header v-if="$route.name === 'Block'" :is-loading="isLoading" :block="block"/>
 
     <!-- Transactions table -->
     <block-transactions
-      v-if="!isBlockLoading && activeTab === 'transactions'"
+      v-if="$route.name === 'BlockTransactions'"
+      :is-loading="isLoading"
       @selected="selectTransaction"/>
   </div>
 </template>
@@ -48,7 +45,6 @@
 import BlockHeader from './BlockPage/BlockHeader';
 import BlockNavButtons from './BlockPage/BlockNavButtons';
 import BlockTransactions from './BlockPage/BlockTransactions';
-import LoadingMessage from '../misc/LoadingMessage';
 import PageTitle from '../misc/PageTitle';
 
 export default {
@@ -57,23 +53,14 @@ export default {
     BlockHeader,
     BlockNavButtons,
     BlockTransactions,
-    LoadingMessage,
     PageTitle,
-  },
-  data() {
-    return {
-      activeTab: 'details',
-    };
   },
   computed: {
     previousDisabled() {
-      return this.block.height === 0 || this.isBlockLoading;
+      return this.block.height === 0 || this.isLoading;
     },
     nextDisabled() {
-      return this.block.height >= this.highestBlockHeight || this.isBlockLoading;
-    },
-    isBlockLoading() {
-      return !this.block || this.block.height !== Number(this.$route.params.height);
+      return this.block.height >= this.highestBlockHeight || this.isLoading;
     },
     highestBlockHeight() {
       return this.$store.state.server.status.height.overnode.to;
@@ -82,18 +69,38 @@ export default {
       return this.$store.state.blocks.selected;
     },
   },
+  data() {
+    return {
+      isLoading: true,
+      loadedBlockHeight: null,
+    };
+  },
   watch: {
-    $route: 'setSelectedBlock',
+    $route: 'loadDataForRoute',
   },
   async created() {
-    this.setSelectedBlock();
+    this.loadDataForRoute();
   },
   methods: {
-    setSelectedBlock() {
-      this.$store.dispatch('blocks/setSelected', Number(this.$route.params.height));
+    navToDetailsTab() {
+      this.$router.push({
+        name: 'Block',
+        params: {
+          height: this.$route.params.height,
+        },
+      });
     },
-    gotoBlock(height) {
-      if (!this.isBlockLoading && height >= 0 && height <= this.highestBlockHeight) {
+    navToTransactionsTab() {
+      this.$router.push({
+        name: 'BlockTransactions',
+        params: {
+          height: this.$route.params.height,
+          pageNumber: 1,
+        },
+      });
+    },
+    navToBlock(height) {
+      if (!this.isLoading && height >= 0 && height <= this.highestBlockHeight) {
         this.$router.push({
           name: 'Block',
           params: {
@@ -103,10 +110,10 @@ export default {
       }
     },
     gotoPreviousBlock() {
-      this.gotoBlock(this.block.height - 1);
+      this.navToBlock(this.block.height - 1);
     },
     gotoNextBlock() {
-      this.gotoBlock(this.block.height + 1);
+      this.navToBlock(this.block.height + 1);
     },
     selectTransaction(transactionId) {
       this.$router.push({
@@ -115,6 +122,22 @@ export default {
           transactionId,
         },
       });
+    },
+    async loadDataForRoute() {
+      this.isLoading = true;
+      // If new block, load it
+      if (this.$route.params.height !== this.loadedBlockHeight) {
+        // Only if we have a new block requested
+        await this.$store.dispatch('blocks/setSelected', Number(this.$route.params.height));
+        this.loadedBlockHeight = this.$route.params.height;
+      }
+
+      // Load transactions for selected block/transactions page
+      if (this.$route.name === 'BlockTransactions') {
+        await this.$store.dispatch('blocks/setTransactionsPage', Number(this.$route.params.pageNumber));
+      }
+
+      this.isLoading = false;
     },
   },
 };

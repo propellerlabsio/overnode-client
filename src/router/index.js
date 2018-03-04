@@ -44,6 +44,11 @@ export default new Router({
       component: BlockPage,
     },
     {
+      path: '/block/:height/transactions/page/:pageNumber',
+      name: 'BlockTransactions',
+      component: BlockPage,
+    },
+    {
       path: '/donate',
       name: 'Donate',
       component: DonationsPage,
@@ -56,6 +61,11 @@ export default new Router({
     {
       path: '/peers',
       name: 'Peers',
+      component: PeersPage,
+    },
+    {
+      path: '/peers/page/:pageNumber',
+      name: 'PeersPage',
       component: PeersPage,
     },
     {

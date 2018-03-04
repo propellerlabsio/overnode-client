@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-title title="Peers"/>
+    <page-title title="Peers" :count="peersCount"/>
     <table class="table is-striped is-hoverable">
       <thead>
         <tr>
@@ -18,7 +18,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="peer in peers" v-bind:key="peer.id"
+        <tr v-for="peer in page.pageData" v-bind:key="peer.id"
           @click="$router.push(`/peer/${peer.id}`)">
           <td>{{ peer.id }}</td>
           <td class="is-hidden-mobile">{{ peer.addr }}</td>
@@ -56,6 +56,13 @@
         </tr>
       </tbody>
     </table>
+    <pager v-if="page.pageData"
+      :disabled="loading"
+      :current-page="page.current"
+      :last-page="page.last"
+      @previous="gotoPage(page.current - 1)"
+      @next="gotoPage(page.current + 1)"
+      @goto="gotoPage"/>
   </div>
 </template>
 
@@ -64,6 +71,7 @@ import FormattedBytes from '../formatters/FormattedBytes';
 import FormattedPing from '../formatters/FormattedPing';
 import FormattedSubver from '../formatters/FormattedSubver';
 import PageTitle from '../misc/PageTitle';
+import Pager from '../misc/Pager';
 
 export default {
   name: 'peers-page',
@@ -72,14 +80,46 @@ export default {
     FormattedPing,
     FormattedSubver,
     PageTitle,
+    Pager,
   },
-  created() {
+  async created() {
     // Refresh full peers data
-    this.$store.dispatch('peers/getAll');
+    await this.$store.dispatch('peers/getAll');
+    this.loadPeers();
+  },
+  data() {
+    return {
+      loading: true,
+    };
+  },
+  watch: {
+    $route() {
+      this.loadPeers();
+    },
   },
   computed: {
-    peers() {
-      return this.$store.getters['peers/peers'];
+    peersCount() {
+      return this.$store.state.peers.all.length;
+    },
+    page() {
+      return this.$store.getters['peers/page'];
+    },
+  },
+  methods: {
+    async loadPeers() {
+      const pageNumber = this.$route.params.pageNumber || 1;
+      this.loading = true;
+      await this.$store.dispatch('peers/setPage', pageNumber);
+      this.loading = false;
+    },
+
+    async gotoPage(pageNumber) {
+      this.$router.push({
+        name: 'PeersPage',
+        params: {
+          pageNumber,
+        },
+      });
     },
   },
 };
