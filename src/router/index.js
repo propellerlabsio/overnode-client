@@ -44,6 +44,11 @@ export default new Router({
       component: BlockPage,
     },
     {
+      path: '/block/:height/transactions/page/:pageNumber',
+      name: 'BlockTransactions',
+      component: BlockPage,
+    },
+    {
       path: '/donate',
       name: 'Donate',
       component: DonationsPage,
