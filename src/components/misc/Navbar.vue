@@ -29,6 +29,7 @@
         <a class="navbar-item" @click="navTo('/admin')">
           Admin
         </a>
+        <search-tool />
       </div>
 
       <div class="navbar-end">
@@ -49,8 +50,13 @@
 </template>
 
 <script>
+import SearchTool from './Navbar/SearchTool';
+
 export default {
   name: 'navbar',
+  components: {
+    SearchTool,
+  },
   data() {
     return {
       menuActive: false,
@@ -65,3 +71,11 @@ export default {
 };
 </script>
 
+<style>
+  /* Adjust navbar-start. Needed for full width search field per
+  https://github.com/jgthms/bulma/pull/1320#issuecomment-366616688 */
+  .navbar-start {
+    flex-grow: 1;
+    flex-shrink: 1;
+  }
+</style>
