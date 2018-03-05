@@ -82,8 +82,9 @@ export default {
         this.notFound = true;
         this.$store.commit('toasts/add', {
           message: 'Nothing found for that search term',
-          timeoutSecs: 8,
+          timeoutSecs: 5,
           type: 'danger',
+          position: 'top',
         });
       }
 
