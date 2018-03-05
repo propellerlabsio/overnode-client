@@ -6,7 +6,7 @@
         :class="{ 'has-text-danger': notFound, 'is-white': !notFound, 'is-danger': notFound }"
         v-model="term" type="text"
         v-on:keyup.enter="execute"
-        placeholder="Find a block or transaction">
+        placeholder="Block, transaction or address">
     </div>
     <div class="control">
       <button v-if="term" class="button is-white" @click="clear">
@@ -75,6 +75,15 @@ export default {
           name: 'Transaction',
           params: {
             transactionId: this.results.transaction.transaction_id,
+          },
+        });
+      } else if (this.results.address) {
+        // Address found
+        this.term = '';
+        this.$router.push({
+          name: 'Address',
+          params: {
+            address: this.results.address.address,
           },
         });
       } else {

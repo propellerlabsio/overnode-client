@@ -1,8 +1,8 @@
 <template>
-  <span>
-    <span v-if="removePrefix">{{ shortAddress }}</span>
+  <router-link :to="{ name: 'Address', params: { address } }">
+    <span v-if="shorten">{{ shortAddress }}</span>
     <span v-else>{{ address }}</span>
-  </span>
+  </router-link>
 </template>
 
 <script>
@@ -10,16 +10,15 @@ export default {
   name: 'formatted-address',
   props: {
     address: String,
-    removePrefix: {
+    shorten: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
   computed: {
     shortAddress() {
       let shortAddress = this.address;
       if (shortAddress) {
-        shortAddress = shortAddress.split(':')[1];
         const startChars = shortAddress.substr(0, 6);
         const endChars = shortAddress.substr(shortAddress.length - 6);
         shortAddress = `${startChars}...${endChars}`;
