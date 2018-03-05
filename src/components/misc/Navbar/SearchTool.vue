@@ -2,9 +2,18 @@
   <div class="navbar-item is-expanded">
   <div class="field has-addons">
     <div class="control is-expanded">
-      <input class="input" v-model="term" type="text"
+      <input class="input"
+        :class="{ 'has-text-danger': notFound, 'is-white': !notFound, 'is-danger': notFound }"
+        v-model="term" type="text"
         v-on:keyup.enter="execute"
-        placeholder="Find a block or transaction">
+        placeholder="Block, transaction or address">
+    </div>
+    <div class="control">
+      <button v-if="term" class="button is-white" @click="clear">
+        <span class="icon">
+          <i class="fa fa-times"></i>
+        </span>
+      </button>
     </div>
     <div class="control">
       <a class="button is-white" @click="execute" :class="{ 'is-loading': loading }">
@@ -24,7 +33,13 @@ export default {
     return {
       term: '',
       loading: false,
+      notFound: false,
     };
+  },
+  watch: {
+    term() {
+      this.notFound = false;
+    },
   },
   computed: {
     results() {
@@ -32,10 +47,16 @@ export default {
     },
   },
   methods: {
+    clear() {
+      this.term = '';
+    },
     async execute() {
+      if (this.loading) {
+        return;
+      }
+
       this.loading = true;
       await this.$store.dispatch('search/execute', this.term);
-      this.loading = false;
 
       // Nav to result
       if (this.results.block) {
@@ -56,14 +77,27 @@ export default {
             transactionId: this.results.transaction.transaction_id,
           },
         });
+      } else if (this.results.address) {
+        // Address found
+        this.term = '';
+        this.$router.push({
+          name: 'Address',
+          params: {
+            address: this.results.address.address,
+          },
+        });
       } else {
         // Nothing found (might be an address but we have no page for that yet)
+        this.notFound = true;
         this.$store.commit('toasts/add', {
-          message: 'Nothing found for that term',
-          timeoutSecs: 8,
-          type: 'warning',
+          message: 'Nothing found for that search term',
+          timeoutSecs: 5,
+          type: 'danger',
+          position: 'top',
         });
       }
+
+      this.loading = false;
     },
   },
 };

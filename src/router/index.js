@@ -3,6 +3,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 // Page imports
+import AddressPage from '@/components/pages/AddressPage';
 import AdminPage from '@/components/pages/AdminPage';
 import BlockPage from '@/components/pages/BlockPage';
 import BlocksPage from '@/components/pages/BlocksPage';
@@ -22,6 +23,11 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: OverviewPage,
+    },
+    {
+      path: '/address/:address',
+      name: 'Address',
+      component: AddressPage,
     },
     {
       path: '/admin',

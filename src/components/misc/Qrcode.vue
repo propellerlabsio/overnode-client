@@ -1,5 +1,5 @@
 <template>
-  <canvas ref="qrcode" width="300" height="300"/>
+  <canvas ref="qrcode" :width="sideLength" :height="sideLength"/>
 </template>
 
 <script>
@@ -11,6 +11,19 @@ export default {
     address: {
       type: String,
       required: true,
+    },
+    small: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  computed: {
+    sideLength() {
+      let length = 250;
+      if (this.small) {
+        length /= 2;
+      }
+      return length;
     },
   },
   mounted() {
@@ -28,8 +41,8 @@ export default {
           this.$refs.qrcode,
           this.address,
           {
-            width: 250,
-            height: 250,
+            width: this.sideLength,
+            height: this.sideLength,
           },
           (error) => {
             if (error) {

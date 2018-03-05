@@ -23,7 +23,7 @@
 
 <script>
 import PageTitle from '../misc/PageTitle';
-import Qrcode from './DonationsPage/Qrcode';
+import Qrcode from '../misc/Qrcode';
 
 export default {
   name: 'donations-page',
