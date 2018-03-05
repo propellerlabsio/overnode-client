@@ -32,8 +32,20 @@ const mutations = {
 };
 
 const getters = {
-  inputsPage: state => paging.getPage(state.inputsPaging, state.selected.inputs, state.selected.input_count, 'input_index'),
-  outputsPage: state => paging.getPage(state.outputsPaging, state.selected.outputs, state.selected.output_count, 'output_index'),
+  inputsPage: (state) => {
+    let result = [];
+    if (state.selected) {
+      result = paging.getPage(state.inputsPaging, state.selected.inputs, state.selected.input_count, 'input_index');
+    }
+    return result;
+  },
+  outputsPage: (state) => {
+    let result = [];
+    if (state.selected) {
+      result = paging.getPage(state.outputsPaging, state.selected.outputs, state.selected.output_count, 'output_index');
+    }
+    return result;
+  },
 };
 
 const actions = {
