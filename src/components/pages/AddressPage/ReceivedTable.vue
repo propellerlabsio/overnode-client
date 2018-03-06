@@ -65,14 +65,12 @@ export default {
     FormattedAddress,
     FormattedHash,
   },
-  data() {
-    return {
-      isLoading: false,
-    };
-  },
   computed: {
     selected() {
       return this.$store.state.addresses.selected;
+    },
+    isLoading() {
+      return this.$store.state.addresses.control.received.loading;
     },
     outputs() {
       return this.$store.state.addresses.selected.received;
@@ -88,9 +86,7 @@ export default {
         return;
       }
       const beforeCount = this.outputs.length;
-      this.isLoading = true;
       await this.$store.dispatch('addresses/addMoreReceived');
-      this.isLoading = false;
 
       // Turns out there wasn't more - happens because we
       // don't know how many total inputs/outputs there are to the

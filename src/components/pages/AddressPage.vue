@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="columns is-vcentered is-multiline">
-      <div v-if="!isLoading" class="column">
+    <div v-if="!isLoading" class="columns is-vcentered is-multiline">
+      <div class="column">
         <page-title :title="`Address ${selected.address}`"/>
       </div>
       <div class="column is-narrow has-text-centered">

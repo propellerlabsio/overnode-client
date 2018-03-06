@@ -51,14 +51,12 @@ export default {
   components: {
     FormattedHash,
   },
-  data() {
-    return {
-      isLoading: false,
-    };
-  },
   computed: {
     inputs() {
       return this.$store.state.addresses.selected.spent;
+    },
+    isLoading() {
+      return this.$store.state.addresses.control.spent.loading;
     },
     maybeMore() {
       return this.$store.state.addresses.control.spent.maybeMore;
@@ -71,9 +69,7 @@ export default {
         return;
       }
       const beforeCount = this.inputs.length;
-      this.isLoading = true;
       await this.$store.dispatch('addresses/addMoreSpent');
-      this.isLoading = false;
 
       // Turns out there wasn't more - happens because we
       // don't know how many total inputs/outputs there are to the
