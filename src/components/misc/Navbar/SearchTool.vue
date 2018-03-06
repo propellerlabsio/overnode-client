@@ -50,13 +50,23 @@ export default {
     clear() {
       this.term = '';
     },
+    cleanSearchTerm(term) {
+      let cleaned = term;
+      // Dump cash address prefix
+      const cashaddrPrefixLen = 12;
+      if (cleaned.substring(0, cashaddrPrefixLen) === 'bitcoincash:') {
+        cleaned = cleaned.substr(cashaddrPrefixLen);
+      }
+      return cleaned;
+    },
     async execute() {
       if (this.loading) {
         return;
       }
 
       this.loading = true;
-      await this.$store.dispatch('search/execute', this.term);
+      const cleanedTerm = this.cleanSearchTerm(this.term);
+      await this.$store.dispatch('search/execute', cleanedTerm);
 
       // Nav to result
       if (this.results.block) {
