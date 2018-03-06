@@ -32,7 +32,7 @@
           <formatted-hash :hash="output.transaction_id"/>
         </td>
         <td class="is-hidden-mobile">
-          {{ output.output_index }}
+          {{ output.output_number }}
         </td>
         <td>
           {{ output.value }}

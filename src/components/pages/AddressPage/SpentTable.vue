@@ -20,7 +20,7 @@
           <formatted-hash :hash="input.transaction_id"/>
         </td>
         <td>
-          {{ input.input_index }}
+          {{ input.input_number }}
         </td>
         <td>
           {{ input.output_value }}

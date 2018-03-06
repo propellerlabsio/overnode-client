@@ -35,14 +35,14 @@ const getters = {
   inputsPage: (state) => {
     let result = [];
     if (state.selected) {
-      result = paging.getPage(state.inputsPaging, state.selected.inputs, state.selected.input_count, 'input_index');
+      result = paging.getPage(state.inputsPaging, state.selected.inputs, state.selected.input_count, 'input_number');
     }
     return result;
   },
   outputsPage: (state) => {
     let result = [];
     if (state.selected) {
-      result = paging.getPage(state.outputsPaging, state.selected.outputs, state.selected.output_count, 'output_index');
+      result = paging.getPage(state.outputsPaging, state.selected.outputs, state.selected.output_count, 'output_number');
     }
     return result;
   },
@@ -56,10 +56,10 @@ const actions = {
     const query = `query($transactionId: String!, $paging: Paging!) {
       transaction(transaction_id: $transactionId) {
         inputs(paging: $paging) {
-          input_index
+          input_number
           coinbase
           output_transaction_id
-          output_index
+          output_number
           output_value
         }
       }
@@ -83,7 +83,7 @@ const actions = {
       transaction(transaction_id: $transactionId) {
         outputs(paging: $paging) {
           transaction_id
-          output_index
+          output_number
           value
           addresses
         }
@@ -136,15 +136,15 @@ const actions = {
         input_count
         output_count
         inputs(paging: $inputsPaging) {
-          input_index
+          input_number
           coinbase
           output_transaction_id
-          output_index
+          output_number
           output_value
         }
         outputs(paging: $outputsPaging) {
           transaction_id
-          output_index
+          output_number
           value
           addresses
         }        

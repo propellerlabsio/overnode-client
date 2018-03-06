@@ -66,7 +66,7 @@
       </thead>
       <tbody>
         <tr v-for="input in inputsPage.pageData"
-          v-bind:key="input.input_index">
+          v-bind:key="input.input_number">
           <td>
             <formatted-hash class="is-hidden-desktop" :hash='input.output_transaction_id'
               :shorten="true"/>
@@ -74,7 +74,7 @@
               :shorten="false"/>
           </td>
           <td>
-            {{ input.output_index }}
+            {{ input.output_number }}
           </td>
           <td>
             <span v-if="input.coinbase" class="icon has-text-success">
@@ -112,7 +112,7 @@
       </thead>
       <tbody>
         <tr v-for="output in outputsPage.pageData"
-          v-bind:key="output.output_index">
+          v-bind:key="output.output_number">
           <td>
             <span v-for="address in output.addresses" v-bind:key="address">
               <formatted-address class="is-hidden-tablet" :address='address'

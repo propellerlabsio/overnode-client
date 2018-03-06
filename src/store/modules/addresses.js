@@ -49,7 +49,7 @@ const actions = {
       address(address:$address) {
         received(paging: $paging) {
           transaction_id
-          output_index
+          output_number
           value
           addresses
         }
@@ -77,7 +77,7 @@ const actions = {
       address(address:$address) {
         spent(paging: $paging) {
           transaction_id
-          input_index
+          input_number
           output_value
         }
       }
@@ -103,13 +103,13 @@ const actions = {
         address
         received(paging: $receivedPaging) {
           transaction_id
-          output_index
+          output_number
           value
           addresses
         }
         spent(paging: $spentPaging) {
           transaction_id
-          input_index
+          input_number
           output_value
         }
       }
