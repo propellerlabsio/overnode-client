@@ -53,9 +53,9 @@ export default {
     cleanSearchTerm(term) {
       let cleaned = term;
       // Dump cash address prefix
-      const cashaddrPrefixLen = 12;
-      if (cleaned.substring(0, cashaddrPrefixLen) === 'bitcoincash:') {
-        cleaned = cleaned.substr(cashaddrPrefixLen);
+      const cashaddrPrefix = 'bitcoincash:';
+      if (cleaned.substring(0, cashaddrPrefix.length) === cashaddrPrefix) {
+        cleaned = cleaned.substr(cashaddrPrefix.length);
       }
       return cleaned;
     },
