@@ -9,10 +9,15 @@ const initialState = {
     spent: [],
   },
   control: {
+    address: {
+      loading: true,
+    },
     received: {
+      loading: true,
       maybeMore: false,
     },
     spent: {
+      loading: true,
       maybeMore: false,
     },
   },
@@ -28,6 +33,15 @@ const mutations = {
   resetSelected(state) {
     Vue.set(state, 'selected', initialState.selected);
     Vue.set(state, 'control', initialState.control);
+  },
+  setAddressLoading(state, loading) {
+    Vue.set(state.control.address, 'loading', loading);
+  },
+  setReceivedLoading(state, loading) {
+    Vue.set(state.control.received, 'loading', loading);
+  },
+  setSpentLoading(state, loading) {
+    Vue.set(state.control.spent, 'loading', loading);
   },
   setReceivedMaybeMore(state, maybeMore) {
     state.control.received.maybeMore = maybeMore;
@@ -45,11 +59,14 @@ const actions = {
     if (!state.control.received.maybeMore) {
       return;
     }
+
+    commit('setReceivedLoading', true);
+
     const query = `query($address: String!, $paging: Paging!) {
       address(address:$address) {
         received(paging: $paging) {
           transaction_id
-          output_index
+          output_number
           value
           addresses
         }
@@ -67,17 +84,21 @@ const actions = {
     const response = await dispatch('session/request', { query, variables }, { root: true });
     commit('addMoreReceived', response.address.received);
     commit('setReceivedMaybeMore', response.address.received.length === pagingLimit);
+    commit('setReceivedLoading', false);
   },
 
   async addMoreSpent({ dispatch, commit, state }) {
     if (!state.control.spent.maybeMore) {
       return;
     }
+
+    commit('setSpentLoading', true);
+
     const query = `query($address: String!, $paging: Paging!) {
       address(address:$address) {
         spent(paging: $paging) {
           transaction_id
-          input_index
+          input_number
           output_value
         }
       }
@@ -94,22 +115,26 @@ const actions = {
     const response = await dispatch('session/request', { query, variables }, { root: true });
     commit('addMoreSpent', response.address.spent);
     commit('setSpentMaybeMore', response.address.spent.length === pagingLimit);
+    commit('setSpentLoading', false);
   },
 
   async setSelected({ dispatch, commit }, address) {
     commit('resetSelected');
+    commit('setAddressLoading', true);
+    commit('setReceivedLoading', true);
+    commit('setSpentLoading', true);
     const query = `query($address: String!, $spentPaging: Paging!, $receivedPaging: Paging!) {
       address(address:$address) {
         address
         received(paging: $receivedPaging) {
           transaction_id
-          output_index
+          output_number
           value
           addresses
         }
         spent(paging: $spentPaging) {
           transaction_id
-          input_index
+          input_number
           output_value
         }
       }
@@ -131,6 +156,9 @@ const actions = {
     commit('setSelected', response.address);
     commit('setReceivedMaybeMore', response.address.received.length === pagingLimit);
     commit('setSpentMaybeMore', response.address.spent.length === pagingLimit);
+    commit('setAddressLoading', false);
+    commit('setReceivedLoading', false);
+    commit('setSpentLoading', false);
   },
 };
 

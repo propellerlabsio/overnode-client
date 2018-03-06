@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="columns is-vcentered is-multiline">
+    <div v-if="!isLoading" class="columns is-vcentered is-multiline">
       <div class="column">
         <page-title :title="`Address ${selected.address}`"/>
       </div>
@@ -8,7 +8,8 @@
         <qrcode :address="selected.address" :small="true"/>
       </div>
     </div>
-    <div class="columns is-multiline">
+    <loading-message v-if="isLoading"/>
+    <div v-else class="columns is-multiline">
       <div class="column">
         <div class="box is-hidden-mobile">
           <page-subtitle title="Received"/>
@@ -36,6 +37,7 @@
 <script>
 import FormattedAddress from '../formatters/FormattedAddress';
 import FormattedHash from '../formatters/FormattedHash';
+import LoadingMessage from '../misc/LoadingMessage';
 import PageTitle from '../misc/PageTitle';
 import PageSubtitle from '../misc/PageSubtitle';
 import ReceivedTable from './AddressPage/ReceivedTable';
@@ -47,6 +49,7 @@ export default {
   components: {
     FormattedAddress,
     FormattedHash,
+    LoadingMessage,
     PageSubtitle,
     PageTitle,
     ReceivedTable,
@@ -57,23 +60,19 @@ export default {
     selected() {
       return this.$store.state.addresses.selected;
     },
+    isLoading() {
+      return this.$store.state.addresses.control.address.loading;
+    },
   },
   created() {
     this.setSelected();
-  },
-  data() {
-    return {
-      isLoading: true,
-    };
   },
   watch: {
     $route: 'setSelected',
   },
   methods: {
     async setSelected() {
-      this.isLoading = true;
       await this.$store.dispatch('addresses/setSelected', this.$route.params.address);
-      this.isLoading = true;
     },
   },
 };
