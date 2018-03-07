@@ -3,6 +3,8 @@
     :to="{ name: 'Transaction', params: { transactionId, } }">
     <formatted-hash :hash="transactionId" :shorten="shorten"/>
   </router-link>
+  <!-- TODO transaction input link to direct page -->
+  <!-- TODO transaction output link to direct page -->
 </template>
 
 <script>
