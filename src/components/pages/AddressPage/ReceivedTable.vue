@@ -4,9 +4,6 @@
     <thead>
       <tr>
         <th>
-          From
-        </th>
-        <th>
           Transaction
         </th>
         <th class="is-hidden-mobile">
@@ -19,17 +16,8 @@
     </thead>
     <tbody>
       <tr v-if="outputs.length" v-for="(output, index) in outputs" :key="index">
-        <td v-if="output.addresses[0] === selected.address">
-          This address
-        </td>
-        <td v-else>
-          <formatted-address class="is-hidden-desktop" :address='output.addresses[0]'
-            :shorten="true"/>
-          <formatted-address class="is-hidden-touch" :address='output.addresses[0]'
-            :shorten="false"/>
-        </td>
         <td>
-          <formatted-hash :hash="output.transaction_id"/>
+          <transaction-link :transaction-id="output.transaction_id"/>
         </td>
         <td class="is-hidden-mobile">
           {{ output.output_number }}
@@ -56,14 +44,12 @@
 </template>
 
 <script>
-import FormattedAddress from '../../formatters/FormattedAddress';
-import FormattedHash from '../../formatters/FormattedHash';
+import TransactionLink from '../../misc/TransactionLink';
 
 export default {
   name: 'address-page',
   components: {
-    FormattedAddress,
-    FormattedHash,
+    TransactionLink,
   },
   computed: {
     selected() {

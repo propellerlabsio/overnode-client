@@ -9,10 +9,10 @@
           <th>
             Id
           </th>
-          <th class="is-hidden-mobile">
+          <th class="is-hidden-touch">
             Inputs
           </th>
-          <th class="is-hidden-mobile">
+          <th class="is-hidden-touch">
             Outputs
           </th>
           <th>
@@ -30,15 +30,15 @@
             {{ transaction.transaction_index }}
           </td>
           <td>
-            <formatted-hash class="is-hidden-tablet"
-              :hash='transaction.transaction_id' :shorten="true"/>
-            <formatted-hash class="is-hidden-mobile"
-              :hash='transaction.transaction_id' :shorten="false"/>
+            <transaction-link class="is-hidden-tablet"
+              :transaction-id='transaction.transaction_id' :shorten="true"/>
+            <transaction-link class="is-hidden-mobile"
+              :transaction-id='transaction.transaction_id' :shorten="false"/>
           </td>
-          <td class="is-hidden-mobile has-text-right">
+          <td class="is-hidden-touch has-text-right">
             {{ transaction.input_count }}
           </td>
-          <td class="is-hidden-mobile has-text-right">
+          <td class="is-hidden-touch has-text-right">
             {{ transaction.output_count }}
           </td>
           <td class="has-text-right">
@@ -66,14 +66,14 @@
 </template>
 
 <script>
-import FormattedHash from '../../formatters/FormattedHash';
 import Pager from '../../misc/Pager';
+import TransactionLink from '../../misc/TransactionLink';
 
 export default {
   name: 'block-transactions',
   components: {
-    FormattedHash,
     Pager,
+    TransactionLink,
   },
   props: {
     isLoading: false,
