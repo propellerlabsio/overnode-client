@@ -35,8 +35,6 @@
 </template>
 
 <script>
-import FormattedAddress from '../formatters/FormattedAddress';
-import FormattedHash from '../formatters/FormattedHash';
 import LoadingMessage from '../misc/LoadingMessage';
 import PageTitle from '../misc/PageTitle';
 import PageSubtitle from '../misc/PageSubtitle';
@@ -47,8 +45,6 @@ import Qrcode from '../misc/Qrcode';
 export default {
   name: 'address-page',
   components: {
-    FormattedAddress,
-    FormattedHash,
     LoadingMessage,
     PageSubtitle,
     PageTitle,

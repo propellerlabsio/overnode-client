@@ -1,18 +1,7 @@
 <template>
   <div>
-    <!-- Header -->
-    <div class="level is-mobile is-clipped">
-      <div class="level-left is-clipped">
-        <h2 class="level-item subtitle is-4 is-clipped">Transaction&nbsp;
-            <formatted-hash v-if="transaction" class="is-hidden-tablet"
-              :hash='transaction.transaction_id'
-              :shorten="true"/>
-            <formatted-hash v-if="transaction"
-              class="is-hidden-mobile is-clipped" :hash='transaction.transaction_id'
-              :shorten="false"/>
-        </h2>
-      </div>
-    </div>
+    <!-- Heading -->
+    <page-title :title="`Transaction ${ transaction ? transaction.transaction_id : '' }`"/>
 
     <!-- Transaction details -->
     <table v-if="transaction" class="table">
@@ -68,9 +57,11 @@
         <tr v-for="input in inputsPage.pageData"
           v-bind:key="input.input_number">
           <td>
-            <formatted-hash class="is-hidden-desktop" :hash='input.output_transaction_id'
+            <transaction-link class="is-hidden-desktop"
+              :transaction-id='input.output_transaction_id'
               :shorten="true"/>
-            <formatted-hash class="is-hidden-touch" :hash='input.output_transaction_id'
+            <transaction-link class="is-hidden-touch"
+              :transaction-id='input.output_transaction_id'
               :shorten="false"/>
           </td>
           <td>
@@ -115,9 +106,9 @@
           v-bind:key="output.output_number">
           <td>
             <span v-for="address in output.addresses" v-bind:key="address">
-              <formatted-address class="is-hidden-tablet" :address='address'
-                :shorten="false"/>
-              <formatted-address class="is-hidden-mobile" :address='address'
+              <address-link class="is-hidden-tablet" :address='address'
+                :shorten="true"/>
+              <address-link class="is-hidden-mobile" :address='address'
                 :shorten="false"/>
               <span v-if="output.addresses.length > 1">+</span>
             </span>
@@ -143,11 +134,11 @@
 </template>
 
 <script>
-import FormattedAddress from '../formatters/FormattedAddress';
-import FormattedHash from '../formatters/FormattedHash';
+import AddressLink from '../misc/AddressLink';
 import LoadingMessage from '../misc/LoadingMessage';
 import Pager from '../misc/Pager';
 import PageTitle from '../misc/PageTitle';
+import TransactionLink from '../misc/TransactionLink';
 
 export default {
   name: 'transaction-page',
@@ -178,11 +169,11 @@ export default {
     this.setSelectedTransaction();
   },
   components: {
-    FormattedAddress,
-    FormattedHash,
+    AddressLink,
     LoadingMessage,
     Pager,
     PageTitle,
+    TransactionLink,
   },
   methods: {
     async gotoInputsPage(pageNumber) {

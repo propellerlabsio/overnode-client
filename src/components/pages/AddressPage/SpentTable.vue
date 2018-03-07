@@ -17,7 +17,7 @@
     <tbody>
       <tr v-if="inputs.length" v-for="(input, index) in inputs" :key="index">
         <td>
-          <formatted-hash :hash="input.transaction_id"/>
+          <transaction-link :transaction-id="input.transaction_id"/>
         </td>
         <td>
           {{ input.input_number }}
@@ -44,12 +44,12 @@
 </template>
 
 <script>
-import FormattedHash from '../../formatters/FormattedHash';
+import TransactionLink from '../../misc/TransactionLink';
 
 export default {
   name: 'address-page',
   components: {
-    FormattedHash,
+    TransactionLink,
   },
   computed: {
     inputs() {

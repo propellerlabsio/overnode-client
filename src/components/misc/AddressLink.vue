@@ -3,6 +3,8 @@
     <span v-if="shorten">{{ shortAddress }}</span>
     <span v-else>{{ address }}</span>
   </router-link>
+  <!-- TODO transaction input link to direct page -->
+  <!-- TODO transaction output link to direct page -->
 </template>
 
 <script>
