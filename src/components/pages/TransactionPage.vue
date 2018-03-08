@@ -4,20 +4,8 @@
     <page-title :title="`Transaction ${ transaction ? transaction.transaction_id : '' }`"/>
 
     <!-- Transaction details -->
-    <table v-if="transaction" class="table">
-      <tbody>
-        <tr>
-          <th>
-            Size
-          </th>
-          <td>
-            {{ transaction.size }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <loading-message v-if="!transaction"/>
+    <transaction-details v-if="transaction"/>
+    <loading-message v-else/>
 
     <!-- Tabs -->
     <div v-if="transaction" class="tabs">
@@ -138,6 +126,7 @@ import AddressLink from '../misc/AddressLink';
 import LoadingMessage from '../misc/LoadingMessage';
 import Pager from '../misc/Pager';
 import PageTitle from '../misc/PageTitle';
+import TransactionDetails from './TransactionPage/TransactionDetails';
 import TransactionLink from '../misc/TransactionLink';
 
 export default {
@@ -173,6 +162,7 @@ export default {
     LoadingMessage,
     Pager,
     PageTitle,
+    TransactionDetails,
     TransactionLink,
   },
   methods: {
