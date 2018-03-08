@@ -1,5 +1,5 @@
 <template>
-  <router-link v-if="!inputNumber && !outputNumber"
+  <router-link v-if="transactionId && !inputNumber && !outputNumber"
     :to="{ name: 'Transaction', params: { transactionId, } }">
     <formatted-hash :hash="transactionId" :shorten="shorten"/>
   </router-link>
@@ -15,7 +15,7 @@ export default {
   props: {
     transactionId: {
       type: String,
-      required: true,
+      required: false,
     },
     inputNumber: {
       type: Number,
