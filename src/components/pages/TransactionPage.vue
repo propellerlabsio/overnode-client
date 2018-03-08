@@ -24,109 +24,20 @@
     </div>
 
     <!-- Transaction inputs -->
-    <table v-if="transaction && activeTab === 'inputs'" class="table">
-      <thead>
-        <tr>
-          <th>
-            Transaction
-          </th>
-          <th>
-            Output
-          </th>
-          <th>
-            Coinbase?
-          </th>
-          <th>
-            Value
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="input in inputsPage.pageData"
-          v-bind:key="input.input_number">
-          <td>
-            <transaction-link class="is-hidden-desktop"
-              :transaction-id='input.output_transaction_id'
-              :shorten="true"/>
-            <transaction-link class="is-hidden-touch"
-              :transaction-id='input.output_transaction_id'
-              :shorten="false"/>
-          </td>
-          <td>
-            {{ input.output_number }}
-          </td>
-          <td>
-            <span v-if="input.coinbase" class="icon has-text-success">
-              <i class="fa fa-check"></i>
-            </span>
-          </td>
-          <td>
-            {{ input.output_value }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- Inputs paging -->
-    <pager
-      v-if="transaction && activeTab === 'inputs'"
-      :disabled="inputsLoading"
-      :current-page="inputsPage.current"
-      :last-page="inputsPage.last"
-      @previous="gotoInputsPage(inputsPage.current - 1)"
-      @next="gotoInputsPage(inputsPage.current + 1)"
-      @goto="gotoInputsPage"/>
+    <transaction-inputs v-if="transaction && activeTab === 'inputs'"/>
 
     <!-- Transaction outputs -->
-    <table v-if="transaction && activeTab === 'outputs'" class="table">
-      <thead>
-        <tr>
-          <th>
-            Address
-          </th>
-          <th>
-            Value BCH
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="output in outputsPage.pageData"
-          v-bind:key="output.output_number">
-          <td>
-            <span v-for="address in output.addresses" v-bind:key="address">
-              <address-link class="is-hidden-tablet" :address='address'
-                :shorten="true"/>
-              <address-link class="is-hidden-mobile" :address='address'
-                :shorten="false"/>
-              <span v-if="output.addresses.length > 1">+</span>
-            </span>
-          </td>
-          <td>
-            {{ output.value }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- Outputs paging -->
-    <pager
-      v-if="transaction && activeTab === 'outputs'"
-      :disabled="outputsLoading"
-      :current-page="outputsPage.current"
-      :last-page="outputsPage.last"
-      @previous="gotoOutputsPage(outputsPage.current - 1)"
-      @next="gotoOutputsPage(outputsPage.current + 1)"
-      @goto="gotoOutputsPage"/>
-
+    <transaction-outputs v-if="transaction && activeTab === 'outputs'"/>
   </div>
 </template>
 
 <script>
 import AddressLink from '../misc/AddressLink';
 import LoadingMessage from '../misc/LoadingMessage';
-import Pager from '../misc/Pager';
 import PageTitle from '../misc/PageTitle';
 import TransactionDetails from './TransactionPage/TransactionDetails';
+import TransactionInputs from './TransactionPage/TransactionInputs';
+import TransactionOutputs from './TransactionPage/TransactionOutputs';
 import TransactionLink from '../misc/TransactionLink';
 
 export default {
@@ -134,19 +45,11 @@ export default {
   data() {
     return {
       activeTab: 'inputs',
-      inputsLoading: false,
-      outputsLoading: false,
     };
   },
   computed: {
     transaction() {
       return this.$store.state.transaction.selected;
-    },
-    inputsPage() {
-      return this.$store.getters['transaction/inputsPage'];
-    },
-    outputsPage() {
-      return this.$store.getters['transaction/outputsPage'];
     },
   },
   watch: {
@@ -160,31 +63,16 @@ export default {
   components: {
     AddressLink,
     LoadingMessage,
-    Pager,
     PageTitle,
     TransactionDetails,
+    TransactionInputs,
+    TransactionOutputs,
     TransactionLink,
   },
   methods: {
-    async gotoInputsPage(pageNumber) {
-      this.inputsLoading = true;
-      await this.$store.dispatch('transaction/setInputsPage', pageNumber);
-      this.inputsLoading = false;
-    },
-    async gotoOutputsPage(pageNumber) {
-      this.outputsLoading = true;
-      await this.$store.dispatch('transaction/setOutputsPage', pageNumber);
-      this.outputsLoading = false;
-    },
     setSelectedTransaction() {
       this.$store.dispatch('transaction/setSelected', this.$route.params.transactionId);
     },
   },
 };
 </script>
-
-<style scoped>
-  /* th {
-    width: 100px;
-  } */
-</style>
