@@ -22,7 +22,7 @@
             Details
           </a>
         </li>
-        <li :class="{ 'is-active': $route.name === 'BlockTransactions' }">
+        <li :class="{ 'is-active': transactionTabActive }">
           <a @click="navToTransactionsTab">
             Transactions
           </a>
@@ -35,7 +35,7 @@
 
     <!-- Transactions table -->
     <block-transactions
-      v-if="$route.name === 'BlockTransactions'"
+      v-if="transactionTabActive"
       :is-loading="isLoading"
       @selected="selectTransaction"/>
   </div>
@@ -56,6 +56,9 @@ export default {
     PageTitle,
   },
   computed: {
+    transactionTabActive() {
+      return this.$route.name === 'BlockTransactions' || this.$route.name === 'BlockTransaction';
+    },
     previousDisabled() {
       return this.block.height === 0 || this.isLoading;
     },
@@ -101,12 +104,24 @@ export default {
     },
     navToBlock(height) {
       if (!this.isLoading && height >= 0 && height <= this.highestBlockHeight) {
-        this.$router.push({
-          name: 'Block',
-          params: {
-            height,
-          },
-        });
+        // If currently looking at details, goto to details tab of new block
+        if (this.$route.name === 'Block') {
+          this.$router.push({
+            name: 'Block',
+            params: {
+              height,
+            },
+          });
+        } else {
+          // Currently looking at transactions, goto to transactions tab of new block
+          this.$router.push({
+            name: 'BlockTransactions',
+            params: {
+              height,
+              pageNumber: 1,
+            },
+          });
+        }
       }
     },
     gotoPreviousBlock() {
@@ -128,6 +143,7 @@ export default {
       // If new block, load it
       if (this.$route.params.height !== this.loadedBlockHeight) {
         // Only if we have a new block requested
+        this.$store.commit('blocks/setHighlightedTransactionIndex', null);
         await this.$store.dispatch('blocks/setSelected', Number(this.$route.params.height));
         this.loadedBlockHeight = this.$route.params.height;
       }
@@ -135,6 +151,14 @@ export default {
       // Load transactions for selected block/transactions page
       if (this.$route.name === 'BlockTransactions') {
         await this.$store.dispatch('blocks/setTransactionsPage', Number(this.$route.params.pageNumber));
+      } else if (this.$route.name === 'BlockTransaction') {
+        const transactionIndex = Number(this.$route.params.transactionIndex);
+        const transactionsPerPage = this.$store.state.blocks.transactionsPaging.limit;
+
+        // Calc page number (1 is first page)
+        const pageNumber = Math.floor((transactionIndex) / transactionsPerPage) + 1;
+        this.$store.commit('blocks/setHighlightedTransactionIndex', transactionIndex);
+        await this.$store.dispatch('blocks/setTransactionsPage', pageNumber);
       }
 
       this.isLoading = false;

@@ -50,6 +50,11 @@ export default new Router({
       component: BlockPage,
     },
     {
+      path: '/block/:height/transaction/:transactionIndex',
+      name: 'BlockTransaction',
+      component: BlockPage,
+    },
+    {
       path: '/block/:height/transactions/page/:pageNumber',
       name: 'BlockTransactions',
       component: BlockPage,

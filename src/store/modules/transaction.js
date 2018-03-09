@@ -131,7 +131,7 @@ const actions = {
         transaction_id
         transaction_index
         size
-        block_hash
+        block_height
         time
         input_count
         output_count

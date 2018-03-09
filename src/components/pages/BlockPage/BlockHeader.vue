@@ -32,20 +32,6 @@
         </div>
       </div>
 
-      <!-- Confirmations -->
-      <div class="columns">
-        <div class="column no-padding-bottom is-2">
-          <div :class="labelClasses">
-            Confirmations
-          </div>
-        </div>
-        <div class="column">
-          <div :class="dataClasses">
-            {{ block.confirmations }}
-          </div>
-        </div>
-      </div>
-
       <!-- Size -->
       <div class="columns">
         <div class="column no-padding-bottom is-2">

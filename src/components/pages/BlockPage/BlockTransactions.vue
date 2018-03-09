@@ -25,15 +25,18 @@
       </thead>
       <tbody>
         <tr v-for="transaction in page.pageData" :key="transaction.txid"
-          @click="$emit('selected', transaction.transaction_id)">
+          @click="$emit('selected', transaction.transaction_id)"
+          :class="{
+            'is-selected': transaction.transaction_index === highlightedIndex,
+          }">
           <td>
             {{ transaction.transaction_index }}
           </td>
           <td>
-            <transaction-link class="is-hidden-tablet"
-              :transaction-id='transaction.transaction_id' :shorten="true"/>
-            <transaction-link class="is-hidden-mobile"
-              :transaction-id='transaction.transaction_id' :shorten="false"/>
+            <formatted-hash class="is-hidden-tablet"
+              :hash='transaction.transaction_id' :shorten="true"/>
+            <formatted-hash class="is-hidden-mobile"
+              :hash='transaction.transaction_id' :shorten="false"/>
           </td>
           <td class="is-hidden-touch has-text-right">
             {{ transaction.input_count }}
@@ -45,11 +48,9 @@
             {{ transaction.size }}
           </td>
           <td class="has-text-centered">
-            <a class="button is-white">
-              <span class="icon">
-                <i class="fa fa-chevron-right"></i>
-              </span>
-            </a>
+            <span class="icon">
+              <i class="fa fa-chevron-right"></i>
+            </span>
           </td>
         </tr>
       </tbody>
@@ -66,19 +67,22 @@
 </template>
 
 <script>
+import FormattedHash from '../../formatters/FormattedHash';
 import Pager from '../../misc/Pager';
-import TransactionLink from '../../misc/TransactionLink';
 
 export default {
   name: 'block-transactions',
   components: {
+    FormattedHash,
     Pager,
-    TransactionLink,
   },
   props: {
     isLoading: false,
   },
   computed: {
+    highlightedIndex() {
+      return this.$store.state.blocks.highlightedTransactionIndex;
+    },
     page() {
       return this.$store.getters['blocks/transactionsPage'];
     },

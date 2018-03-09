@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import TransactionLink from '../../misc/TransactionLink';
+import TransactionLink from '../../links/TransactionLink';
 
 export default {
   name: 'address-page',
