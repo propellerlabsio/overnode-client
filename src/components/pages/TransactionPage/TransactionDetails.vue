@@ -15,9 +15,8 @@
           Block
         </th>
         <td>
-          <router-link :to="{ name: 'Block', params: { height: transaction.block_height } }">
-            {{ transaction.block_height }}
-          </router-link>
+          <block-link :height="transaction.block_height"
+            :transaction-index="transaction.transaction_index"/>
         </td>
       </tr>
       <tr>
@@ -33,11 +32,13 @@
 </template>
 
 <script>
+import BlockLink from '../../links/BlockLink';
 import FormattedUnixTime from '../../formatters/FormattedUnixTime';
 
 export default {
   name: 'transaction-details',
   components: {
+    BlockLink,
     FormattedUnixTime,
   },
   computed: {

@@ -18,6 +18,7 @@ const state = {
     limit: 10,
     offset: 0,
   },
+  highlightedTransactionIndex: null,
   pageTransactions: [],
 };
 
@@ -27,6 +28,9 @@ const mutations = {
   },
   setHeight(state, height) {
     Vue.set(state, 'height', height);
+  },
+  setHighlightedTransactionIndex(state, transactionIndex) {
+    Vue.set(state, 'highlightedTransactionIndex', transactionIndex);
   },
   setLatest(state, blocks) {
     Vue.set(state, 'latest', blocks);
