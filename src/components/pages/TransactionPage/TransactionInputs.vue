@@ -58,7 +58,7 @@
 
 <script>
 import Pager from '../../misc/Pager';
-import TransactionLink from '../../misc/TransactionLink';
+import TransactionLink from '../../links/TransactionLink';
 
 export default {
   name: 'transaction-inputs',

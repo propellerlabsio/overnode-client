@@ -32,13 +32,13 @@
 </template>
 
 <script>
-import AddressLink from '../misc/AddressLink';
+import AddressLink from '../links/AddressLink';
 import LoadingMessage from '../misc/LoadingMessage';
 import PageTitle from '../misc/PageTitle';
 import TransactionDetails from './TransactionPage/TransactionDetails';
 import TransactionInputs from './TransactionPage/TransactionInputs';
 import TransactionOutputs from './TransactionPage/TransactionOutputs';
-import TransactionLink from '../misc/TransactionLink';
+import TransactionLink from '../links/TransactionLink';
 
 export default {
   name: 'transaction-page',

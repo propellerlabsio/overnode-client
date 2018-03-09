@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import AddressLink from '../../misc/AddressLink';
+import AddressLink from '../../links/AddressLink';
 import Pager from '../../misc/Pager';
 
 export default {
