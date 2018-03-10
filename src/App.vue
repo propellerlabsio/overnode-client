@@ -1,13 +1,13 @@
 <template>
-  <div id="app" class="container">
-    <section class="section app-header">
-      <navbar />
+  <div id="app">
+    <navbar />
+    <section class="section app-header container">
       <server-sync-status />
       <socket-connection />
       <upgrade-watcher />
       <hero-banner v-if="$route.name === 'Home'" />
     </section>
-    <section class="section page">
+    <section class="section page container">
       <router-view/>
       <toasts/>
     </section>
