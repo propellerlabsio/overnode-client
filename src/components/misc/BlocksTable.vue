@@ -54,11 +54,9 @@
           {{ (block.size / 1000000).toFixed(3) }}
         </td>
         <td class="has-text-centered">
-          <a class="button is-white is-small">
-            <span class="icon">
-              <i class="fa fa-chevron-right"></i>
-            </span>
-          </a>
+          <span class="icon">
+            <i class="fa fa-chevron-right"></i>
+          </span>
         </td>
       </tr>
     </tbody>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Transaction outputs -->
-    <table class="table">
+    <table class="table is-striped is-hoverable">
       <thead>
         <tr>
           <th>
@@ -10,22 +10,31 @@
           <th>
             Value BCH
           </th>
+          <th>
+            <!-- Nav icon -->
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="output in outputsPage.pageData"
+          @click="navToAddress(output.addresses[0])"
           v-bind:key="output.output_number">
           <td>
             <span v-for="address in output.addresses" v-bind:key="address">
-              <address-link class="is-hidden-tablet" :address='address'
+              <formatted-address class="is-hidden-tablet" :address='address'
                 :shorten="true"/>
-              <address-link class="is-hidden-mobile" :address='address'
+              <formatted-address class="is-hidden-mobile" :address='address'
                 :shorten="false"/>
               <span v-if="output.addresses.length > 1">+</span>
             </span>
           </td>
           <td>
             {{ output.value }}
+          </td>
+          <td class="has-text-centered">
+            <span class="icon">
+              <i class="fa fa-chevron-right"></i>
+            </span>
           </td>
         </tr>
       </tbody>
@@ -44,7 +53,7 @@
 </template>
 
 <script>
-import AddressLink from '../../links/AddressLink';
+import FormattedAddress from '../../formatters/FormattedAddress';
 import Pager from '../../misc/Pager';
 
 export default {
@@ -60,7 +69,7 @@ export default {
     },
   },
   components: {
-    AddressLink,
+    FormattedAddress,
     Pager,
   },
   methods: {
@@ -68,6 +77,18 @@ export default {
       this.outputsLoading = true;
       await this.$store.dispatch('transaction/setOutputsPage', pageNumber);
       this.outputsLoading = false;
+    },
+    /**
+     * Nav to the address nominated
+     */
+    navToAddress(address) {
+      // TODO nav direct to output
+      this.$router.push({
+        name: 'Address',
+        params: {
+          address,
+        },
+      });
     },
   },
 };
