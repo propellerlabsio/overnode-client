@@ -1,13 +1,14 @@
 <template>
   <router-link :to="{ name: 'Address', params: { address } }">
-    <span v-if="shorten">{{ shortAddress }}</span>
-    <span v-else>{{ address }}</span>
+    <formatted-address :address="address" :shorten="shorten"/>
   </router-link>
 </template>
 
 <script>
+import FormattedAddress from '../formatters/FormattedAddress';
+
 export default {
-  name: 'formatted-address',
+  name: 'address-link',
   props: {
     address: String,
     shorten: {
@@ -15,16 +16,8 @@ export default {
       default: true,
     },
   },
-  computed: {
-    shortAddress() {
-      let shortAddress = this.address;
-      if (shortAddress) {
-        const startChars = shortAddress.substr(0, 6);
-        const endChars = shortAddress.substr(shortAddress.length - 6);
-        shortAddress = `${startChars}...${endChars}`;
-      }
-      return shortAddress;
-    },
+  components: {
+    FormattedAddress,
   },
 };
 </script>

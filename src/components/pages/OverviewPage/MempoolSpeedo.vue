@@ -282,7 +282,7 @@ export default {
       // Append text for mempool size bytes value
       this.svg
         .append('text')
-        .text('300000000')
+        .text('999999999')
         .attr('id', 'size')
         .attr('class', 'is-unselectable')
         .style('fill', '#000000')

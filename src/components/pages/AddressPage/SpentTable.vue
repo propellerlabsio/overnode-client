@@ -1,6 +1,6 @@
 <template>
   <table
-    class="table is-fullwidth">
+    class="table is-fullwidth is-striped is-hoverable">
     <thead>
       <tr>
         <th>
@@ -12,18 +12,27 @@
         <th>
           Value
         </th>
+        <th>
+          <!-- Nav icon -->
+        </th>
       </tr>
     </thead>
     <tbody>
-      <tr v-if="inputs.length" v-for="(input, index) in inputs" :key="index">
+      <tr v-if="inputs.length" v-for="(input, index) in inputs" :key="index"
+          @click="navToTransactionInput(input)">
         <td>
-          <transaction-link :transaction-id="input.transaction_id"/>
+          <formatted-hash :hash="input.transaction_id"/>
         </td>
         <td>
           {{ input.input_number }}
         </td>
         <td>
           {{ input.output_value }}
+        </td>
+        <td class="has-text-centered">
+          <span class="icon">
+            <i class="fa fa-chevron-right"></i>
+          </span>
         </td>
       </tr>
       <tr v-if="!inputs.length">
@@ -44,12 +53,12 @@
 </template>
 
 <script>
-import TransactionLink from '../../links/TransactionLink';
+import FormattedHash from '../../formatters/FormattedHash';
 
 export default {
-  name: 'address-page',
+  name: 'spent-table',
   components: {
-    TransactionLink,
+    FormattedHash,
   },
   computed: {
     inputs() {
@@ -82,6 +91,18 @@ export default {
           type: 'info',
         });
       }
+    },
+    /**
+     * Nav to a transaction input
+     */
+    navToTransactionInput(input) {
+      // TODO nav direct to input number
+      this.$router.push({
+        name: 'Transaction',
+        params: {
+          transactionId: input.transaction_id,
+        },
+      });
     },
   },
 };

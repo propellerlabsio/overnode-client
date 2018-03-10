@@ -1,9 +1,12 @@
 <template>
   <div>
     <!-- Transaction inputs -->
-    <table class="table">
+    <table class="table is-striped is-hoverable">
       <thead>
         <tr>
+          <th>
+            <!-- Nav icon -->
+          </th>
           <th>
             Transaction
           </th>
@@ -20,13 +23,19 @@
       </thead>
       <tbody>
         <tr v-for="input in inputsPage.pageData"
-          v-bind:key="input.input_number">
+          v-bind:key="input.input_number"
+          @click="navToTransactionOutput(input)">
+          <td class="has-text-centered">
+            <span class="icon">
+              <i class="fa fa-chevron-left"></i>
+            </span>
+          </td>
           <td>
-            <transaction-link class="is-hidden-desktop"
-              :transaction-id='input.output_transaction_id'
+            <formatted-hash class="is-hidden-desktop"
+              :hash='input.output_transaction_id'
               :shorten="true"/>
-            <transaction-link class="is-hidden-touch"
-              :transaction-id='input.output_transaction_id'
+            <formatted-hash class="is-hidden-touch"
+              :hash='input.output_transaction_id'
               :shorten="false"/>
           </td>
           <td>
@@ -58,7 +67,7 @@
 
 <script>
 import Pager from '../../misc/Pager';
-import TransactionLink from '../../links/TransactionLink';
+import FormattedHash from '../../formatters/FormattedHash';
 
 export default {
   name: 'transaction-inputs',
@@ -73,14 +82,27 @@ export default {
     },
   },
   components: {
+    FormattedHash,
     Pager,
-    TransactionLink,
   },
   methods: {
     async gotoInputsPage(pageNumber) {
       this.inputsLoading = true;
       await this.$store.dispatch('transaction/setInputsPage', pageNumber);
       this.inputsLoading = false;
+    },
+
+    /**
+     * Nav to the transaction output that makes the nominated input
+     */
+    navToTransactionOutput(input) {
+      // TODO nav direct to output number
+      this.$router.push({
+        name: 'Transaction',
+        params: {
+          transactionId: input.output_transaction_id,
+        },
+      });
     },
   },
 };

@@ -1,8 +1,11 @@
 <template>
   <table
-    class="table is-fullwidth">
+    class="table is-fullwidth is-striped is-hoverable">
     <thead>
       <tr>
+        <th>
+          <!-- Nav icon -->
+        </th>
         <th>
           Transaction
         </th>
@@ -15,9 +18,15 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-if="outputs.length" v-for="(output, index) in outputs" :key="index">
+      <tr v-if="outputs.length" v-for="(output, index) in outputs" :key="index"
+          @click="navToTransactionOutput(output)">
+        <td class="has-text-centered">
+          <span class="icon">
+            <i class="fa fa-chevron-left"></i>
+          </span>
+        </td>
         <td>
-          <transaction-link :transaction-id="output.transaction_id"/>
+          <formatted-hash :hash="output.transaction_id"/>
         </td>
         <td class="is-hidden-mobile">
           {{ output.output_number }}
@@ -44,12 +53,12 @@
 </template>
 
 <script>
-import TransactionLink from '../../links/TransactionLink';
+import FormattedHash from '../../formatters/FormattedHash';
 
 export default {
-  name: 'address-page',
+  name: 'receeived-table',
   components: {
-    TransactionLink,
+    FormattedHash,
   },
   computed: {
     selected() {
@@ -85,6 +94,18 @@ export default {
           type: 'info',
         });
       }
+    },
+    /**
+     * Nav to a transaction output
+     */
+    navToTransactionOutput(output) {
+      // TODO nav direct to output number
+      this.$router.push({
+        name: 'Transaction',
+        params: {
+          transactionId: output.transaction_id,
+        },
+      });
     },
   },
 };
