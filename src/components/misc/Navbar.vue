@@ -8,12 +8,12 @@
             alt="Overnode logo"/>
         </router-link>
 
-        <button class="button navbar-burger" :class="{ 'is-active': menuActive }"
+        <div class="navbar-burger" :class="{ 'is-active': menuActive }"
           @click="menuActive = !menuActive">
           <span></span>
           <span></span>
           <span></span>
-        </button>
+        </div>
 
       </div>
 
@@ -88,6 +88,10 @@ export default {
 
   .navbar-end {
     padding-right: 1.5rem;
+  }
+
+  .navbar-burger > span { 
+      color: #ffffff;
   }
 
 </style>
