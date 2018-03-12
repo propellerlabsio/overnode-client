@@ -90,7 +90,7 @@ export default {
     padding-right: 1.5rem;
   }
 
-  .navbar-burger > span { 
+  .navbar-burger > span {
       color: #ffffff;
   }
 
