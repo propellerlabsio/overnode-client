@@ -51,7 +51,7 @@ const paging = {
         offset: pagingState.offset,
         limit: pagingState.limit,
         current: Math.floor(pagingState.offset / pagingState.limit) + 1,
-        last: Math.floor(allCount / pagingState.limit) + 1,
+        last: Math.ceil(allCount / pagingState.limit),
         pageData,
       };
     }
