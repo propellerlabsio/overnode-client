@@ -5,7 +5,7 @@
         <page-title :title="`Address ${selected.address}`"/>
       </div>
       <div class="column is-narrow has-text-centered">
-        <qrcode :address="selected.address" :small="true"/>
+        <qrcode :address="`bitcoincash:${selected.address}`" :small="true"/>
       </div>
     </div>
     <loading-message v-if="isLoading"/>

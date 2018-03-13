@@ -85,6 +85,7 @@ const actions = {
           transaction_id
           output_number
           value
+          address
           addresses
         }
       }
@@ -146,6 +147,7 @@ const actions = {
           transaction_id
           output_number
           value
+          address
           addresses
         }        
       }
