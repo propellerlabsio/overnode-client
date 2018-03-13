@@ -17,15 +17,23 @@
       </thead>
       <tbody>
         <tr v-for="output in outputsPage.pageData"
-          @click="navToAddress(output.addresses[0])"
+          @click="navToAddress(output.address || output.addresses[0])"
           v-bind:key="output.output_number">
           <td>
-            <span v-for="address in output.addresses" v-bind:key="address">
-              <formatted-address class="is-hidden-tablet" :address='address'
+            <!-- Single address output -->
+            <span v-if="output.address">
+              <formatted-address class="is-hidden-tablet" :address='output.address'
                 :shorten="true"/>
-              <formatted-address class="is-hidden-mobile" :address='address'
+              <formatted-address class="is-hidden-mobile" :address='output.address'
                 :shorten="false"/>
-              <span v-if="output.addresses.length > 1">+</span>
+            </span>
+
+            <!-- Multiple address output -->
+            <span v-else v-for="address in output.addresses" v-bind:key="address">
+              <address-link class="is-hidden-tablet" :address='address'
+                :shorten="true"/>
+              <address-link class="is-hidden-mobile" :address='address'
+                :shorten="false"/>
             </span>
           </td>
           <td>
@@ -54,6 +62,7 @@
 
 <script>
 import FormattedAddress from '../../formatters/FormattedAddress';
+import AddressLink from '../../links/AddressLink';
 import Pager from '../../misc/Pager';
 
 export default {
@@ -69,6 +78,7 @@ export default {
     },
   },
   components: {
+    AddressLink,
     FormattedAddress,
     Pager,
   },
