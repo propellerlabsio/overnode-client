@@ -17,8 +17,9 @@ module.exports = {
         ws: true,
       },      
       '/graphql': {
-        target: 'http://localhost:4000',
+        target: 'https://overnode.org', // UNDO THIS CHANGE BEFORE MERGING
         changeOrigin: true,
+        secure: true, // UNDO THIS CHANGE BEFORE MERGING
       },      
     },
 

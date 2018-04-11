@@ -90,10 +90,12 @@ export default {
     },
     startConnection() {
       try {
-        const protocol = location.protocol.includes('https') ?
-          'wss' :
-          'ws';
-        this.connection = new WebSocket(`${protocol}://${location.host}/socket`);
+        // UNDO BELOW CHANGES BEFORE MERGING
+        // const protocol = location.protocol.includes('https') ?
+        // 'wss' :
+        // 'ws';
+        // this.connection = new WebSocket(`${protocol}://${location.host}/socket`);
+        this.connection = new WebSocket('wss://overnode.org/socket');
       } catch (err) {
         // Can't even create WebSocket.  Just exit and allow reconnection logic to
         // try again later
