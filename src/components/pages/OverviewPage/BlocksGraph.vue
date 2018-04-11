@@ -211,15 +211,13 @@ export default {
         .attr('class', 'intervalPipBg')
         .attr('r', 5.5)
         .style('fill', 'white')
-        .style('stroke', 'none')
-        .call(this.addBlockNavigation);
+        .style('stroke', 'none');
 
       intervalPipScalers
         .append('circle')
         .attr('class', 'intervalPipFg')
         .style('fill', this.colors.blockIntervals)
-        .attr('r', 3.0)
-        .call(this.addBlockNavigation);
+        .attr('r', 3.0);
     },
 
     drawBlockNumbers() {
@@ -274,12 +272,32 @@ export default {
       axis.selectAll('text')
         .style('stroke', 'none')
         .attr('fill', this.colors.blockMegabytes);
+
+      // Create transparent press targets last - these are invisible, full-height columns
+      // that are drawn over the top of each block (megabytes bar and time interval).
+      // Resolves issue #7
+      mainGroup
+        .selectAll('.block-press-target')
+        .data(this.blocks)
+        .enter()
+        .append('rect')
+        .attr('class', 'block-press-target')
+        .attr('x', d => this.ranges.blockNumbers(d.number) - 10)
+        .attr('y', 0)
+        .attr('height', this.height)
+        .attr('width', 20)
+        .call(this.addBlockNavigation);
     },
   },
 };
 </script>
 
 <style>
+  .block-press-target {
+    fill: transparent;
+    stroke: none;
+  }
+
   .block-megabytes-bar, .intervalPipBg, .intervalPipFg {
     cursor: pointer;
   }
