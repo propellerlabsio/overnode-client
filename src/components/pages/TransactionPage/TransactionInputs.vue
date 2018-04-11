@@ -8,13 +8,13 @@
             <!-- Nav icon -->
           </th>
           <th>
+            Coinbase?
+          </th>
+          <th>
             Transaction
           </th>
           <th>
             Output
-          </th>
-          <th>
-            Coinbase?
           </th>
           <th>
             Value
@@ -23,12 +23,8 @@
       </thead>
       <tbody>
         <tr v-for="input in inputsPage.pageData"
-          v-bind:key="input.input_number"
-          @click="navToTransactionOutput(input)">
+          v-bind:key="input.input_number">
           <td class="has-text-centered">
-            <span class="icon">
-              <i class="fa fa-chevron-left"></i>
-            </span>
           </td>
           <td>
             <formatted-hash class="is-hidden-desktop"
@@ -95,15 +91,15 @@ export default {
     /**
      * Nav to the transaction output that makes the nominated input
      */
-    navToTransactionOutput(input) {
-      // TODO nav direct to output number
-      this.$router.push({
-        name: 'Transaction',
-        params: {
-          transactionId: input.output_transaction_id,
-        },
-      });
-    },
+    // navToTransactionOutput(input) {
+    //   // TODO nav direct to output number
+    //   this.$router.push({
+    //     name: 'Transaction',
+    //     params: {
+    //       transactionId: input.output_transaction_id,
+    //     },
+    //   });
+    // },
   },
 };
 </script>
