@@ -22,11 +22,14 @@
         <tr v-for="input in inputsPage.pageData"
           v-bind:key="input.input_number">
           <td class="has-text-centered">
+            <span v-if="!input.coinbase" class = "icon">
+              <i  @click="navToTransactionOutput(input)" class = "fa fa-chevron-left"></i>
+            </span>
           </td>
+          <td>
             <span v-if="input.coinbase">
                Coinbase
             </span>
-          <td>
             <formatted-hash class="is-hidden-desktop"
               :hash='input.output_transaction_id'
               :shorten="true"/>
@@ -65,6 +68,7 @@ export default {
   data() {
     return {
       inputsLoading: false,
+      isDisabled: false,
     };
   },
   computed: {
@@ -81,6 +85,14 @@ export default {
       this.inputsLoading = true;
       await this.$store.dispatch('transaction/setInputsPage', pageNumber);
       this.inputsLoading = false;
+    },
+    navToTransactionOutput(input) {
+      this.$router.push({
+        name: 'Transaction',
+        params: {
+          transactionId: input.output_transaction_id,
+        },
+      });
     },
   },
 };
