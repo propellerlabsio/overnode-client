@@ -68,7 +68,6 @@ export default {
   data() {
     return {
       inputsLoading: false,
-      isDisabled: false,
     };
   },
   computed: {
