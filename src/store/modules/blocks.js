@@ -123,7 +123,7 @@ const actions = {
         block(height: $height) {
           transactions(paging: $paging) {
             transaction_id
-            transaction_index
+            transaction_number
             size
             time
             input_count
@@ -204,7 +204,7 @@ const actions = {
         interval
         transactions(paging: $transactionsPaging) {
           transaction_id
-          transaction_index
+          transaction_number
           size
           time
           input_count

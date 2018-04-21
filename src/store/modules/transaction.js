@@ -130,7 +130,7 @@ const actions = {
     const query = `query($transactionId: String!, $inputsPaging: Paging!, $outputsPaging: Paging!) {
       transaction(transaction_id: $transactionId) {
         transaction_id
-        transaction_index
+        transaction_number
         size
         block_height
         time

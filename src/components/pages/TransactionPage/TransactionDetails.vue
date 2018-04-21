@@ -16,7 +16,7 @@
         </th>
         <td>
           <block-link :height="transaction.block_height"
-            :transaction-index="transaction.transaction_index"/>
+            :transaction-index="transaction.transaction_number"/>
         </td>
       </tr>
       <tr>
