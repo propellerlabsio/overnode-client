@@ -159,8 +159,17 @@ const actions = {
       outputsPaging: state.outputsPaging,
     };
 
-    // Execute query and set data in store
+    // Execute query
     const response = await dispatch('session/request', { query, variables }, { root: true });
+
+    // Dummy up coinbase transaction which isn't in the database/provided by this query
+    if (response.transaction.transaction_number === 0) {
+      response.transaction.inputs.unshift({
+        input_number: 0,
+        coinbase: true,
+      });
+    }
+
     commit('setSelected', response.transaction);
   },
 };
