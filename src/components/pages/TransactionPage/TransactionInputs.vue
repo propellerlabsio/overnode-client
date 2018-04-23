@@ -14,23 +14,22 @@
             Output
           </th>
           <th>
-            Coinbase?
-          </th>
-          <th>
             Value
           </th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="input in inputsPage.pageData"
-          v-bind:key="input.input_number"
-          @click="navToTransactionOutput(input)">
+          v-bind:key="input.input_number">
           <td class="has-text-centered">
-            <span class="icon">
-              <i class="fa fa-chevron-left"></i>
+            <span v-if="!input.coinbase" class = "icon">
+              <i  @click="navToTransactionOutput(input)" class = "fa fa-chevron-left"></i>
             </span>
           </td>
           <td>
+            <span v-if="input.coinbase">
+               Coinbase
+            </span>
             <formatted-hash class="is-hidden-desktop"
               :hash='input.output_transaction_id'
               :shorten="true"/>
@@ -40,11 +39,6 @@
           </td>
           <td>
             {{ input.output_number }}
-          </td>
-          <td>
-            <span v-if="input.coinbase" class="icon has-text-success">
-              <i class="fa fa-check"></i>
-            </span>
           </td>
           <td>
             {{ input.output_value }}
@@ -91,12 +85,7 @@ export default {
       await this.$store.dispatch('transaction/setInputsPage', pageNumber);
       this.inputsLoading = false;
     },
-
-    /**
-     * Nav to the transaction output that makes the nominated input
-     */
     navToTransactionOutput(input) {
-      // TODO nav direct to output number
       this.$router.push({
         name: 'Transaction',
         params: {
