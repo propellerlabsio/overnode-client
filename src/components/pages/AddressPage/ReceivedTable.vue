@@ -3,7 +3,7 @@
     class="table is-fullwidth is-striped is-hoverable">
     <thead>
       <tr>
-        <th>
+        <th class="is-narrow">
           <!-- Nav icon -->
         </th>
         <th>
@@ -20,7 +20,7 @@
     <tbody>
       <tr v-if="outputs.length" v-for="(output, index) in outputs" :key="index"
           @click="navToTransactionOutput(output)">
-        <td class="has-text-centered">
+        <td class="has-text-centered is-narrow">
           <span class="icon">
             <i class="fa fa-chevron-left"></i>
           </span>

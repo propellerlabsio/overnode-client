@@ -12,7 +12,7 @@
         <th>
           Value
         </th>
-        <th>
+        <th class="is-narrow">
           <!-- Nav icon -->
         </th>
       </tr>
@@ -29,7 +29,7 @@
         <td>
           {{ input.output_value }}
         </td>
-        <td class="has-text-centered">
+        <td class="has-text-centered is-narrow">
           <span class="icon">
             <i class="fa fa-chevron-right"></i>
           </span>

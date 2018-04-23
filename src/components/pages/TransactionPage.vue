@@ -8,26 +8,8 @@
     <loading-message v-else/>
 
     <!-- Tabs -->
-    <div v-if="transaction" class="tabs">
-      <ul>
-        <li :class="{ 'is-active': activeTab === 'inputs' }">
-          <a @click="activeTab = 'inputs'">
-            Inputs ({{ transaction.input_count }})
-          </a>
-        </li>
-        <li :class="{ 'is-active': activeTab === 'outputs' }">
-          <a @click="activeTab = 'outputs'">
-            Outputs ({{ transaction.output_count }})
-          </a>
-        </li>
-      </ul>
-    </div>
-
-    <!-- Transaction inputs -->
-    <transaction-inputs v-if="transaction && activeTab === 'inputs'"/>
-
-    <!-- Transaction outputs -->
-    <transaction-outputs v-if="transaction && activeTab === 'outputs'"/>
+    <transaction-io-tabs class="is-hidden-desktop"/>
+    <transaction-io-no-tabs class="is-hidden-touch"/>
   </div>
 </template>
 
@@ -36,8 +18,8 @@ import AddressLink from '../links/AddressLink';
 import LoadingMessage from '../misc/LoadingMessage';
 import PageTitle from '../misc/PageTitle';
 import TransactionDetails from './TransactionPage/TransactionDetails';
-import TransactionInputs from './TransactionPage/TransactionInputs';
-import TransactionOutputs from './TransactionPage/TransactionOutputs';
+import TransactionIoTabs from './TransactionPage/TransactionIoTabs';
+import TransactionIoNoTabs from './TransactionPage/TransactionIoNoTabs';
 import TransactionLink from '../links/TransactionLink';
 
 export default {
@@ -65,8 +47,8 @@ export default {
     LoadingMessage,
     PageTitle,
     TransactionDetails,
-    TransactionInputs,
-    TransactionOutputs,
+    TransactionIoTabs,
+    TransactionIoNoTabs,
     TransactionLink,
   },
   methods: {

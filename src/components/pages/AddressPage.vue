@@ -13,21 +13,21 @@
     <div v-else class="columns is-multiline">
       <div class="column">
         <div class="box is-hidden-mobile">
-          <page-subtitle :title="`Received ${selected.totals.received}`"/>
+          <page-subtitle :title="`Received ${selected.totals.received} BCH`"/>
           <received-table/>
         </div>
         <div class="is-hidden-tablet">
-          <page-subtitle :title="`Received ${selected.totals.received}`"/>
+          <page-subtitle :title="`Received ${selected.totals.received} BCH`"/>
           <received-table/>
         </div>
       </div>
       <div class="column">
         <div class="box is-hidden-mobile">
-          <page-subtitle :title="`Spent ${selected.totals.spent}`"/>
+          <page-subtitle :title="`Spent ${selected.totals.spent} BCH`"/>
           <spent-table />
         </div>
         <div class="is-hidden-tablet">
-          <page-subtitle :title="`Spent ${selected.totals.spent}`"/>
+          <page-subtitle :title="`Spent ${selected.totals.spent} BCH`"/>
           <spent-table />
         </div>
       </div>

@@ -14,28 +14,26 @@
             Output
           </th>
           <th>
-            Value
+            Value BCH
           </th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="input in inputsPage.pageData"
-          v-bind:key="input.input_number">
+          v-bind:key="input.input_number"
+          @click="navToTransactionOutput(input)">
           <td class="has-text-centered">
             <span v-if="!input.coinbase" class = "icon">
-              <i  @click="navToTransactionOutput(input)" class = "fa fa-chevron-left"></i>
+              <i class = "fa fa-chevron-left"></i>
             </span>
           </td>
           <td>
             <span v-if="input.coinbase">
                Coinbase
             </span>
-            <formatted-hash class="is-hidden-desktop"
+            <formatted-hash
               :hash='input.output_transaction_id'
               :shorten="true"/>
-            <formatted-hash class="is-hidden-touch"
-              :hash='input.output_transaction_id'
-              :shorten="false"/>
           </td>
           <td>
             {{ input.output_number }}
@@ -86,12 +84,14 @@ export default {
       this.inputsLoading = false;
     },
     navToTransactionOutput(input) {
-      this.$router.push({
-        name: 'Transaction',
-        params: {
-          transactionId: input.output_transaction_id,
-        },
-      });
+      if (!input.coinbase) {
+        this.$router.push({
+          name: 'Transaction',
+          params: {
+            transactionId: input.output_transaction_id,
+          },
+        });
+      }
     },
   },
 };

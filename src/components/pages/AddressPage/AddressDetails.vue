@@ -6,7 +6,7 @@
           Balance
         </th>
         <td>
-          {{ balance }}
+          {{ balance }} BCH
         </td>
       </tr>
     </tbody>

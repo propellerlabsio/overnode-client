@@ -1,14 +1,13 @@
 <template>
   <article class="message is-warning" v-if="syncing">
-    <div class="message-header">
+    <div class="message-header" @click="showDetails = !showDetails">
       <p>
         <span class="icon">
           <i class="fa fa-wrench"></i>
         </span>
         Overnode is syncing.  Not all data is available yet.
       </p>
-      <button class="button is-small is-warning is-pulled-right" aria-label="details"
-        @click="showDetails = !showDetails">
+      <button class="button is-small is-warning is-pulled-right" aria-label="details" >
         <span class="icon">
           <i class="fa" :class="{ 'fa-chevron-down': !showDetails,
             'fa-chevron-up': showDetails }"></i>

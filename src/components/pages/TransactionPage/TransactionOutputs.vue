@@ -22,18 +22,14 @@
           <td>
             <!-- Single address output -->
             <span v-if="output.address">
-              <formatted-address class="is-hidden-tablet" :address='output.address'
+              <formatted-address :address='output.address'
                 :shorten="true"/>
-              <formatted-address class="is-hidden-mobile" :address='output.address'
-                :shorten="false"/>
             </span>
 
             <!-- Multiple address output -->
             <span v-else v-for="address in output.addresses" v-bind:key="address">
-              <address-link class="is-hidden-tablet" :address='address'
+              <address-link :address='address'
                 :shorten="true"/>
-              <address-link class="is-hidden-mobile" :address='address'
-                :shorten="false"/>
             </span>
           </td>
           <td>
