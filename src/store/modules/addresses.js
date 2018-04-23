@@ -5,6 +5,10 @@ const pagingLimit = 10;
 const initialState = {
   selected: {
     address: '',
+    totals: {
+      received: 0,
+      spent: 0,
+    },
     received: [],
     spent: [],
   },
@@ -126,6 +130,10 @@ const actions = {
     const query = `query($address: String!, $spentPaging: Paging!, $receivedPaging: Paging!) {
       address(address:$address) {
         address
+        totals {
+          received
+          spent
+        }
         received(paging: $receivedPaging) {
           transaction_id
           output_number
