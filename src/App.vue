@@ -48,8 +48,14 @@ export default {
   },
   created() {
     this.periodicallyUpdateHumanizedTimes();
+    this.periodicallyUpdatePrices();
   },
   methods: {
+    async periodicallyUpdatePrices() {
+      const fiveMinutes = 1000 * 60 * 5;
+      await this.$store.dispatch('currencies/updatePrices');
+      window.setTimeout(this.periodicallyUpdatePrices, fiveMinutes);
+    },
     periodicallyUpdateHumanizedTimes() {
       this.$store.commit('blocks/humanizeTimes');
       window.setTimeout(this.periodicallyUpdateHumanizedTimes, 30000);
