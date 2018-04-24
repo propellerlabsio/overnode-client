@@ -88,13 +88,20 @@ export default {
      * Nav to the address nominated
      */
     navToAddress(address) {
-      // TODO nav direct to output
-      this.$router.push({
-        name: 'Address',
-        params: {
-          address,
-        },
-      });
+      if (address) {
+        this.$router.push({
+          name: 'Address',
+          params: {
+            address,
+          },
+        });
+      } else {
+        this.$store.commit('toasts/add', {
+          message: 'This transaction output has no address.  It may be non-standard.',
+          timeoutSecs: 5,
+          type: 'warning',
+        });
+      }
     },
   },
 };
