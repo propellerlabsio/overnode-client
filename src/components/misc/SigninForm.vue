@@ -91,7 +91,7 @@ export default {
           permanent: this.permanent,
         });
 
-        await this.$store.dispatch('session/start', accessToken);
+        await this.$store.dispatch('session/start', { accessToken, keep: this.permanent });
         this.loading = false;
       } catch (err) {
         this.loading = false;

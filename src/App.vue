@@ -47,6 +47,7 @@ export default {
     },
   },
   created() {
+    this.$store.dispatch('session/restore');
     this.periodicallyUpdateHumanizedTimes();
     this.periodicallyUpdatePrices();
   },

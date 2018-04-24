@@ -97,7 +97,7 @@ export default {
         });
       } else {
         this.$store.commit('toasts/add', {
-          message: 'This transaction output has no address.  It may be non-standard.',
+          message: 'This output has no address.  It may be non-standard.',
           timeoutSecs: 5,
           type: 'warning',
         });

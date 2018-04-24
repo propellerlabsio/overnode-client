@@ -61,17 +61,36 @@ const mutations = {
 
 const actions = {
   /**
+   * Attempt to restore session (if any) from local storage
+   */
+  async restore({ dispatch }) {
+    if ((Storage) !== 'undefined') {
+      const accessToken = localStorage.getItem('accessToken');
+      if (accessToken) {
+        // Have stored token, check it hasn't expired
+        const jwtToken = jwt.read(accessToken);
+        const tokenExpires = new Date(jwtToken.claim.exp * 1000);
+        const now = new Date();
+        if (tokenExpires > now) {
+          // Start session with stored token, keep it for future sessions
+          dispatch('start', { accessToken, keep: true });
+        }
+      }
+    }
+  },
+
+  /**
    * Call to initialize a session.
    *
    * @param {any} { commit, state }
    */
-  async start({ commit }, accessToken) {
+  async start({ commit }, { accessToken, keep }) {
     if (!accessToken) {
       // No token provided
       throw new Error('No access token');
     } else {
       commit('setAccessToken', accessToken);
-      if ((Storage) !== 'undefined') {
+      if ((Storage) !== 'undefined' && keep) {
         localStorage.setItem('accessToken', accessToken);
       }
     }
@@ -85,22 +104,6 @@ const actions = {
       localStorage.removeItem('accessToken');
     }
     commit('setStatus', sessionStatuses.NONE);
-  },
-
-  /**
-   * Returns access token.
-   *
-   * If no access token is in the store, an attempt will be made to load one
-   * from local storage.
-   */
-  getAccessToken({ commit, state }) {
-    // TODO - validate token expiry from token data, throw errors etc
-    let token = state.accessToken;
-    if (!token && (Storage) !== 'undefined') {
-      token = localStorage.getItem('accessToken');
-      commit('setAccessToken', token);
-    }
-    return token;
   },
 
   request(vuexUnused, { query, variables }) {
