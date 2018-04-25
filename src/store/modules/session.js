@@ -106,12 +106,16 @@ const actions = {
     commit('setStatus', sessionStatuses.NONE);
   },
 
-  request(vuexUnused, { query, variables }) {
+  request({ state }, { query, variables }) {
     return new Promise((resolve, reject) => {
       // Request payload: query + arguments (variables)
       const payload = {
         query,
         variables,
+      };
+
+      config.headers = {
+        Authorization: `bearer ${state.accessToken}`,
       };
 
       return axios.post('/graphql', payload, config)
