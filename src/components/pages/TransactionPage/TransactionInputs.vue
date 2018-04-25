@@ -14,10 +14,7 @@
             Output
           </th>
           <th>
-            Coinbase?
-          </th>
-          <th>
-            Value
+            Value BCH
           </th>
         </tr>
       </thead>
@@ -26,25 +23,20 @@
           v-bind:key="input.input_number"
           @click="navToTransactionOutput(input)">
           <td class="has-text-centered">
-            <span class="icon">
-              <i class="fa fa-chevron-left"></i>
+            <span v-if="!input.coinbase" class = "icon">
+              <i class = "fa fa-chevron-left"></i>
             </span>
           </td>
           <td>
-            <formatted-hash class="is-hidden-desktop"
+            <span v-if="input.coinbase">
+               Coinbase
+            </span>
+            <formatted-hash
               :hash='input.output_transaction_id'
               :shorten="true"/>
-            <formatted-hash class="is-hidden-touch"
-              :hash='input.output_transaction_id'
-              :shorten="false"/>
           </td>
           <td>
             {{ input.output_number }}
-          </td>
-          <td>
-            <span v-if="input.coinbase" class="icon has-text-success">
-              <i class="fa fa-check"></i>
-            </span>
           </td>
           <td>
             {{ input.output_value }}
@@ -91,18 +83,15 @@ export default {
       await this.$store.dispatch('transaction/setInputsPage', pageNumber);
       this.inputsLoading = false;
     },
-
-    /**
-     * Nav to the transaction output that makes the nominated input
-     */
     navToTransactionOutput(input) {
-      // TODO nav direct to output number
-      this.$router.push({
-        name: 'Transaction',
-        params: {
-          transactionId: input.output_transaction_id,
-        },
-      });
+      if (!input.coinbase) {
+        this.$router.push({
+          name: 'Transaction',
+          params: {
+            transactionId: input.output_transaction_id,
+          },
+        });
+      }
     },
   },
 };

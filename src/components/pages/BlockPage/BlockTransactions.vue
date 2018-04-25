@@ -27,10 +27,10 @@
         <tr v-for="transaction in page.pageData" :key="transaction.txid"
           @click="$emit('selected', transaction.transaction_id)"
           :class="{
-            'is-selected': transaction.transaction_index === highlightedIndex,
+            'is-selected': transaction.transaction_number === highlightedIndex,
           }">
           <td>
-            {{ transaction.transaction_index }}
+            {{ transaction.transaction_number }}
           </td>
           <td>
             <formatted-hash class="is-hidden-tablet"

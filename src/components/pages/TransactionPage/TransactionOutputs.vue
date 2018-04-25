@@ -22,18 +22,14 @@
           <td>
             <!-- Single address output -->
             <span v-if="output.address">
-              <formatted-address class="is-hidden-tablet" :address='output.address'
+              <formatted-address :address='output.address'
                 :shorten="true"/>
-              <formatted-address class="is-hidden-mobile" :address='output.address'
-                :shorten="false"/>
             </span>
 
             <!-- Multiple address output -->
             <span v-else v-for="address in output.addresses" v-bind:key="address">
-              <address-link class="is-hidden-tablet" :address='address'
+              <address-link :address='address'
                 :shorten="true"/>
-              <address-link class="is-hidden-mobile" :address='address'
-                :shorten="false"/>
             </span>
           </td>
           <td>
@@ -92,13 +88,20 @@ export default {
      * Nav to the address nominated
      */
     navToAddress(address) {
-      // TODO nav direct to output
-      this.$router.push({
-        name: 'Address',
-        params: {
-          address,
-        },
-      });
+      if (address) {
+        this.$router.push({
+          name: 'Address',
+          params: {
+            address,
+          },
+        });
+      } else {
+        this.$store.commit('toasts/add', {
+          message: 'This output has no address.  It may be non-standard.',
+          timeoutSecs: 5,
+          type: 'warning',
+        });
+      }
     },
   },
 };
