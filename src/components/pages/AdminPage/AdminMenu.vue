@@ -4,13 +4,25 @@
       Monitor
     </p>
     <ul class="menu-list">
-      <li><router-link to="/admin/sync-errors">Sync errors</router-link></li>
+      <li>
+        <router-link
+          to="/admin/sync-errors"
+          :class="activeIfRoute('SyncErrors')">
+          Sync errors
+        </router-link>
+      </li>
     </ul>
     <p class="menu-label">
       Tools
     </p>
     <ul class="menu-list">
-      <li><router-link to="/admin/transaction-tool">Transaction</router-link></li>
+      <li>
+        <router-link
+          to="/admin/transaction-builder"
+          :class="activeIfRoute('TransactionBuilder')">
+          Transaction Builder
+        </router-link>
+      </li>
     </ul>
     <p class="menu-label">
       Session
@@ -25,6 +37,13 @@
 export default {
   name: 'admin-menu',
   methods: {
+    activeIfRoute(routeName) {
+      const classes = [];
+      if (this.$route.name === routeName) {
+        classes.push('is-active');
+      }
+      return classes;
+    },
     async signout() {
       await this.$store.dispatch('session/end');
       this.$store.commit('toasts/add', {
