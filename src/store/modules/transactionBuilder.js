@@ -20,7 +20,9 @@ const actions = {
    */
   async load({ commit, dispatch }, transactionId) {
     const query = `query ($txid: String!, $verbose: Int) {
-        rpc_getrawtransaction(txid: $txid, verbose: $verbose)
+        rpc {
+          getrawtransaction(txid: $txid, verbose: $verbose)
+        }
       }      
     `;
     const variables = {
@@ -28,7 +30,7 @@ const actions = {
       verbose: 1,
     };
     const response = await dispatch('session/request', { query, variables }, { root: true });
-    commit('initFromRaw', { rawString: response.rpc_getrawtransaction, transactionId });
+    commit('initFromRaw', { rawString: response.rpc.getrawtransaction, transactionId });
   },
 };
 

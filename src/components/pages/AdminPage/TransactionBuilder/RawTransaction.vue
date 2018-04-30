@@ -1,5 +1,5 @@
 <template>
-  <pre>{{rawTransaction}}</pre>
+  <pre class="scroll-x">{{rawTransaction}}</pre>
 </template>
 
 <script>
@@ -15,15 +15,11 @@ export default {
 };
 </script>
 
-<style scoped>
-  code {
-    display: block;
-    width: 100%;
-  }
-  pre {
-    display: block;
+<style>
+  pre.scroll-x {
+    display:block;
     width: 100%;
     overflow-x: scroll;
+    overflow-wrap: normal;
   }
 </style>
-

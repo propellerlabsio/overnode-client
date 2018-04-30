@@ -1,7 +1,8 @@
 
 import AdminPage from '@/components/pages/AdminPage';
 import SyncErrors from '@/components/pages/AdminPage/SyncErrors';
-import TransactionBuilder from '@/components/pages/TransactionBuilder';
+import RpcTool from '@/components/pages/AdminPage/RpcTool';
+import TransactionBuilder from '@/components/pages/AdminPage/TransactionBuilder';
 
 const adminRoutes = [
   {
@@ -12,6 +13,10 @@ const adminRoutes = [
       name: 'TransactionBuilder',
       path: 'transaction-builder',
       component: TransactionBuilder,
+    }, {
+      name: 'RpcTool',
+      path: 'rpc/:commandName',
+      component: RpcTool,
     }, {
       name: 'SyncErrors',
       path: 'sync-errors',

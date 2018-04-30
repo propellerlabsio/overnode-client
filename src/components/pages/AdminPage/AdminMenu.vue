@@ -24,6 +24,25 @@
         </router-link>
       </li>
     </ul>
+    <p @click="onRpcClick" class="menu-label" :class="{ 'is-loading': rpcLoading }">
+      <span>
+        RPC
+      </span>
+      <span class="icon">
+        <i v-if="!rpcExpanded" class="fa fa-chevron-down"/>
+        <i v-else class="fa fa-chevron-up"/>
+      </span>
+    </p>
+    <ul class="menu-list">
+      <li v-if="rpcExpanded" v-for="command in rpcCommands" v-bind:key="command.name">
+        <router-link
+          :class="{ 'is-active': $route.params.commandName === command.name }"
+          :to="`/admin/rpc/${command.name}`">
+          {{ command.name }}
+        </router-link>
+      </li>
+      <li v-if="rpcLoading"><a>Loading...</a></li>
+    </ul>
     <p class="menu-label">
       Session
     </p>
@@ -36,6 +55,17 @@
 <script>
 export default {
   name: 'admin-menu',
+  data() {
+    return {
+      rpcExpanded: false,
+      rpcLoading: false,
+    };
+  },
+  computed: {
+    rpcCommands() {
+      return this.$store.state.rpc.commands;
+    },
+  },
   methods: {
     activeIfRoute(routeName) {
       const classes = [];
@@ -51,6 +81,14 @@ export default {
         timeoutSecs: 5,
         type: 'success',
       });
+    },
+    async onRpcClick() {
+      if (!this.rpcExpanded && !this.rpcCommands.length) {
+        this.rpcLoading = true;
+        await this.$store.dispatch('rpc/init');
+        this.rpcLoading = false;
+      }
+      this.rpcExpanded = !this.rpcExpanded;
     },
   },
 };

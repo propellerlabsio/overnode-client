@@ -5,7 +5,7 @@
     <div class="column is-narrow">
       <admin-menu />
     </div>
-    <div>
+    <div class="column overflow-auto">
       <router-view />
     </div>
   </div>
@@ -33,3 +33,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+  .overflow-auto {
+    overflow: auto;
+  }
+</style>
+
