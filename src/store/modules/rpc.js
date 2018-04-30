@@ -1,3 +1,5 @@
+import { stripExtraDoubleQuotes, booleanStringToBoolean } from './util/strings';
+
 const initialState = {
   selectedName: '',
   input: {},
@@ -13,33 +15,48 @@ const mutations = {
   resetInput(state) {
     state.input = {};
     if (state.selectedName) {
+      // Get arguments for selected command
       const args = state
         .commands
         .find(command => command.name === state.selectedName)
         .args;
+
+      // Add propert to state.input for each argument giving it a default
+      // value from the scheme typedef or null
       if (args) {
         args.forEach((arg) => {
           const graphQlType = arg.type.name || arg.type.ofType.name;
-          if (arg.defaultValue && graphQlType === 'Int') {
-            state.input[arg.name] = Number(arg.defaultValue);
+          if (arg.defaultValue) {
+            if (graphQlType === 'Int') {
+              state.input[arg.name] = Number(arg.defaultValue);
+            } else if (graphQlType === 'String') {
+              const cleanString = stripExtraDoubleQuotes(arg.defaultValue);
+              state.input[arg.name] = cleanString;
+            } else {
+              state.input[arg.name] = arg.defaultValue;
+            }
           } else {
-            state.input[arg.name] = arg.defaultValue;
+            state.input[arg.name] = null;
           }
         });
       }
     }
   },
+
   setInputValue(state, { argumentName, argumentValue }) {
     state.input[argumentName] = argumentValue;
     // Reset output as it no longer matches input
     state.output = null;
   },
+
   setCommands(state, commands) {
     state.commands = commands;
   },
+
   setOutput(state, output) {
     state.output = output;
   },
+
   setSelected(state, name) {
     state.selectedName = name;
   },
@@ -78,36 +95,42 @@ const actions = {
     `;
     const variables = { };
     const response = await dispatch('session/request', { query, variables }, { root: true });
+
+    // Get Rpc object from whole schema and add the rpc commands to our state
     // eslint-disable-next-line no-underscore-dangle
     const rpcObject = response.__schema.types.find(({ name }) => name === 'Rpc');
     const rpcCommands = rpcObject.fields.filter(command => command.name !== 'authorized');
     commit('setCommands', rpcCommands);
   },
 
-  /* eslint-disable */
   async execute({ state, commit, dispatch }) {
     commit('setOutput', null);
 
     // Build arguments / values string
+    const command = getters.selectedCommand(state);
     let argsString = '';
     const args = state.input;
     Object.keys(args)
       .filter(arg => args[arg] != null)
-      .forEach((arg) => {
-        let nextArg
-        if (typeof args[arg] === "string") {
-          nextArg = `${arg}: "${args[arg]}"`;
+      .forEach((argName) => {
+        const argDef = command.args.find(arg => arg.name === argName);
+        const graphQlType = argDef.type.name || argDef.type.ofType.name;
+        let nextArg;
+        if (graphQlType === 'String') {
+          nextArg = `${argName}: "${args[argName]}"`;
+        } else if (graphQlType === 'Boolean') {
+          nextArg = `${argName}: ${booleanStringToBoolean(args[argName])}`;
         } else {
-          nextArg = `${arg}: ${args[arg]}`;
+          nextArg = `${argName}: ${args[argName]}`;
         }
         if (!argsString) {
           argsString = nextArg;
         } else {
-          argsString = `${argsString}, ${nextArg}`
+          argsString = `${argsString}, ${nextArg}`;
         }
       });
     if (argsString) {
-      argsString = `(${argsString})`
+      argsString = `(${argsString})`;
     }
 
     // Build query
@@ -119,7 +142,7 @@ const actions = {
 
     const response = await dispatch('session/request', { query, variables: state.input }, { root: true });
     const output = response.rpc[state.selectedName];
-    let convertedOutput = JSON.parse(output);
+    const convertedOutput = JSON.parse(output);
     commit('setOutput', convertedOutput);
   },
 
