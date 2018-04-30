@@ -19,7 +19,12 @@ const mutations = {
         .args;
       if (args) {
         args.forEach((arg) => {
-          state.input[arg.name] = arg.defaultValue;
+          const graphQlType = arg.type.name || arg.type.ofType.name;
+          if (arg.defaultValue && graphQlType === 'Int') {
+            state.input[arg.name] = Number(arg.defaultValue);
+          } else {
+            state.input[arg.name] = arg.defaultValue;
+          }
         });
       }
     }
@@ -77,8 +82,6 @@ const actions = {
     const rpcObject = response.__schema.types.find(({ name }) => name === 'Rpc');
     const rpcCommands = rpcObject.fields.filter(command => command.name !== 'authorized');
     commit('setCommands', rpcCommands);
-    // debugger;
-    // commit('initFromRaw', { rawString: response.rpc.getrawtransaction, transactionId });
   },
 
   /* eslint-disable */
