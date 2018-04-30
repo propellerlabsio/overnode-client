@@ -2,7 +2,7 @@ const initialState = {
   selectedName: '',
   input: {},
   commands: [],
-  results: null,
+  output: null,
 };
 
 const mutations = {
@@ -26,12 +26,14 @@ const mutations = {
   },
   setInputValue(state, { argumentName, argumentValue }) {
     state.input[argumentName] = argumentValue;
+    // Reset output as it no longer matches input
+    state.output = null;
   },
   setCommands(state, commands) {
     state.commands = commands;
   },
-  setResults(state, results) {
-    state.results = results;
+  setOutput(state, output) {
+    state.output = output;
   },
   setSelected(state, name) {
     state.selectedName = name;
@@ -81,7 +83,7 @@ const actions = {
 
   /* eslint-disable */
   async execute({ state, commit, dispatch }) {
-    commit('setResults', null);
+    commit('setOutput', null);
 
     // Build arguments / values string
     let argsString = '';
@@ -113,13 +115,14 @@ const actions = {
     }`;
 
     const response = await dispatch('session/request', { query, variables: state.input }, { root: true });
-    const results = response.rpc[state.selectedName];
-    commit('setResults', results);
+    const output = response.rpc[state.selectedName];
+    let convertedOutput = JSON.parse(output);
+    commit('setOutput', convertedOutput);
   },
 
   async setSelected({ state, commit, dispatch }, commandName) {
     // Clear any previous results
-    commit('setResults', null);
+    commit('setOutput', null);
 
     // See if we need to load all commands from server first
     if (!state.commands.length) {

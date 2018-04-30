@@ -4,10 +4,10 @@
       <h1 class="title">{{ command.name }}</h1>
       <p>{{ command.description }}</p>
       <br/>
-      <h2 class="subtitle">Arguments</h2>
+      <h2 v-if="command.args.length" class="subtitle">Arguments</h2>
       <rpc-input @execute="execute"/>
-
-      <p>{{ results }}</p>
+      <br/>
+      <rpc-output v-if="output"/>
     </div>
     <loading-message v-else/>
   </div>
@@ -16,19 +16,21 @@
 <script>
 import LoadingMessage from '../../misc/LoadingMessage';
 import RpcInput from './RpcTool/RpcInput';
+import RpcOutput from './RpcTool/RpcOutput';
 
 export default {
   name: 'rpc',
   components: {
     LoadingMessage,
     RpcInput,
+    RpcOutput,
   },
   computed: {
     command() {
       return this.$store.getters['rpc/selectedCommand'];
     },
-    results() {
-      return this.$store.state.rpc.results;
+    output() {
+      return this.$store.state.rpc.output;
     },
   },
   created() {
