@@ -4,10 +4,22 @@ const initialState = {
   selectedName: '',
   input: {},
   commands: [],
+  help: [],
   output: null,
 };
 
 const mutations = {
+  /**
+   * Add help text to the state.help array for the currently selected
+   * command.
+   */
+  addHelp(state, text) {
+    state.help.push({
+      command: state.selectedName,
+      text,
+    });
+  },
+
   /**
    * Reset input object to parameters for selected command with
    * values initialized to default value
@@ -64,6 +76,9 @@ const mutations = {
 
 const getters = {
   selectedCommand: state => state.commands.find(command => command.name === state.selectedName),
+  selectedHelp: state => state.help
+    .filter(help => help.command === state.selectedName)
+    .map(help => help.text)[0],
 };
 
 const actions = {
@@ -158,6 +173,20 @@ const actions = {
     // Set selected command and reset any input from previous commands
     commit('setSelected', commandName);
     commit('resetInput');
+
+    // If we haven't already stored help for this command, request it now
+    if (!getters.selectedHelp(state)) {
+      const query = `{
+        rpc {
+          help(command: "${state.selectedName}")
+        }
+      }`;
+
+      const response = await dispatch('session/request', { query, variables: {} }, { root: true });
+      const help = response.rpc.help;
+      const parsed = JSON.parse(help);
+      commit('addHelp', parsed);
+    }
   },
 };
 
