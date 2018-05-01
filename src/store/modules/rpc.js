@@ -5,6 +5,7 @@ const initialState = {
   input: {},
   commands: [],
   help: [],
+  history: [],
   output: null,
 };
 
@@ -17,6 +18,18 @@ const mutations = {
     state.help.push({
       command: state.selectedName,
       text,
+    });
+  },
+
+  /**
+   * Add the current input and output for the selected command to the history array
+   */
+  addHistory(state) {
+    state.history.push({
+      command: state.selectedName,
+      time: new Date(),
+      input: Object.assign({}, state.input),
+      output: Object.assign({}, state.output),
     });
   },
 
@@ -79,6 +92,8 @@ const getters = {
   selectedHelp: state => state.help
     .filter(help => help.command === state.selectedName)
     .map(help => help.text)[0],
+  selectedHistory: state => state.history
+    .filter(history => history.command === state.selectedName),
 };
 
 const actions = {
@@ -159,6 +174,7 @@ const actions = {
     const output = response.rpc[state.selectedName];
     const convertedOutput = JSON.parse(output);
     commit('setOutput', convertedOutput);
+    commit('addHistory');
   },
 
   async setSelected({ state, commit, dispatch }, commandName) {

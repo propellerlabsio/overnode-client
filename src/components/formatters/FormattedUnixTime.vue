@@ -6,7 +6,7 @@
 import moment from 'moment';
 
 export default {
-  name: 'formatted-unix-time-stamp',
+  name: 'formatted-unix-time',
   props: {
     time: Number,
   },

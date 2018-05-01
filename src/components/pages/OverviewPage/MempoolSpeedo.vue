@@ -143,7 +143,6 @@ export default {
   },
   watch: {
     mempool() {
-      // console.debug('Data changed');
       // Re-draw graph whenever the data changes
       this.drawValues();
     },

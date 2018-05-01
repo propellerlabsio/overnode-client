@@ -4,7 +4,6 @@
       <h1 class="title">{{ command.name }}</h1>
       <p>{{ command.description }}</p>
       <br/>
-      <h2 v-if="command.args.length" class="subtitle">Arguments</h2>
       <rpc-input @execute="execute"/>
       <br/>
       <div v-if="output">

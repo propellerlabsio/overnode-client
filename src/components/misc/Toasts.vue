@@ -15,7 +15,7 @@
     <!-- Bottom toasts -->
     <div v-if="bottom.length" class="columns toasts toasts-bottom">
       <div class="column">
-        <div v-for="toast in bottom" v-bind:key="toast.id"
+        <div v-for="(toast, index) in bottom" v-bind:key="index"
           class="notification"
           :class="`is-${toast.type}`">
           <button class="delete" @click="$store.commit('toasts/remove', toast.id)"></button>
