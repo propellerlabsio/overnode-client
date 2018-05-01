@@ -1,7 +1,9 @@
 <template>
   <div>
     <h2 class="subtitle">Results</h2>
-    <pre class="scroll-x">{{output}}</pre>
+    <pre class="scroll-x" :class="{ text: typeof rawOutput === 'string' }">
+      {{output}}
+    </pre>
   </div>
 </template>
 
@@ -9,20 +11,31 @@
 export default {
   name: 'rpc-output',
   computed: {
+    rawOutput() {
+      return this.$store.state.rpc.output;
+    },
     output() {
-      const raw = this.$store.state.rpc.output;
-      const formatted = JSON.stringify(raw, undefined, 4);
+      let formatted;
+      if (typeof rawOutput === 'object') {
+        formatted = JSON.stringify(this.rawOutput, undefined, 4);
+      } else {
+        formatted = this.rawOutput;
+      }
       return formatted;
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
   pre.scroll-x {
     display:block;
     width: 100%;
     overflow-x: scroll;
     overflow-wrap: normal;
+  }
+
+  pre.text {
+    white-space: pre-wrap;
   }
 </style>
