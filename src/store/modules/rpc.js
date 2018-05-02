@@ -86,19 +86,7 @@ const mutations = {
       // value from the scheme typedef or null
       if (args) {
         args.forEach((arg) => {
-          const graphQlType = arg.type.name || arg.type.ofType.name;
-          if (arg.defaultValue) {
-            if (graphQlType === 'Int') {
-              state.input[arg.name] = Number(arg.defaultValue);
-            } else if (graphQlType === 'String') {
-              const cleanString = stripExtraDoubleQuotes(arg.defaultValue);
-              state.input[arg.name] = cleanString;
-            } else {
-              state.input[arg.name] = arg.defaultValue;
-            }
-          } else {
-            state.input[arg.name] = null;
-          }
+          state.input[arg.name] = JSON.parse(arg.defaultValue);
         });
       }
     }
