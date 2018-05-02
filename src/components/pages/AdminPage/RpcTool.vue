@@ -4,15 +4,15 @@
       <h1 class="title">{{ command.name }}</h1>
       <p>{{ command.description }}</p>
       <br/>
-      <rpc-input @execute="execute"/>
+      <rpc-arguments @execute="execute"/>
       <br/>
       <div v-if="output">
         <h2 class="subtitle">Response</h2>
-        <formatted-rpc-response :response="output"/>
+        <rpc-response :response="output"/>
       </div>
       <br/>
       <h2 class="subtitle">Help</h2>
-      <formatted-rpc-response v-if="help" :response="help"/>
+      <rpc-response v-if="help" :response="help"/>
     </div>
     <loading-message v-else/>
   </div>
@@ -20,15 +20,15 @@
 
 <script>
 import LoadingMessage from '../../misc/LoadingMessage';
-import FormattedRpcResponse from './RpcTool/FormattedRpcResponse';
-import RpcInput from './RpcTool/RpcInput';
+import RpcResponse from './RpcTool/RpcResponse';
+import RpcArguments from './RpcTool/RpcArguments';
 
 export default {
   name: 'rpc',
   components: {
     LoadingMessage,
-    FormattedRpcResponse,
-    RpcInput,
+    RpcResponse,
+    RpcArguments,
   },
   computed: {
     command() {

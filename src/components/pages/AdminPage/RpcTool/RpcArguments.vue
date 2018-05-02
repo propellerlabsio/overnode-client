@@ -1,25 +1,7 @@
 <template>
   <div>
     <div v-if="command">
-      <nav v-if="command.args.length" class="level">
-        <!-- Left side -->
-        <div class="level-left">
-          <div class="level-item">
-            <h2 class="subtitle">Arguments</h2>
-          </div>
-        </div>
-
-        <!-- Right side -->
-        <div class="level-right">
-          <p class="level-item">
-            <a @click="onClickHistory" class="button" :disabled="!history.length">
-              <span class="icon">
-                <i class="fa fa-history"/>
-              </span>
-            </a>
-          </p>
-        </div>
-      </nav>
+      <h2 v-if="command.args.length" class="subtitle">Arguments</h2>
 
       <table class="table is-fullwidth">
         <tbody>
@@ -28,15 +10,22 @@
               {{ argument.name }}
             </td>
             <td>
-              <input
+              <input v-if="argument.type.kind === 'SCALAR' || argument.type.kind === 'NON_NULL'"
                 :value="input[argument.name]"
                 @input="onInput($event, argument.name)"
                 class="input" :type="argumentInputType(argument)"
                 :placeholder="argument.description">
+
+              <p v-else>{{ argument.type.kind }} input not yet supported</p>
             </td>
           </tr>
         </tbody>
       </table>
+      <a @click="onClickHistory" class="button" :disabled="!history.length">
+        <span class="icon">
+          <i class="fa fa-history"/>
+        </span>
+      </a>
       <a @click="$emit('execute')" class="button is-primary">Execute</a>
     </div>
     <loading-message v-else/>
@@ -49,7 +38,7 @@ import LoadingMessage from '../../../misc/LoadingMessage';
 import RpcHistory from './RpcHistory';
 
 export default {
-  name: 'rpc-input',
+  name: 'rpc-arguments',
   components: {
     LoadingMessage,
     RpcHistory,

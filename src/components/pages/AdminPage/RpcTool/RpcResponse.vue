@@ -9,7 +9,7 @@
 import LoadingMessage from '../../../misc/LoadingMessage';
 
 export default {
-  name: 'formatted-rpc-response',
+  name: 'rpc-response',
   props: {
     response: {
       required: true,

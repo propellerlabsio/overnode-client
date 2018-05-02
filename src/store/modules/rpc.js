@@ -136,6 +136,7 @@ const actions = {
                 name
                 type {
                   name
+                  kind
                   ofType {
                     name
                   }        
