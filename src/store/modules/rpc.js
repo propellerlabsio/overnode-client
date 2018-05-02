@@ -1,5 +1,7 @@
 import { stripExtraDoubleQuotes, booleanStringToBoolean } from './util/strings';
 
+const MAX_HISTORY_PER_COMMAND = 7;
+
 const initialState = {
   selectedName: '',
   input: {},
@@ -31,12 +33,26 @@ const mutations = {
       Object.assign({}, state.output) :
       state.output;
 
-    state.history.push({
+    // Add item to top of history stack
+    state.history.unshift({
       command: state.selectedName,
       time: new Date(),
       input,
       output,
     });
+
+    // Trim old history
+    state
+      .history
+      .filter(item => item.command === state.selectedName)
+      .slice(MAX_HISTORY_PER_COMMAND)
+      .forEach((item) => {
+        const index = state
+          .history
+          .findIndex(candidate => candidate.command === item.command &&
+            candidate.time === item.time);
+        state.history.splice(index, 1);
+      });
   },
 
   reloadHistoricalItem(state, { command, time }) {
