@@ -25,12 +25,32 @@ const mutations = {
    * Add the current input and output for the selected command to the history array
    */
   addHistory(state) {
+    // Lose any object references to state
+    const input = Object.assign({}, state.input);
+    const output = typeof state.output === 'object' ?
+      Object.assign({}, state.output) :
+      state.output;
+
     state.history.push({
       command: state.selectedName,
       time: new Date(),
-      input: Object.assign({}, state.input),
-      output: Object.assign({}, state.output),
+      input,
+      output,
     });
+  },
+
+  reloadHistoricalItem(state, { command, time }) {
+    const item = state
+      .history
+      .find(itemX =>
+        itemX.command === command &&
+        itemX.time === time);
+    if (item) {
+      state.input = item.input;
+      state.output = item.output;
+    } else {
+      throw new Error(`No history for command ${command} at time ${time} found`);
+    }
   },
 
   /**
