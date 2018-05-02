@@ -16,6 +16,8 @@
                 class="input" :type="argumentInputType(argument)"
                 :placeholder="argument.description">
 
+              <rpc-list-input v-else-if="argument.type.kind === 'LIST'" :argument="argument"/>
+
               <p v-else>{{ argument.type.kind }} input not yet supported</p>
             </td>
           </tr>
@@ -36,12 +38,14 @@
 <script>
 import LoadingMessage from '../../../misc/LoadingMessage';
 import RpcHistory from './RpcHistory';
+import RpcListInput from './RpcListInput';
 
 export default {
   name: 'rpc-arguments',
   components: {
     LoadingMessage,
     RpcHistory,
+    RpcListInput,
   },
   data() {
     return {
@@ -63,7 +67,6 @@ export default {
     },
   },
   methods: {
-    // eslint-disable-next-line
     onInput(event, argumentName) {
       const newValue = event.target.type === 'number' ?
         Number(event.target.value) :
@@ -73,6 +76,7 @@ export default {
         argumentValue: newValue,
       });
     },
+    // TODO - move to store - this code is repeated in other components
     argumentInputType(argument) {
       const graphQlType = argument.type.name || argument.type.ofType.name;
       let inputType = 'text';

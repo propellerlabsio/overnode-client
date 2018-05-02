@@ -1,4 +1,4 @@
-import { stripExtraDoubleQuotes, booleanStringToBoolean } from './util/strings';
+import Vue from 'vue';
 
 const MAX_HISTORY_PER_COMMAND = 7;
 
@@ -27,8 +27,14 @@ const mutations = {
    * Add the current input and output for the selected command to the history array
    */
   addHistory(state) {
-    // Lose any object references to state
+    // Lose any references to state objects/arrays
     const input = Object.assign({}, state.input);
+    Object.keys(input)
+      .forEach((key) => {
+        if (Array.isArray(input[key])) {
+          input[key] = input[key].slice();
+        }
+      });
     const output = typeof state.output === 'object' ?
       Object.assign({}, state.output) :
       state.output;
@@ -86,14 +92,40 @@ const mutations = {
       // value from the scheme typedef or null
       if (args) {
         args.forEach((arg) => {
-          state.input[arg.name] = JSON.parse(arg.defaultValue);
+          let defaultValue = JSON.parse(arg.defaultValue);
+          if (arg.type.kind === 'LIST' && defaultValue === null) {
+            // Insert empty record for form input field
+            defaultValue = [null];
+          }
+          Vue.set(state.input, arg.name, defaultValue);
         });
       }
     }
   },
 
-  setInputValue(state, { argumentName, argumentValue }) {
-    state.input[argumentName] = argumentValue;
+  addInputArrayItem(state, { argumentName, argumentValue, arrayIndex = null }) {
+    const array = state.input[argumentName].slice();
+    array.splice(arrayIndex, 0, argumentValue);
+    Vue.set(state.input, argumentName, array);
+
+    // Reset output as it no longer matches input
+    state.output = null;
+  },
+
+  removeInputArrayItem(state, { argumentName, arrayIndex }) {
+    state.input[argumentName].splice(arrayIndex, 1);
+
+    // Reset output as it no longer matches input
+    state.output = null;
+  },
+
+
+  setInputValue(state, { argumentName, argumentValue, arrayIndex = null }) {
+    if (arrayIndex !== null) {
+      Vue.set(state.input[argumentName], arrayIndex, argumentValue);
+    } else {
+      state.input[argumentName] = argumentValue;
+    }
     // Reset output as it no longer matches input
     state.output = null;
   },
@@ -162,30 +194,35 @@ const actions = {
     commit('setOutput', null);
 
     // Build arguments / values string
-    const command = getters.selectedCommand(state);
+    const args = Object.assign({}, state.input);
     let argsString = '';
-    const args = state.input;
-    Object.keys(args)
-      .filter(arg => args[arg] != null)
+    Object
+      .keys(args)
+      .filter((argName) => {
+        let hasValue = false;
+        const argValue = args[argName];
+        if (Array.isArray(argValue)) {
+          hasValue = argValue.length > 0 && !(
+            argValue.length === 1 && argValue[0] === null
+          );
+        } else {
+          // Test for null or undefined with != instead of !==
+          hasValue = argValue != null;
+        }
+        return hasValue;
+      })
       .forEach((argName) => {
-        const argDef = command.args.find(arg => arg.name === argName);
-        const graphQlType = argDef.type.name || argDef.type.ofType.name;
-        let nextArg;
-        if (graphQlType === 'String') {
-          nextArg = `${argName}: "${args[argName]}"`;
-        } else if (graphQlType === 'Boolean') {
-          nextArg = `${argName}: ${booleanStringToBoolean(args[argName])}`;
-        } else {
-          nextArg = `${argName}: ${args[argName]}`;
-        }
         if (!argsString) {
-          argsString = nextArg;
+          argsString = '(';
         } else {
-          argsString = `${argsString}, ${nextArg}`;
+          argsString = argsString.concat(', ');
         }
+        argsString = argsString.concat(argName, ': ', JSON.stringify(args[argName]));
       });
+
+    // Close parenthesis
     if (argsString) {
-      argsString = `(${argsString})`;
+      argsString = argsString.concat(')');
     }
 
     // Build query

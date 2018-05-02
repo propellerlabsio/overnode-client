@@ -8,23 +8,17 @@
         </header>
         <section class="modal-card-body">
           <!-- Content ... -->
-          <table class="table is-fullwidth is-striped">
+          <table class="table is-fullwidth is-striped is-hoverable">
             <tbody>
-              <tr v-for="(item, index) in history" v-bind:key="index">
+              <tr v-for="(item, index) in history" v-bind:key="index"
+                 @click="loadItem(item)">
                 <td class="is-narrow">
                   <strong>
                     <formatted-time :time="item.time"/>
                   </strong>
                 </td>
-                <td>
+                <td class="word-break-all">
                   {{ item.input }}
-                </td>
-                <td class="is-narrow">
-                  <a class="button" @click="loadItem(item)">
-                    <span class="icon">
-                      <i class="fa fa-folder-open"/>
-                    </span>
-                  </a>
                 </td>
               </tr>
             </tbody>
@@ -68,3 +62,8 @@ export default {
 };
 </script>
 
+<style scoped>
+  .word-break-all {
+    word-break:break-all
+  }
+</style>
