@@ -199,12 +199,12 @@ const actions = {
     Object
       .keys(args)
       .filter((argName) => {
+        // Filter out no value arguments
         let hasValue = false;
         const argValue = args[argName];
         if (Array.isArray(argValue)) {
-          hasValue = argValue.length > 0 && !(
-            argValue.length === 1 && argValue[0] === null
-          );
+          // Test array has any value
+          hasValue = argValue.findIndex(value => value != null && value !== '') > -1;
         } else {
           // Test for null or undefined with != instead of !==
           hasValue = argValue != null;
@@ -217,7 +217,15 @@ const actions = {
         } else {
           argsString = argsString.concat(', ');
         }
-        argsString = argsString.concat(argName, ': ', JSON.stringify(args[argName]));
+
+        // Filter out no value array elements (arrays may contain mix of user values +
+        // null or zero-length string 'new entry' lines)
+        let argValue = args[argName];
+        if (Array.isArray(argValue)) {
+          argValue = argValue.filter(x => x != null && x !== '');
+        }
+
+        argsString = argsString.concat(argName, ': ', JSON.stringify(argValue));
       });
 
     // Close parenthesis
