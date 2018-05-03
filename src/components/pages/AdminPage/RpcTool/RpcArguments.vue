@@ -10,11 +10,10 @@
               {{ argument.name }}
             </td>
             <td>
-              <input v-if="argument.type.kind === 'SCALAR' || argument.type.kind === 'NON_NULL'"
+              <rpc-input v-if="argument.type.kind === 'SCALAR' || argument.type.kind === 'NON_NULL'"
+                :argument="argument"
                 :value="input[argument.name]"
-                @input="onInput($event, argument.name)"
-                class="input" :type="argumentInputType(argument)"
-                :placeholder="argument.description">
+                @input="onInput($event, argument.name, index)"/>
 
               <rpc-list-input v-else-if="argument.type.kind === 'LIST'" :argument="argument"/>
 
@@ -38,6 +37,7 @@
 <script>
 import LoadingMessage from '../../../misc/LoadingMessage';
 import RpcHistory from './RpcHistory';
+import RpcInput from './RpcInput';
 import RpcListInput from './RpcListInput';
 
 export default {
@@ -45,6 +45,7 @@ export default {
   components: {
     LoadingMessage,
     RpcHistory,
+    RpcInput,
     RpcListInput,
   },
   data() {
@@ -75,15 +76,6 @@ export default {
         argumentName,
         argumentValue: newValue,
       });
-    },
-    // TODO - move to store - this code is repeated in other components
-    argumentInputType(argument) {
-      const graphQlType = argument.type.name || argument.type.ofType.name;
-      let inputType = 'text';
-      if (graphQlType === 'Int') {
-        inputType = 'number';
-      }
-      return inputType;
     },
     onClickHistory() {
       if (this.history.length) {

@@ -5,11 +5,10 @@
         <td>
           <div class="field has-addons">
             <div class="control is-expanded">
-              <input
+              <rpc-input
+                :argument="argument"
                 :value="value"
-                @input="onInput($event, argument.name, index)"
-                class="input" :type="argumentInputType(argument)"
-                :placeholder="argument.description">
+                :array-index="index"/>
             </div>
             <div class="control">
               <a @click="removeArgument(index)" class="button has-text-grey-dark"
@@ -34,6 +33,8 @@
 </template>
 
 <script>
+import RpcInput from './RpcInput';
+
 export default {
   name: 'rpc-list-input',
   props: {
@@ -42,10 +43,8 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      newValue: null,
-    };
+  components: {
+    RpcInput,
   },
   computed: {
     values() {
@@ -69,17 +68,6 @@ export default {
         inputType = 'number';
       }
       return inputType;
-    },
-
-    onInput(event, argumentName, arrayIndex) {
-      const newValue = event.target.type === 'number' ?
-        Number(event.target.value) :
-        event.target.value;
-      this.$store.commit('rpc/setInputValue', {
-        argumentName,
-        argumentValue: newValue,
-        arrayIndex,
-      });
     },
 
     removeArgument(arrayIndex) {
