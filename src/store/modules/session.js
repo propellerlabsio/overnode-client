@@ -40,6 +40,14 @@ const getters = {
   statuses() {
     return sessionStatuses;
   },
+  email(state) {
+    let email = null;
+    if (state.accessToken) {
+      const jwtToken = jwt.read(state.accessToken);
+      email = jwtToken.claim.sub;
+    }
+    return email;
+  },
 };
 
 const mutations = {

@@ -77,10 +77,13 @@
               </span>
             </a>
             <div class="navbar-dropdown is-right">
-              <a class="navbar-item is-hidden-mobile" @click="navTo('/admin')">
+              <label class="navbar-item label">
+                {{ userEmail }}
+              </label>
+              <a class="navbar-item" @click="navTo('/admin')">
                 Admin menu
               </a>
-              <a class="navbar-item is-hidden-mobile" @click="signout()">
+              <a class="navbar-item" @click="signout()">
                 Sign out
               </a>
             </div>
@@ -105,6 +108,9 @@ export default {
     };
   },
   computed: {
+    userEmail() {
+      return this.$store.getters['session/email'];
+    },
     statuses() {
       return this.$store.getters['session/statuses'];
     },
