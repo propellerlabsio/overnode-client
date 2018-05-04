@@ -272,15 +272,12 @@ const actions = {
     // If we haven't already stored help for this command, request it now
     if (!getters.selectedHelp(state)) {
       const query = `{
-        rpc {
-          help(command: "${state.selectedName}")
-        }
+        rpc_help(command: "${state.selectedName}")
       }`;
 
       const response = await dispatch('session/request', { query, variables: {} }, { root: true });
-      const help = response.rpc.help;
-      const parsed = JSON.parse(help);
-      commit('addHelp', parsed);
+      const help = JSON.parse(response.rpc_help);
+      commit('addHelp', help);
     }
   },
 };
