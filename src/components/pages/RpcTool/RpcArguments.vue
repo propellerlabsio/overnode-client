@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import LoadingMessage from '../../../misc/LoadingMessage';
+import LoadingMessage from '@/components/misc/LoadingMessage';
 import RpcHistory from './RpcHistory';
 import RpcInput from './RpcInput';
 import RpcListInput from './RpcListInput';

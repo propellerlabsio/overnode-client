@@ -24,19 +24,6 @@
         </router-link>
       </li>
     </ul>
-    <p class="menu-label" :class="{ 'is-loading': rpcLoading }">
-      RPC
-    </p>
-    <ul class="menu-list">
-      <li v-for="command in rpcCommands" v-bind:key="command.name">
-        <router-link
-          :class="{ 'is-active': $route.params.commandName === command.name }"
-          :to="`/admin/rpc/${command.name}`">
-          {{ command.name }}
-        </router-link>
-      </li>
-      <li v-if="rpcLoading"><a>Loading...</a></li>
-    </ul>
     <p class="menu-label">
       Session
     </p>
@@ -49,19 +36,6 @@
 <script>
 export default {
   name: 'admin-menu',
-  data() {
-    return {
-      rpcLoading: false,
-    };
-  },
-  computed: {
-    rpcCommands() {
-      return this.$store.state.rpc.commands;
-    },
-  },
-  created() {
-    this.initRpc();
-  },
   methods: {
     activeIfRoute(routeName) {
       const classes = [];
@@ -77,13 +51,6 @@ export default {
         timeoutSecs: 5,
         type: 'success',
       });
-    },
-    async initRpc() {
-      if (!this.rpcCommands.length) {
-        this.rpcLoading = true;
-        await this.$store.dispatch('rpc/init');
-        this.rpcLoading = false;
-      }
     },
   },
 };

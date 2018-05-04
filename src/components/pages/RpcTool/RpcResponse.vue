@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import LoadingMessage from '../../../misc/LoadingMessage';
+import LoadingMessage from '@/components/misc/LoadingMessage';
 
 export default {
   name: 'rpc-response',

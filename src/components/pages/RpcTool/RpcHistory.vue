@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import FormattedTime from '../../../formatters/FormattedTime';
+import FormattedTime from '@/components/formatters/FormattedTime';
 
 export default {
   name: 'rpc-history',

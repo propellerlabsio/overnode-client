@@ -1,6 +1,9 @@
 <template>
-  <div>
-    <div v-if="command">
+  <div class="columns">
+    <div class="column is-narrow">
+      <rpc-menu />
+    </div>
+    <div class="column" v-if="command">
       <h1 class="title">{{ command.name }}</h1>
       <p>{{ command.description }}</p>
       <br/>
@@ -14,21 +17,22 @@
       <h2 class="subtitle">Help</h2>
       <rpc-response v-if="help" :response="help"/>
     </div>
-    <loading-message v-else/>
   </div>
 </template>
 
 <script>
-import LoadingMessage from '../../misc/LoadingMessage';
-import RpcResponse from './RpcTool/RpcResponse';
+import LoadingMessage from '@/components/misc/LoadingMessage';
 import RpcArguments from './RpcTool/RpcArguments';
+import RpcMenu from './RpcTool/RpcMenu';
+import RpcResponse from './RpcTool/RpcResponse';
 
 export default {
   name: 'rpc',
   components: {
     LoadingMessage,
-    RpcResponse,
     RpcArguments,
+    RpcMenu,
+    RpcResponse,
   },
   computed: {
     command() {

@@ -93,6 +93,11 @@ export default {
 
         await this.$store.dispatch('session/start', { accessToken, keep: this.permanent });
         this.loading = false;
+        this.$store.commit('toasts/add', {
+          message: 'Signed in',
+          timeoutSecs: 5,
+          type: 'success',
+        });
       } catch (err) {
         this.loading = false;
         this.$store.commit('toasts/add', {

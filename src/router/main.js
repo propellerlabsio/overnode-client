@@ -8,6 +8,8 @@ import PeerPage from '@/components/pages/PeerPage';
 import PeersPage from '@/components/pages/PeersPage';
 import PrioritySyncingPage from '@/components/pages/PrioritySyncingPage';
 import QueryPage from '@/components/pages/QueryPage';
+import RpcTool from '@/components/pages/RpcTool';
+import SigninPage from '@/components/pages/SigninPage';
 import TransactionPage from '@/components/pages/TransactionPage';
 
 
@@ -71,6 +73,21 @@ const mainRoutes = [
     path: '/query',
     name: 'Query',
     component: QueryPage,
+  },
+  {
+    name: 'RpcTool',
+    path: '/rpc',
+    component: RpcTool,
+  },
+  {
+    name: 'RpcCommand',
+    path: '/rpc/:commandName',
+    component: RpcTool,
+  },
+  {
+    path: '/signin',
+    name: 'Signin',
+    component: SigninPage,
   },
   {
     path: '/syncing',
