@@ -37,10 +37,13 @@
               Developers
             </a>
             <div class="navbar-dropdown">
+              <a class="navbar-item is-hidden-tablet" disabled>
+                API / Live Query (Large-screen only)
+              </a>
               <a class="navbar-item is-hidden-mobile" @click="navTo('/query')">
                 API / Live Query
               </a>
-              <a class="navbar-item is-hidden-mobile" @click="navTo('/rpc')">
+              <a class="navbar-item" @click="navTo('/rpc')">
                 JSON-RPC Tool
               </a>
             </div>
@@ -52,9 +55,12 @@
         </div>
 
         <div class="navbar-end">
+          <!-- Donate -->
           <a class="navbar-item" @click="navTo('/donate')">
             Donate
           </a>
+
+          <!-- Github -->
           <a href="https://github.com/propellerlabsio/overnode-client" target="_blank" class="navbar-item">
             <span class="icon is-hidden-mobile">
               <i class="fa fa-github fa-2x"></i>
@@ -73,7 +79,7 @@
           <div v-if="isSignedIn" class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
               <span class="icon">
-                <i class="fa fa-user-circle fa-2x"/>
+                <i class="fa fa-user fa-2x"/>
               </span>
             </a>
             <div class="navbar-dropdown is-right">
