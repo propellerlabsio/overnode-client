@@ -51,12 +51,9 @@ export default {
       this.term = '';
     },
     cleanSearchTerm(term) {
-      let cleaned = term;
-      // Dump cash address prefix
-      const cashaddrPrefix = 'bitcoincash:';
-      if (cleaned.substring(0, cashaddrPrefix.length) === cashaddrPrefix) {
-        cleaned = cleaned.substr(cashaddrPrefix.length);
-      }
+      // Dump any cash address prefix (e.g. 'bitcoincash:', 'bchtest:', 'bchreg:')
+      const addressPrefixLength = term.indexOf(':') + 1;
+      const cleaned = term.substr(addressPrefixLength);
       return cleaned;
     },
     async execute() {
