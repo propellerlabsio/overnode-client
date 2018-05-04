@@ -1,9 +1,14 @@
 <template>
-  <input
+  <input v-if="graphQlType !== 'JSON'"
     :value="value"
     @input="onInput($event, argument.name)"
-    class="input" :type="argumentInputType(argument)"
-    :placeholder="argument.description">
+    class="input" :type="htmlInputType"
+    :placeholder="graphQlType">
+  <textarea v-else
+    :value="value"
+    @input="onInput($event, argument.name)"
+    class="textarea"
+    :placeholder="graphQlType"></textarea>
 </template>
 
 <script>
@@ -21,25 +26,45 @@ export default {
       type: Number,
     },
   },
-  methods: {
-    argumentInputType(argument) {
-      const graphQlType = argument.type.name || argument.type.ofType.name;
+  computed: {
+    graphQlType() {
+      return this.argument.type.name || this.argument.type.ofType.name;
+    },
+    htmlInputType() {
       let inputType = 'text';
-      if (graphQlType === 'Int' || graphQlType === 'Float') {
+      if (this.graphQlType === 'Int' || this.graphQlType === 'Float') {
         inputType = 'number';
       }
       return inputType;
     },
-
+  },
+  methods: {
     onInput(event, argumentName) {
-      const newValue = event.target.type === 'number' ?
-        Number(event.target.value) :
-        event.target.value;
-      this.$store.commit('rpc/setInputValue', {
-        argumentName,
-        argumentValue: newValue,
-        arrayIndex: this.arrayIndex,
-      });
+      try {
+        let newValue;
+        switch (event.target.type) {
+          case 'number':
+            newValue = Number(event.target.value);
+            break;
+          default:
+            newValue = event.target.value;
+        }
+        this.$store.commit('rpc/setInputValue', {
+          argumentName,
+          argumentValue: newValue,
+          arrayIndex: this.arrayIndex,
+        });
+      } catch (err) {
+        if (err.message.includes('JSON')) {
+          this.jsonError = true;
+        } else {
+          this.$store.commit('toasts/add', {
+            message: err.message,
+            timeoutSecs: 8,
+            type: 'danger',
+          });
+        }
+      }
     },
   },
 };

@@ -24,7 +24,7 @@
         </router-link>
       </li>
     </ul>
-    <p @click="onRpcClick" class="menu-label" :class="{ 'is-loading': rpcLoading }">
+    <p class="menu-label" :class="{ 'is-loading': rpcLoading }">
       RPC
     </p>
     <ul class="menu-list">
@@ -59,6 +59,9 @@ export default {
       return this.$store.state.rpc.commands;
     },
   },
+  created() {
+    this.initRpc();
+  },
   methods: {
     activeIfRoute(routeName) {
       const classes = [];
@@ -75,7 +78,7 @@ export default {
         type: 'success',
       });
     },
-    async onRpcClick() {
+    async initRpc() {
       if (!this.rpcCommands.length) {
         this.rpcLoading = true;
         await this.$store.dispatch('rpc/init');

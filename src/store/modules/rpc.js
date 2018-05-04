@@ -225,6 +225,15 @@ const actions = {
           argValue = argValue.filter(x => x != null && x !== '');
         }
 
+        // Parse/validate and the stringify JSON type arguments
+        const argDef = getters.selectedCommand(state).args.find(x => x.name === argName);
+        const argType = argDef.type.name || argDef.type.ofType.name;
+        const isJson = argType === 'JSON';
+        if (isJson) {
+          argValue = JSON.parse(argValue);
+          argValue = JSON.stringify(argValue);
+        }
+
         argsString = argsString.concat(argName, ': ', JSON.stringify(argValue));
       });
 
