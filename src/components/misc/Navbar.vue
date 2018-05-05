@@ -46,6 +46,9 @@
               <a class="navbar-item" @click="navTo('/rpc')">
                 JSON-RPC Tool
               </a>
+              <a class="navbar-item" @click="navTo('/script')">
+                Script Tool
+              </a>
             </div>
           </div>
           <search-tool />

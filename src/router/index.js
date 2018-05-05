@@ -4,10 +4,11 @@ import Router from 'vue-router';
 
 // Route imports
 import adminRoutes from './admin';
-import mainRoutes from './main';
+import generalRoutes from './general';
+import developerRoutes from './developer';
 
 Vue.use(Router);
 
 export default new Router({
-  routes: mainRoutes.concat(adminRoutes),
+  routes: generalRoutes.concat(adminRoutes).concat(developerRoutes),
 });

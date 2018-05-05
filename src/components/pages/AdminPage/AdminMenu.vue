@@ -13,18 +13,6 @@
       </li>
     </ul>
     <p class="menu-label">
-      Tools
-    </p>
-    <ul class="menu-list">
-      <li>
-        <router-link
-          to="/admin/transaction-builder"
-          :class="activeIfRoute('TransactionBuilder')">
-          Transaction Builder
-        </router-link>
-      </li>
-    </ul>
-    <p class="menu-label">
       Session
     </p>
     <ul class="menu-list">
