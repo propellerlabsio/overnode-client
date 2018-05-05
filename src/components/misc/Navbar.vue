@@ -19,7 +19,7 @@
 
       <div class="navbar-menu" :class="{ 'is-active': menuActive }">
         <div class="navbar-start">
-          <div class="navbar-item has-dropdwon is-hoverable">
+          <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
               Explore
             </a>
@@ -32,7 +32,7 @@
               </a>
             </div>
           </div>
-          <div class="navbar-item has-dropdwon is-hoverable">
+          <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
               Developers
             </a>
@@ -48,9 +48,6 @@
               </a>
             </div>
           </div>
-          <a class="navbar-item" @click="navTo('/admin')">
-            Admin
-          </a>
           <search-tool />
         </div>
 
