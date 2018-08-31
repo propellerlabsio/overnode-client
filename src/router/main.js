@@ -6,7 +6,6 @@ import DonationsPage from '@/components/pages/DonationsPage';
 import OverviewPage from '@/components/pages/OverviewPage';
 import PeerPage from '@/components/pages/PeerPage';
 import PeersPage from '@/components/pages/PeersPage';
-import PrioritySyncingPage from '@/components/pages/PrioritySyncingPage';
 import QueryPage from '@/components/pages/QueryPage';
 import TransactionPage from '@/components/pages/TransactionPage';
 
@@ -71,11 +70,6 @@ const mainRoutes = [
     path: '/query',
     name: 'Query',
     component: QueryPage,
-  },
-  {
-    path: '/syncing',
-    name: 'PrioritySyncing',
-    component: PrioritySyncingPage,
   },
   {
     path: '/transaction/:transactionId',

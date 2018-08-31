@@ -66,7 +66,7 @@ export default {
       return this.block.height >= this.highestBlockHeight || this.isLoading;
     },
     highestBlockHeight() {
-      return this.$store.state.server.status.height.overnode.to;
+      return this.$store.state.server.status.height.bitcoind;
     },
     block() {
       return this.$store.state.blocks.selected;
