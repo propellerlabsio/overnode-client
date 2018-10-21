@@ -27,7 +27,7 @@
           {{ input.input_number }}
         </td>
         <td>
-          {{ input.output_value }}
+          {{ input.value }}
         </td>
         <td class="has-text-centered is-narrow">
           <span class="icon">

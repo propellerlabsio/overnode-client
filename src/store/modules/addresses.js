@@ -72,7 +72,7 @@ const actions = {
           transaction_id
           output_number
           value
-          addresses
+          address
         }
       }
     }`;
@@ -101,9 +101,10 @@ const actions = {
     const query = `query($address: String!, $paging: Paging!) {
       address(address:$address) {
         spent(paging: $paging) {
+          address
           transaction_id
           input_number
-          output_value
+          value
         }
       }
     }`;
@@ -138,12 +139,12 @@ const actions = {
           transaction_id
           output_number
           value
-          addresses
+          address
         }
         spent(paging: $spentPaging) {
           transaction_id
           input_number
-          output_value
+          value
         }
       }
     }`;
