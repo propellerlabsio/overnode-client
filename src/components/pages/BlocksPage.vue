@@ -48,7 +48,7 @@ export default {
       return this.$store.getters['blocks/blocksPage'];
     },
     blocksCount() {
-      return this.$store.state.server.status.height.bitcoind;
+      return this.$store.state.server.status.height.overnode.to;
     },
   },
   methods: {

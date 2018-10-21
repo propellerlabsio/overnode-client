@@ -2,6 +2,7 @@
   <div id="app">
     <navbar />
     <section class="section app-header container">
+      <server-sync-status />
       <socket-connection />
       <upgrade-watcher />
       <hero-banner v-if="$route.name === 'Home'" />
@@ -18,6 +19,7 @@ import HeroBanner from './components/pages/OverviewPage/HeroBanner';
 import Navbar from './components/misc/Navbar';
 import SocketConnection from './components/misc/SocketConnection';
 import Toasts from './components/misc/Toasts';
+import ServerSyncStatus from './components/misc/ServerSyncStatus';
 import UpgradeWatcher from './components/misc/UpgradeWatcher';
 
 export default {
@@ -27,7 +29,22 @@ export default {
     Navbar,
     SocketConnection,
     Toasts,
+    ServerSyncStatus,
     UpgradeWatcher,
+  },
+  computed: {
+    prioritySyncing() {
+      return this.$store.state.server.status.prioritySyncing;
+    },
+  },
+  watch: {
+    prioritySyncing() {
+      if (this.prioritySyncing) {
+        this.$router.push({ name: 'PrioritySyncing' });
+      } else {
+        this.$router.push({ name: 'Home' });
+      }
+    },
   },
   created() {
     this.$store.dispatch('session/restore');

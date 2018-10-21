@@ -127,7 +127,7 @@ export default {
             // Request latest blocks new ones are available (new block mined etc)
             // if we aren't currently prioritySyncing
             if (!this.$store.state.server.status.prioritySyncing) {
-              const latestAvailableBlock = dataJson.liveData.height.bitcoind;
+              const latestAvailableBlock = dataJson.liveData.height.overnode.to;
               const latestBlockRetrieved = this.$store.state.blocks.height;
               if (latestBlockRetrieved < latestAvailableBlock &&
                 this.latestBlockRequested < latestAvailableBlock) {
